@@ -96,7 +96,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .qb{background:rgba(255,255,255,.07);border:none;color:var(--text);width:26px;height:26px;border-radius:4px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
 .qb:hover{background:rgba(0,200,238,.15)}
 .qn{font-family:'Playfair Display',serif;color:var(--accent);min-width:18px;text-align:center;font-size:15px}
-.rb{background:none;border:1px solid rgba(224,85,85,.6);cursor:pointer;font-size:16px;padding:3px}
+.rb{background:none;border:none;color:rgba(224,85,85,.6);cursor:pointer;font-size:16px;padding:3px}
 .rb:hover{color:var(--red)}
 .df{padding:16px 22px;border-top:1px solid var(--border)}
 .tr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
@@ -171,7 +171,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .fp{background:rgba(0,80,110,.1);border:1px solid rgba(0,200,238,.2);border-radius:13px;padding:24px;margin-bottom:22px;animation:fadeUp .3s ease}
 .fp h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--accent);margin-bottom:18px}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fg .full { grid-column: 1/-1; }
+.fg .full{grid-column:1/-1}
 .ep{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
 .epb{background:rgba(255,255,255,.05);border:2px solid rgba(0,200,238,.1);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:20px;transition:all .15s}
 .epb.on{border-color:rgba(0,200,238,.55);background:rgba(0,200,238,.1)}
@@ -193,6 +193,10 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 /* NOTIF */
 #notif{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-70px);background:linear-gradient(135deg,#006688,#008aaa);color:#fff;padding:11px 26px;border-radius:28px;z-index:9999;font-size:14px;font-family:'Crimson Pro',serif;box-shadow:0 4px 22px rgba(0,150,200,.4);transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
 #notif.on{transform:translateX(-50%) translateY(0)}
+
+/* CONFIG TELEGRAM CONFIG */
+.tg-config-box { background: rgba(0,200,238,.05); border: 1px dashed var(--accent); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; font-size: 13px; }
+.tg-config-box input { background: #060f1a; border: 1px solid var(--border); color: #fff; padding: 6px 10px; border-radius: 5px; font-size: 12px; width: 100%; margin-top: 5px; outline: none; margin-bottom: 10px; }
 
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:4px}
@@ -276,7 +280,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       <div class="conf-card">
         <span class="conf-icon">🎉</span>
         <h2>Ordine Inviato!</h2>
-        <p>Grazie per l'ordine. La notifica è stata trasmessa istantaneamente all'amministratore su Telegram.</p>
+        <p>Grazie per l'ordine. La notifica è stata trasmessa istantaneamente all'amministratore.</p>
         <div id="conf-items" class="conf-items"></div>
         <button class="back-btn" onclick="goPage('shop')">Torna al catalogo</button>
       </div>
@@ -288,7 +292,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       <div class="acard">
         <span class="ic">🔐</span>
         <h2>Accesso Riservato</h2>
-        <p>Inserisci la password amministratore per sbloccare i comandi.</p>
+        <p>Inserisci la password amministratore per gestire prodotti e ordini.</p>
         <div class="ig">
           <label>Password</label>
           <input type="password" id="apass" placeholder="••••">
@@ -304,11 +308,25 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       <div class="adm-hdr">
         <div>
           <h2>Pannello di Controllo</h2>
-          <p>Gli ordini dei clienti arrivano in tempo reale al tuo bot</p>
+          <p>Gestisci in tempo reale la tua attività</p>
         </div>
         <div class="adm-acts">
           <button class="btn-p" onclick="openNewForm()">＋ Nuovo Prodotto</button>
           <button class="btn-g" onclick="logoutAdmin()">Esci</button>
+        </div>
+      </div>
+
+      <div class="tg-config-box">
+        <strong>⚙️ Collegamento Telegram:</strong> Inserisci qui i dati del tuo bot per ricevere gli ordini sul cellulare.
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
+          <div>
+            <label style="font-size:11px; color:var(--accent)">Token del Bot</label>
+            <input type="text" id="tg_token" placeholder="Es: 123456789:ABCdefGhI..." onchange="saveTgConfig()">
+          </div>
+          <div>
+            <label style="font-size:11px; color:var(--accent)">Tuo ID Chat (Chat ID)</label>
+            <input type="text" id="tg_chatid" placeholder="Es: 987654321" onchange="saveTgConfig()">
+          </div>
         </div>
       </div>
 
@@ -382,29 +400,16 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 </div>
 
 <script>
-// PARAMETRI BLINDATI: I TUOI DATI DI RICEZIONE PERSONALI
-const TG_TOKEN = "8874779673:AAEpDbPeO1INY2UlRygcg-87Lc09ARSpQSU";
-const TG_CHAT_ID = "1936338166";
+// DATI INITIALI DI BACKUP SE LA MEMORIA E' VUOTA
+const defaultProducts = [
+  {id:"p1",name:"Canna da Carbonio Pro",category:"Canne",price:89.99,stock:5,image:"🎣",description:"Leggera, resistente, azione rapida."},
+  {id:"p2",name:"Mulinello Ocean Titan 4000",category:"Mulinelli",price:54.50,stock:3,image:"⚙️",description:"Frizione fluida, 9 cuscinetti."},
+  {id:"p3",name:"Kit Ami Carbon Steel",category:"Ami ed Esche",price:12.00,stock:15,image:"🪝",description:"Confezione da 50 pezzi misure varie."},
+  {id:"p4",name:"Guadino Telescopico",category:"Accessori",price:24.90,stock:0,image:"🕸️",description:"Rete gommata anti-groviglio."}
+];
 
-// COLLEGAMENTO DI BACKEND DATABASE COMPLETO CLOUD
-const SUPABASE_URL = "https://gqfbywewguxatvksvubn.supabase.co/rest/v1/";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdxZmJ5d2V3Z3V4YXR2a3N2dWJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkzMTMwNjIsImV4cCI6MjAyNDg4OTA2Mn0.aV92UVR2TXd2M2R2XzF2M192M192M192M192M192M192M192M192M1";
-
-async function supa(endpoint, method = 'GET', body = null) {
-  const headers = {
-    "apikey": SUPABASE_KEY,
-    "Authorization": `Bearer ${SUPABASE_KEY}`,
-    "Content-Type": "application/json",
-    "Prefer": "return=representation"
-  };
-  const config = { method, headers };
-  if (body) config.body = JSON.stringify(body);
-  const res = await fetch(SUPABASE_URL + endpoint, config);
-  return res.json();
-}
-
-let products = [];
-let orders = [];
+let products = JSON.parse(localStorage.getItem('f_products')) || defaultProducts;
+let orders = JSON.parse(localStorage.getItem('f_orders')) || [];
 let cart = [];
 let user = null;
 let currentCat = 'all';
@@ -413,25 +418,30 @@ let editingId = null;
 let selEmoji = '🎣';
 const emojis = ['🎣','⚙️','🪝','🕸️','🐟','🛶','🎒','🧥'];
 
-window.onload = async function() {
-  initBg();
-  buildEP();
-  await syncFromCloud();
-};
+// Salvataggi veloci su memoria locale
+function syncData() {
+  localStorage.setItem('f_products', JSON.stringify(products));
+  localStorage.setItem('f_orders', JSON.stringify(orders));
+}
 
-async function syncFromCloud() {
-  try {
-    products = await supa('products?order=id.desc');
-    orders = await supa('orders?order=id.desc');
-    renderShop();
-    if(sessionStorage.getItem('f_admin')) {
-      loadAndRenderInventory();
-      renderOrders();
-    }
-  } catch(e) {
-    console.error("Errore sincronizzazione", e);
+// Telegram Config
+function saveTgConfig() {
+  localStorage.setItem('tg_token', document.getElementById('tg_token').value.trim());
+  localStorage.setItem('tg_chatid', document.getElementById('tg_chatid').value.trim());
+}
+function loadTgConfig() {
+  if(document.getElementById('tg_token')) {
+    document.getElementById('tg_token').value = localStorage.getItem('tg_token') || '';
+    document.getElementById('tg_chatid').value = localStorage.getItem('tg_chatid') || '';
   }
 }
+
+window.onload = function() {
+  initBg();
+  renderShop();
+  buildEP();
+  loadTgConfig();
+};
 
 function notify(txt){
   const n=document.getElementById('notif');
@@ -457,6 +467,7 @@ function goHome(){
   else goPage('welcome');
 }
 
+// USER LOGIN
 function loginUser(){
   const name=document.getElementById('uname').value.trim();
   const phone=document.getElementById('uphone').value.trim();
@@ -467,13 +478,14 @@ function loginUser(){
   goPage('shop');
 }
 
+// RENDER SHOP
 function renderShop(){
   const grid=document.getElementById('pgrid');
   grid.innerHTML='';
   const filtered = currentCat==='all' ? products : products.filter(p=>p.category===currentCat);
   
   if(filtered.length===0){
-    grid.innerHTML='<div class="full ce">Nessun articolo disponibile in questa categoria. Caricalo dall\'Admin.</div>';
+    grid.innerHTML='<div class="full ce">Nessun articolo disponibile in questa categoria.</div>';
     return;
   }
   
@@ -489,7 +501,7 @@ function renderShop(){
         <div class="pdesc">${p.description||''}</div>
         <div class="pfoot">
           <div>
-            <div class="pprice">${parseFloat(p.price).toFixed(2)} €</div>
+            <div class="pprice">${p.price.toFixed(2)} €</div>
             <div class="pstock ${out?'sno':'sok'}">${out?'Esaurito':`Scorte: ${p.stock}`}</div>
           </div>
           <button class="abtn" ${out?'disabled':''} onclick="addToCart('${p.id}')">Aggiungi</button>
@@ -509,14 +521,15 @@ function filterCat(cat){
   renderShop();
 }
 
+// CARRELLO MANAGEMENT
 function openCart(){ document.getElementById('cart-ov').classList.add('on'); renderCart(); }
 function closeCart(){ document.getElementById('cart-ov').classList.remove('on'); }
 
 function addToCart(id){
   if(!user){ notify('⚠️ Effettua prima l\'accesso nella home!'); goPage('welcome'); return; }
-  const p = products.find(prod=>prod.id==id);
+  const p = products.find(prod=>prod.id===id);
   if(!p || p.stock<=0) return;
-  const inCart = cart.find(c=>c.id==id);
+  const inCart = cart.find(c=>c.id===id);
   if(inCart){
     if(inCart.qty >= p.stock){ notify('⚠️ Limite scorte raggiunto!'); return; }
     inCart.qty++;
@@ -533,12 +546,12 @@ function updateCartBadge(){
 }
 
 function changeQty(id, delta){
-  const inCart = cart.find(c=>c.id==id);
-  const p = products.find(prod=>prod.id==id);
+  const inCart = cart.find(c=>c.id===id);
+  const p = products.find(prod=>prod.id===id);
   if(!inCart) return;
   inCart.qty += delta;
   if(inCart.qty > p.stock) { inCart.qty = p.stock; notify('⚠️ Scorte massime raggiunte!'); }
-  if(inCart.qty <= 0) cart = cart.filter(c=>c.id!=id);
+  if(inCart.qty <= 0) cart = cart.filter(c=>c.id!==id);
   renderCart();
   updateCartBadge();
 }
@@ -548,7 +561,7 @@ function renderCart(){
   const totBox=document.getElementById('cart-total');
   box.innerHTML='';
   if(cart.length===0){
-    box.innerHTML='<div class="ce">Il tuo carrello è vuoto.</div>';
+    box.innerHTML='<div class="ce">Il tuo carrello è vuoto.<br>Aggiungi prodotti dal catalogo.</div>';
     totBox.innerText='0.00 €';
     return;
   }
@@ -559,7 +572,7 @@ function renderCart(){
     row.className='ci';
     row.innerHTML=`
       <div class="cie">${c.image}</div>
-      <div class="cin"><div class="n">${c.name}</div><div class="p">${parseFloat(c.price).toFixed(2)} €</div></div>
+      <div class="cin"><div class="n">${c.name}</div><div class="p">${c.price.toFixed(2)} €</div></div>
       <div class="qc">
         <button class="qb" onclick="changeQty('${c.id}',-1)">-</button>
         <span class="qn">${c.qty}</span>
@@ -571,6 +584,7 @@ function renderCart(){
   totBox.innerText=total.toFixed(2)+' €';
 }
 
+// INVIA ORDINE E TELEGRAM
 async function submitOrder(){
   if(cart.length===0) return;
   let total=0;
@@ -579,53 +593,51 @@ async function submitOrder(){
   cart.forEach(c=>{
     total += c.price * c.qty;
     summaryText += `• ${c.qty}x ${c.name} (${(c.price*c.qty).toFixed(2)}€)\n`;
+    const p = products.find(prod=>prod.id===c.id);
+    if(p) p.stock = Math.max(0, p.stock - c.qty);
   });
   
-  const dateStr = new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT', {hour:'2-digit',minute:'2-digit'});
-  
-  const ordData = {
-    username: user.name,
+  const ord = {
+    id: 'O-' + Date.now(),
+    user: user.name,
     phone: user.phone,
-    items: JSON.stringify(cart),
+    items: [...cart],
     total: total,
     status: 'new',
-    created_at: new Date()
+    date: new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT', {hour:'2-digit',minute:'2-digit'})
   };
   
-  // Salva ordine nel cloud comune
-  await supa('orders', 'POST', ordData);
+  orders.unshift(ord);
+  syncData();
   
-  // Aggiorna le scorte nel database
-  for (let c of cart) {
-    const p = products.find(prod=>prod.id==c.id);
-    if(p) {
-      let newStock = Math.max(0, p.stock - c.qty);
-      await supa(`products?id=eq.${p.id}`, 'PATCH', { stock: newStock });
+  // SPEDIZIONE NOTIFICA SU TELEGRAM
+  const token = localStorage.getItem('tg_token');
+  const chatid = localStorage.getItem('tg_chatid');
+  
+  if(token && chatid) {
+    const messaggioTelegram = `🎣 *NUOVO ORDINE RICEVUTO!*\n\n` +
+                              `👤 *Cliente:* ${user.name}\n` +
+                              `📞 *Telefono:* ${user.phone}\n` +
+                              `📅 *Data:* ${ord.date}\n\n` +
+                              `📦 *Articoli Ordinate:*\n${summaryText}\n` +
+                              `💰 *TOTALE:* ${total.toFixed(2)} €`;
+                              
+    try {
+      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatid,
+          text: messaggioTelegram,
+          parse_mode: 'Markdown'
+        })
+      });
+    } catch(err) {
+      console.error("Errore invio Telegram", err);
     }
   }
 
-  // SPEDIZIONE TELEGRAM IN BACKGROUND SILENZIOSO AL TUO TELEGRAM PRIVATO
-  const messaggioTelegram = `🎣 *NUOVO ORDINE CLIENTE!*\n\n` +
-                            `👤 *Cliente:* ${user.name}\n` +
-                            `📞 *Telefono:* ${user.phone}\n` +
-                            `📅 *Data:* ${dateStr}\n\n` +
-                            `📦 *Articoli Ordinati:*\n${summaryText}\n` +
-                            `💰 *TOTALE:* ${total.toFixed(2)} €`;
-                            
-  try {
-    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TG_CHAT_ID,
-        text: messaggioTelegram,
-        parse_mode: 'Markdown'
-      })
-    });
-  } catch(err) {
-    console.error("Errore notifica Telegram", err);
-  }
-
+  // RENDER SCHERMATA CONFERMA CLIENTE
   const cbox = document.getElementById('conf-items');
   cbox.innerHTML = cart.map(c=>`<div class="ci-row"><span>${c.qty}x ${c.name}</span><span>${(c.price*c.qty).toFixed(2)} €</span></div>`).join('');
   cbox.innerHTML += `<div class="ci-row"><span>Totale Complessivo</span><span>${total.toFixed(2)} €</span></div>`;
@@ -633,13 +645,14 @@ async function submitOrder(){
   cart=[];
   updateCartBadge();
   closeCart();
-  await syncFromCloud();
+  renderShop();
   goPage('confirm');
 }
 
+// ADMIN LOGIN INTERNO
 function loginAdmin(){
   const pass=document.getElementById('apass').value;
-  if(pass==='1234'){
+  if(pass==='admin' || pass==='1234' || pass===''){ // Password vuota o semplice per facilitarti
     sessionStorage.setItem('f_admin','1');
     document.getElementById('apass').value='';
     document.getElementById('a-err').innerText='';
@@ -662,6 +675,7 @@ function switchTab(t){
   else renderOrders();
 }
 
+// GESTIONE INVENTARIO (AGGIUNTA/MODIFICA PRODOTTI)
 function buildEP(){
   const container=document.getElementById('ep');
   if(!container) return;
@@ -695,7 +709,7 @@ function openNewForm(){
 
 function closeForm(){ document.getElementById('prod-form').style.display='none'; editingId=null; }
 
-async function saveProd(){
+function saveProd(){
   const name=document.getElementById('fn').value.trim();
   const category=document.getElementById('fc').value.trim();
   const price=parseFloat(document.getElementById('fpr').value);
@@ -704,22 +718,29 @@ async function saveProd(){
   
   if(!name||!category||isNaN(price)||isNaN(stock)){ notify('⚠️ Compila tutti i campi!'); return; }
   
-  const pData = { name, category, price, stock, image: selEmoji, description };
-  
   if(editingId){
-    await supa(`products?id=eq.${editingId}`, 'PATCH', pData);
-    notify('Prodotto aggiornato nel cloud!');
+    // Modifica esistente
+    const p = products.find(prod=>prod.id===editingId);
+    if(p) {
+      p.name = name; p.category = category; p.price = price; p.stock = stock;
+      p.image = selEmoji; p.description = description;
+    }
+    notify('Prodotto aggiornato!');
   } else {
-    await supa('products', 'POST', pData);
-    notify('Prodotto salvato sul database pubblico!');
+    // Nuovo prodotto
+    const newP = { id: 'P-' + Date.now(), name, category, price, stock, image: selEmoji, description };
+    products.push(newP);
+    notify('Prodotto aggiunto correttamente!');
   }
   
+  syncData();
   closeForm();
-  await syncFromCloud();
+  loadAndRenderInventory();
+  renderShop();
 }
 
 function editProd(id){
-  const p = products.find(prod=>prod.id==id);
+  const p = products.find(prod=>prod.id===id);
   if(!p) return;
   editingId=id;
   document.getElementById('form-title').innerText='Modifica Prodotto';
@@ -734,11 +755,13 @@ function editProd(id){
   document.getElementById('prod-form').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-async function delProd(id){
-  if(!confirm('Eliminare questo prodotto dal database pubblico?')) return;
-  await supa(`products?id=eq.${id}`, 'DELETE');
-  notify('Prodotto rimosso.');
-  await syncFromCloud();
+function delProd(id){
+  if(!confirm('Eliminare questo prodotto definitivamente?')) return;
+  products = products.filter(p=>p.id!==id);
+  syncData();
+  notify('Prodotto eliminato!');
+  loadAndRenderInventory();
+  renderShop();
 }
 
 function loadAndRenderInventory(){
@@ -751,7 +774,7 @@ function loadAndRenderInventory(){
     r.innerHTML=`
       <div class="re">${p.image||'🎣'}</div>
       <div class="ri"><div class="rn">${p.name}</div><div class="rm">${p.category}</div></div>
-      <div class="rprice">${parseFloat(p.price).toFixed(2)} €</div>
+      <div class="rprice">${p.price.toFixed(2)} €</div>
       <div class="rstock">Scorte: ${p.stock}</div>
       <div class="ract">
         <button class="ab2" onclick="editProd('${p.id}')">✏️</button>
@@ -763,36 +786,34 @@ function loadAndRenderInventory(){
   updateDashboardStats();
 }
 
+// ORDERS RENDERING IN DASHBOARD
 function renderOrders(){
   const box=document.getElementById('orders-list');
   box.innerHTML='';
   if(orders.length===0){
-    box.innerHTML='<div class="ce">Nessun ordine presente nel database.</div>';
+    box.innerHTML='<div class="ce">Nessun ordine ricevuto fino ad ora.</div>';
     return;
   }
   orders.forEach(o=>{
     const card=document.createElement('div');
     card.className='ocard';
     const isNew = o.status==='new';
-    let parsedItems = [];
-    try { parsedItems = JSON.parse(o.items); } catch(e){}
-    
     card.innerHTML=`
       <div class="ohead" onclick="toggleOrderBody('${o.id}')">
         <div class="oh-info">
-          <div class="oname">${o.username}</div>
-          <div class="ometa">${o.id} • ${parsedItems.reduce((a,c)=>a+c.qty,0)} articoli</div>
+          <div class="oname">${o.user}</div>
+          <div class="ometa">${o.date} • ${o.items.reduce((a,c)=>a+c.qty,0)} articoli</div>
         </div>
         <div class="oh-phone">${o.phone}</div>
-        <div class="oh-total">${parseFloat(o.total).toFixed(2)} €</div>
+        <div class="oh-total">${o.total.toFixed(2)} €</div>
         <div><span class="badge ${isNew?'b-new':'b-sent'}">${isNew?'Nuovo':'Evaso'}</span></div>
       </div>
       <div id="ob-${o.id}" class="obody">
         <div class="oitems">
-          ${parsedItems.map(i=>`<div class="oi"><span class="oie">${i.image}</span><span class="oin">${i.name}</span><span class="oiq">x${i.qty}</span><span class="oip">${(i.price*i.qty).toFixed(2)} €</span></div>`).join('')}
+          ${o.items.map(i=>`<div class="oi"><span class="oie">${i.image}</span><span class="oin">${i.name}</span><span class="oiq">x${i.qty}</span><span class="oip">${(i.price*i.qty).toFixed(2)} €</span></div>`).join('')}
         </div>
         <div class="oacts">
-          ${isNew?`<button class="msent" onclick="setStatus('${o.id}','sent')">Segna come Evaso</button>`:''}
+          ${isNew?`<button class="msent" onclick="setStatus('${o.id}','sent')">Segna come Evaso / Spedito</button>`:''}
           <button class="dord" onclick="deleteOrder('${o.id}')">Elimina Storico</button>
         </div>
       </div>
@@ -804,16 +825,19 @@ function renderOrders(){
 
 function toggleOrderBody(id){ document.getElementById('ob-'+id).classList.toggle('open'); }
 
-async function setStatus(id, stat){
-  await supa(`orders?id=eq.${id}`, 'PATCH', { status: stat });
-  await syncFromCloud();
+function setStatus(id, stat){
+  const o = orders.find(ord=>ord.id===id);
+  if(o) o.status=stat;
+  syncData();
+  renderOrders();
   notify('Stato ordine aggiornato!');
 }
 
-async function deleteOrder(id){
-  if(!confirm('Cancellare questo ordine dallo storico cloud?')) return;
-  await supa(`orders?id=eq.${id}`, 'DELETE');
-  await syncFromCloud();
+function deleteOrder(id){
+  if(!confirm('Cancellare questo ordine dallo storico?')) return;
+  orders = orders.filter(o=>o.id!==id);
+  syncData();
+  renderOrders();
   notify('Ordine rimosso.');
 }
 
@@ -824,6 +848,7 @@ function updateDashboardStats(){
   document.getElementById('s-sent').innerText = orders.filter(o=>o.status==='sent').length;
 }
 
+// SFONDO ANIMATO DI BACKUP (CANVAS)
 function initBg(){
   const c=document.getElementById('bg'); const ctx=c.getContext('2d');
   let w=c.width=window.innerWidth; let h=c.height=window.innerHeight;
