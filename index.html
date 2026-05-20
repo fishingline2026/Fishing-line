@@ -276,7 +276,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       <div class="conf-card">
         <span class="conf-icon">🎉</span>
         <h2>Ordine Inviato!</h2>
-        <p>Grazie per l'ordine. La notifica è stata trasmessa istantaneamente all'amministratore.</p>
+        <p>Grazie per l'ordine. La notifica è stata trasmessa istantaneamente all'amministratore su Telegram.</p>
         <div id="conf-items" class="conf-items"></div>
         <button class="back-btn" onclick="goPage('shop')">Torna al catalogo</button>
       </div>
@@ -288,10 +288,10 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       <div class="acard">
         <span class="ic">🔐</span>
         <h2>Accesso Riservato</h2>
-        <p>Inserisci la password amministratore per gestire l'inventario.</p>
+        <p>Inserisci la password amministratore per sbloccare i comandi.</p>
         <div class="ig">
           <label>Password</label>
-          <input type="password" id="apass" placeholder="Predefinita: 1234">
+          <input type="password" id="apass" placeholder="••••">
         </div>
         <button class="btn-cta" onclick="loginAdmin()">Accedi</button>
         <div id="a-err" class="err"></div>
@@ -304,7 +304,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       <div class="adm-hdr">
         <div>
           <h2>Pannello di Controllo</h2>
-          <p>Gestisci in tempo reale i tuoi prodotti pubblici</p>
+          <p>Gli ordini dei clienti arrivano in tempo reale al tuo bot</p>
         </div>
         <div class="adm-acts">
           <button class="btn-p" onclick="openNewForm()">＋ Nuovo Prodotto</button>
@@ -382,18 +382,29 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 </div>
 
 <script>
+// PARAMETRI BLINDATI: I TUOI DATI DI RICEZIONE PERSONALI
 const TG_TOKEN = "8874779673:AAEpDbPeO1INY2UlRygcg-87Lc09ARSpQSU";
 const TG_CHAT_ID = "1936338166";
 
-const defaultProducts = [
-  {id:"p1",name:"Canna da Carbonio Pro",category:"Canne",price:89.99,stock:5,image:"🎣",description:"Leggera, resistente, azione rapida."},
-  {id:"p2",name:"Mulinello Ocean Titan 4000",category:"Mulinelli",price:54.50,stock:3,image:"⚙️",description:"Frizione fluida, 9 cuscinetti."},
-  {id:"p3",name:"Kit Ami Carbon Steel",category:"Ami ed Esche",price:12.00,stock:15,image:"🪝",description:"Confezione da 50 pezzi misure varie."},
-  {id:"p4",name:"Guadino Telescopico",category:"Accessori",price:24.90,stock:0,image:"🕸️",description:"Rete gommata anti-groviglio."}
-];
+// COLLEGAMENTO DI BACKEND DATABASE COMPLETO CLOUD
+const SUPABASE_URL = "https://gqfbywewguxatvksvubn.supabase.co/rest/v1/";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdxZmJ5d2V3Z3V4YXR2a3N2dWJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDkzMTMwNjIsImV4cCI6MjAyNDg4OTA2Mn0.aV92UVR2TXd2M2R2XzF2M192M192M192M192M192M192M192M192M1";
 
-let products = JSON.parse(localStorage.getItem('f_products')) || defaultProducts;
-let orders = JSON.parse(localStorage.getItem('f_orders')) || [];
+async function supa(endpoint, method = 'GET', body = null) {
+  const headers = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": `Bearer ${SUPABASE_KEY}`,
+    "Content-Type": "application/json",
+    "Prefer": "return=representation"
+  };
+  const config = { method, headers };
+  if (body) config.body = JSON.stringify(body);
+  const res = await fetch(SUPABASE_URL + endpoint, config);
+  return res.json();
+}
+
+let products = [];
+let orders = [];
 let cart = [];
 let user = null;
 let currentCat = 'all';
@@ -402,16 +413,25 @@ let editingId = null;
 let selEmoji = '🎣';
 const emojis = ['🎣','⚙️','🪝','🕸️','🐟','🛶','🎒','🧥'];
 
-function syncData() {
-  localStorage.setItem('f_products', JSON.stringify(products));
-  localStorage.setItem('f_orders', JSON.stringify(orders));
-}
-
-window.onload = function() {
+window.onload = async function() {
   initBg();
-  renderShop();
   buildEP();
+  await syncFromCloud();
 };
+
+async function syncFromCloud() {
+  try {
+    products = await supa('products?order=id.desc');
+    orders = await supa('orders?order=id.desc');
+    renderShop();
+    if(sessionStorage.getItem('f_admin')) {
+      loadAndRenderInventory();
+      renderOrders();
+    }
+  } catch(e) {
+    console.error("Errore sincronizzazione", e);
+  }
+}
 
 function notify(txt){
   const n=document.getElementById('notif');
@@ -453,7 +473,7 @@ function renderShop(){
   const filtered = currentCat==='all' ? products : products.filter(p=>p.category===currentCat);
   
   if(filtered.length===0){
-    grid.innerHTML='<div class="full ce">Nessun articolo disponibile in questa categoria.</div>';
+    grid.innerHTML='<div class="full ce">Nessun articolo disponibile in questa categoria. Caricalo dall\'Admin.</div>';
     return;
   }
   
@@ -469,7 +489,7 @@ function renderShop(){
         <div class="pdesc">${p.description||''}</div>
         <div class="pfoot">
           <div>
-            <div class="pprice">${p.price.toFixed(2)} €</div>
+            <div class="pprice">${parseFloat(p.price).toFixed(2)} €</div>
             <div class="pstock ${out?'sno':'sok'}">${out?'Esaurito':`Scorte: ${p.stock}`}</div>
           </div>
           <button class="abtn" ${out?'disabled':''} onclick="addToCart('${p.id}')">Aggiungi</button>
@@ -494,9 +514,9 @@ function closeCart(){ document.getElementById('cart-ov').classList.remove('on');
 
 function addToCart(id){
   if(!user){ notify('⚠️ Effettua prima l\'accesso nella home!'); goPage('welcome'); return; }
-  const p = products.find(prod=>prod.id===id);
+  const p = products.find(prod=>prod.id==id);
   if(!p || p.stock<=0) return;
-  const inCart = cart.find(c=>c.id===id);
+  const inCart = cart.find(c=>c.id==id);
   if(inCart){
     if(inCart.qty >= p.stock){ notify('⚠️ Limite scorte raggiunto!'); return; }
     inCart.qty++;
@@ -513,12 +533,12 @@ function updateCartBadge(){
 }
 
 function changeQty(id, delta){
-  const inCart = cart.find(c=>c.id===id);
-  const p = products.find(prod=>prod.id===id);
+  const inCart = cart.find(c=>c.id==id);
+  const p = products.find(prod=>prod.id==id);
   if(!inCart) return;
   inCart.qty += delta;
   if(inCart.qty > p.stock) { inCart.qty = p.stock; notify('⚠️ Scorte massime raggiunte!'); }
-  if(inCart.qty <= 0) cart = cart.filter(c=>c.id!==id);
+  if(inCart.qty <= 0) cart = cart.filter(c=>c.id!=id);
   renderCart();
   updateCartBadge();
 }
@@ -528,7 +548,7 @@ function renderCart(){
   const totBox=document.getElementById('cart-total');
   box.innerHTML='';
   if(cart.length===0){
-    box.innerHTML='<div class="ce">Il tuo carrello è vuoto.<br>Aggiungi prodotti dal catalogo.</div>';
+    box.innerHTML='<div class="ce">Il tuo carrello è vuoto.</div>';
     totBox.innerText='0.00 €';
     return;
   }
@@ -539,7 +559,7 @@ function renderCart(){
     row.className='ci';
     row.innerHTML=`
       <div class="cie">${c.image}</div>
-      <div class="cin"><div class="n">${c.name}</div><div class="p">${c.price.toFixed(2)} €</div></div>
+      <div class="cin"><div class="n">${c.name}</div><div class="p">${parseFloat(c.price).toFixed(2)} €</div></div>
       <div class="qc">
         <button class="qb" onclick="changeQty('${c.id}',-1)">-</button>
         <span class="qn">${c.qty}</span>
@@ -559,27 +579,36 @@ async function submitOrder(){
   cart.forEach(c=>{
     total += c.price * c.qty;
     summaryText += `• ${c.qty}x ${c.name} (${(c.price*c.qty).toFixed(2)}€)\n`;
-    const p = products.find(prod=>prod.id===c.id);
-    if(p) p.stock = Math.max(0, p.stock - c.qty);
   });
   
-  const ord = {
-    id: 'O-' + Date.now(),
-    user: user.name,
+  const dateStr = new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT', {hour:'2-digit',minute:'2-digit'});
+  
+  const ordData = {
+    username: user.name,
     phone: user.phone,
-    items: [...cart],
+    items: JSON.stringify(cart),
     total: total,
     status: 'new',
-    date: new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT', {hour:'2-digit',minute:'2-digit'})
+    created_at: new Date()
   };
   
-  orders.unshift(ord);
-  syncData();
+  // Salva ordine nel cloud comune
+  await supa('orders', 'POST', ordData);
   
-  const messaggioTelegram = `🎣 *NUOVO ORDINE RICEVUTO!*\n\n` +
+  // Aggiorna le scorte nel database
+  for (let c of cart) {
+    const p = products.find(prod=>prod.id==c.id);
+    if(p) {
+      let newStock = Math.max(0, p.stock - c.qty);
+      await supa(`products?id=eq.${p.id}`, 'PATCH', { stock: newStock });
+    }
+  }
+
+  // SPEDIZIONE TELEGRAM IN BACKGROUND SILENZIOSO AL TUO TELEGRAM PRIVATO
+  const messaggioTelegram = `🎣 *NUOVO ORDINE CLIENTE!*\n\n` +
                             `👤 *Cliente:* ${user.name}\n` +
                             `📞 *Telefono:* ${user.phone}\n` +
-                            `📅 *Data:* ${ord.date}\n\n` +
+                            `📅 *Data:* ${dateStr}\n\n` +
                             `📦 *Articoli Ordinati:*\n${summaryText}\n` +
                             `💰 *TOTALE:* ${total.toFixed(2)} €`;
                             
@@ -594,7 +623,7 @@ async function submitOrder(){
       })
     });
   } catch(err) {
-    console.error("Errore di rete Telegram", err);
+    console.error("Errore notifica Telegram", err);
   }
 
   const cbox = document.getElementById('conf-items');
@@ -604,13 +633,13 @@ async function submitOrder(){
   cart=[];
   updateCartBadge();
   closeCart();
-  renderShop();
+  await syncFromCloud();
   goPage('confirm');
 }
 
 function loginAdmin(){
   const pass=document.getElementById('apass').value;
-  if(pass==='1234' || pass==='admin'){
+  if(pass==='1234'){
     sessionStorage.setItem('f_admin','1');
     document.getElementById('apass').value='';
     document.getElementById('a-err').innerText='';
@@ -666,7 +695,7 @@ function openNewForm(){
 
 function closeForm(){ document.getElementById('prod-form').style.display='none'; editingId=null; }
 
-function saveProd(){
+async function saveProd(){
   const name=document.getElementById('fn').value.trim();
   const category=document.getElementById('fc').value.trim();
   const price=parseFloat(document.getElementById('fpr').value);
@@ -675,27 +704,22 @@ function saveProd(){
   
   if(!name||!category||isNaN(price)||isNaN(stock)){ notify('⚠️ Compila tutti i campi!'); return; }
   
+  const pData = { name, category, price, stock, image: selEmoji, description };
+  
   if(editingId){
-    const p = products.find(prod=>prod.id===editingId);
-    if(p) {
-      p.name = name; p.category = category; p.price = price; p.stock = stock;
-      p.image = selEmoji; p.description = description;
-    }
-    notify('Prodotto aggiornato!');
+    await supa(`products?id=eq.${editingId}`, 'PATCH', pData);
+    notify('Prodotto aggiornato nel cloud!');
   } else {
-    const newP = { id: 'P-' + Date.now(), name, category, price, stock, image: selEmoji, description };
-    products.push(newP);
-    notify('Prodotto aggiunto correttamente!');
+    await supa('products', 'POST', pData);
+    notify('Prodotto salvato sul database pubblico!');
   }
   
-  syncData();
   closeForm();
-  loadAndRenderInventory();
-  renderShop();
+  await syncFromCloud();
 }
 
 function editProd(id){
-  const p = products.find(prod=>prod.id===id);
+  const p = products.find(prod=>prod.id==id);
   if(!p) return;
   editingId=id;
   document.getElementById('form-title').innerText='Modifica Prodotto';
@@ -710,13 +734,11 @@ function editProd(id){
   document.getElementById('prod-form').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function delProd(id){
-  if(!confirm('Eliminare questo prodotto definitivamente?')) return;
-  products = products.filter(p=>p.id!==id);
-  syncData();
-  notify('Prodotto eliminato!');
-  loadAndRenderInventory();
-  renderShop();
+async function delProd(id){
+  if(!confirm('Eliminare questo prodotto dal database pubblico?')) return;
+  await supa(`products?id=eq.${id}`, 'DELETE');
+  notify('Prodotto rimosso.');
+  await syncFromCloud();
 }
 
 function loadAndRenderInventory(){
@@ -729,7 +751,7 @@ function loadAndRenderInventory(){
     r.innerHTML=`
       <div class="re">${p.image||'🎣'}</div>
       <div class="ri"><div class="rn">${p.name}</div><div class="rm">${p.category}</div></div>
-      <div class="rprice">${p.price.toFixed(2)} €</div>
+      <div class="rprice">${parseFloat(p.price).toFixed(2)} €</div>
       <div class="rstock">Scorte: ${p.stock}</div>
       <div class="ract">
         <button class="ab2" onclick="editProd('${p.id}')">✏️</button>
@@ -745,30 +767,32 @@ function renderOrders(){
   const box=document.getElementById('orders-list');
   box.innerHTML='';
   if(orders.length===0){
-    box.innerHTML='<div class="ce">Nessun ordine ricevuto fino ad ora.</div>';
+    box.innerHTML='<div class="ce">Nessun ordine presente nel database.</div>';
     return;
   }
   orders.forEach(o=>{
     const card=document.createElement('div');
-    card.className='ocamp';
     card.className='ocard';
     const isNew = o.status==='new';
+    let parsedItems = [];
+    try { parsedItems = JSON.parse(o.items); } catch(e){}
+    
     card.innerHTML=`
       <div class="ohead" onclick="toggleOrderBody('${o.id}')">
         <div class="oh-info">
-          <div class="oname">${o.user}</div>
-          <div class="ometa">${o.date} • ${o.items.reduce((a,c)=>a+c.qty,0)} articoli</div>
+          <div class="oname">${o.username}</div>
+          <div class="ometa">${o.id} • ${parsedItems.reduce((a,c)=>a+c.qty,0)} articoli</div>
         </div>
         <div class="oh-phone">${o.phone}</div>
-        <div class="oh-total">${o.total.toFixed(2)} €</div>
+        <div class="oh-total">${parseFloat(o.total).toFixed(2)} €</div>
         <div><span class="badge ${isNew?'b-new':'b-sent'}">${isNew?'Nuovo':'Evaso'}</span></div>
       </div>
       <div id="ob-${o.id}" class="obody">
         <div class="oitems">
-          ${o.items.map(i=>`<div class="oi"><span class="oie">${i.image}</span><span class="oin">${i.name}</span><span class="oiq">x${i.qty}</span><span class="oip">${(i.price*i.qty).toFixed(2)} €</span></div>`).join('')}
+          ${parsedItems.map(i=>`<div class="oi"><span class="oie">${i.image}</span><span class="oin">${i.name}</span><span class="oiq">x${i.qty}</span><span class="oip">${(i.price*i.qty).toFixed(2)} €</span></div>`).join('')}
         </div>
         <div class="oacts">
-          ${isNew?`<button class="msent" onclick="setStatus('${o.id}','sent')">Segna come Evaso / Spedito</button>`:''}
+          ${isNew?`<button class="msent" onclick="setStatus('${o.id}','sent')">Segna come Evaso</button>`:''}
           <button class="dord" onclick="deleteOrder('${o.id}')">Elimina Storico</button>
         </div>
       </div>
@@ -780,19 +804,16 @@ function renderOrders(){
 
 function toggleOrderBody(id){ document.getElementById('ob-'+id).classList.toggle('open'); }
 
-function setStatus(id, stat){
-  const o = orders.find(ord=>ord.id===id);
-  if(o) o.status=stat;
-  syncData();
-  renderOrders();
+async function setStatus(id, stat){
+  await supa(`orders?id=eq.${id}`, 'PATCH', { status: stat });
+  await syncFromCloud();
   notify('Stato ordine aggiornato!');
 }
 
-function deleteOrder(id){
-  if(!confirm('Cancellare questo ordine dallo storico?')) return;
-  orders = orders.filter(o=>o.id!==id);
-  syncData();
-  renderOrders();
+async function deleteOrder(id){
+  if(!confirm('Cancellare questo ordine dallo storico cloud?')) return;
+  await supa(`orders?id=eq.${id}`, 'DELETE');
+  await syncFromCloud();
   notify('Ordine rimosso.');
 }
 
