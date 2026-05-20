@@ -4,865 +4,419 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fishing Line — Ordina la tua attrezzatura</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<title>Fishing Line — Attrezzatura da Pesca</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --deep:#060f1a;--ocean:#0b1d2e;--mid:#0f2840;
-  --accent:#00c8ee;--accent2:#007a99;--gold:#c9a84c;
-  --text:#ddeef6;--muted:rgba(180,215,230,.55);
-  --glass:rgba(255,255,255,.04);--border:rgba(0,200,238,.12);
-  --red:#e05555;--green:#4ecb8a;--warn:#e09a30;
+/* ============================================================
+   DESIGN SYSTEM — LIGHT LUXURY MARINE
+   ============================================================ */
+:root {
+  --white:    #ffffff;
+  --ivory:    #f8f6f2;
+  --ivory2:   #f0ede6;
+  --navy:     #0d2137;
+  --navy2:    #163350;
+  --teal:     #1a7a8a;
+  --teal2:    #0f5a68;
+  --teal-lt:  #e8f4f6;
+  --teal-mid: #b8dde3;
+  --gold:     #b8913a;
+  --gold-lt:  #f5ead4;
+  --text:     #1a2633;
+  --text2:    #4a5a6a;
+  --text3:    #7a8a9a;
+  --border:   #dde4e8;
+  --border2:  #c8d4da;
+  --red:      #c0392b;
+  --green:    #1a7a55;
+  --shadow-sm: 0 1px 4px rgba(13,33,55,.07);
+  --shadow:    0 4px 16px rgba(13,33,55,.10);
+  --shadow-lg: 0 12px 40px rgba(13,33,55,.14);
+  --r:    8px;
+  --r2:   14px;
+  --r3:   22px;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--deep);color:var(--text);font-family:'Crimson Pro',Georgia,serif;min-height:100vh;overflow-x:hidden}
-#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
-.wrap{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:0 20px}
-
-/* HEADER */
-header{position:sticky;top:0;z-index:100;background:rgba(6,15,26,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 0;gap:12px;flex-wrap:wrap}
-.logo{cursor:pointer;border:none;background:none;text-align:left}
-.logo-main{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--accent);letter-spacing:1px;display:block}
-.logo-sub{font-size:9px;letter-spacing:4px;color:rgba(0,200,238,.45);text-transform:uppercase;display:block;margin-top:1px}
-nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.nb{background:none;border:1px solid transparent;color:var(--muted);padding:6px 14px;border-radius:6px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:14px;transition:all .2s}
-.nb:hover,.nb.on{color:var(--accent);border-color:rgba(0,200,238,.3);background:rgba(0,200,238,.06)}
-.cb{background:linear-gradient(135deg,var(--accent2),#004d66);border:none;color:#fff;padding:7px 18px;border-radius:20px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;transition:opacity .2s}
-.cb:hover{opacity:.85}
-.cbadge{background:var(--gold);color:#1a0f00;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
-
-/* PAGES */
-.page{display:none;animation:fadeUp .4s ease both}
-.page.on{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.pp{padding:32px 0 64px}
-
-/* WELCOME */
-.welcome-shell{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 20px}
-.welcome-card{background:rgba(11,29,46,.88);border:1px solid var(--border);border-radius:20px;padding:48px 40px;max-width:460px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.wc-fish{font-size:60px;display:block;margin-bottom:20px;filter:drop-shadow(0 0 20px rgba(0,200,238,.35))}
-.wc-title{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,38px);font-weight:900;background:linear-gradient(135deg,#fff,var(--accent) 60%,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;line-height:1.1}
-.wc-sub{font-size:16px;color:var(--muted);margin-bottom:32px;line-height:1.75}
-.ig{margin-bottom:14px;text-align:left}
-.ig label{display:block;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.ig input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(0,200,238,.2);color:var(--text);border-radius:8px;padding:11px 14px;font-family:'Crimson Pro',serif;font-size:16px;outline:none;transition:border-color .2s}
-.ig input:focus{border-color:rgba(0,200,238,.55)}
-.ig input::placeholder{color:rgba(180,210,230,.28)}
-.btn-cta{width:100%;background:linear-gradient(135deg,var(--accent2),#003d52);border:none;color:#fff;padding:14px;border-radius:9px;cursor:pointer;font-family:'Playfair Display',serif;font-size:18px;font-weight:700;letter-spacing:.3px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 20px rgba(0,150,200,.2);margin-top:4px}
-.btn-cta:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,150,200,.35)}
-.err{color:rgba(224,85,85,.9);font-size:13px;margin-top:8px;text-align:center}
-
-/* SHOP */
-.shop-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
-.shop-top h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--accent)}
-.greeting{font-size:14px;color:var(--muted);margin-top:4px}
-.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px}
-.fb{background:var(--glass);border:1px solid var(--border);color:var(--muted);border-radius:18px;padding:5px 16px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:13px;transition:all .2s}
-.fb.on,.fb:hover{background:linear-gradient(135deg,var(--accent2),#004055);border-color:transparent;color:#fff}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
-.pcard{background:var(--glass);border:1px solid var(--border);border-radius:13px;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
-.pcard:hover{transform:translateY(-4px);border-color:rgba(0,200,238,.28);box-shadow:0 10px 36px rgba(0,0,0,.4)}
-.pimg{background:linear-gradient(135deg,rgba(0,100,140,.25),rgba(0,50,90,.15));height:100px;display:flex;align-items:center;justify-content:center;font-size:50px}
-.pbody{padding:14px 16px}
-.pcat{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,200,238,.6);margin-bottom:3px}
-.pname{font-family:'Playfair Display',serif;font-size:16px;color:var(--text);margin-bottom:5px;line-height:1.3}
-.pdesc{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5}
-.pfoot{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.pprice{font-family:'Playfair Display',serif;font-size:21px;color:var(--accent);font-weight:700}
-.pstock{font-size:11px;margin-top:2px}
-.sok{color:rgba(78,203,138,.8)}.sno{color:rgba(224,85,85,.8)}
-.abtn{background:linear-gradient(135deg,var(--accent2),#004a60);border:none;color:#fff;border-radius:7px;padding:9px 14px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:13px;font-weight:600;white-space:nowrap;transition:opacity .2s}
-.abtn:hover{opacity:.8}
-.abtn:disabled{background:rgba(100,120,140,.2);color:rgba(200,220,230,.3);cursor:not-allowed}
-
-/* CART DRAWER */
-.dov{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,5,15,.78)}
-.dov.on{display:block}
-.drw{position:absolute;right:0;top:0;bottom:0;width:min(390px,100vw);background:#0a1b2c;border-left:1px solid rgba(0,200,238,.18);display:flex;flex-direction:column;animation:slideIn .3s ease}
-@keyframes slideIn{from{transform:translateX(100%)}to{transform:none}}
-.dh{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.dh h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--accent)}
-.xbtn{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px;line-height:1}
-.xbtn:hover{color:var(--text)}
-.di{flex:1;overflow-y:auto;padding:12px 22px}
-.ce{text-align:center;padding:50px 0;color:var(--muted);font-size:15px;line-height:1.8}
-.ci{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid rgba(0,200,238,.07)}
-.cie{font-size:28px;flex-shrink:0}
-.cin{flex:1;min-width:0}
-.cin .n{font-size:14px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cin .p{font-size:12px;color:rgba(0,200,238,.7);margin-top:2px}
-.qc{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.qb{background:rgba(255,255,255,.07);border:none;color:var(--text);width:26px;height:26px;border-radius:4px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
-.qb:hover{background:rgba(0,200,238,.15)}
-.qn{font-family:'Playfair Display',serif;color:var(--accent);min-width:18px;text-align:center;font-size:15px}
-.rb{background:none;border:none;color:rgba(224,85,85,.6);cursor:pointer;font-size:16px;padding:3px}
-.rb:hover{color:var(--red)}
-.df{padding:16px 22px;border-top:1px solid var(--border)}
-.tr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
-.tl{font-size:14px;color:var(--muted)}
-.tv{font-family:'Playfair Display',serif;font-size:24px;color:var(--accent)}
-.obtn{width:100%;background:linear-gradient(135deg,#007a40,#004d28);border:none;color:#fff;padding:14px;border-radius:8px;cursor:pointer;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;transition:opacity .2s}
-.obtn:hover{opacity:.85}
-
-/* CONFIRM PAGE */
-.conf-wrap{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:40px 20px}
-.conf-card{background:rgba(11,29,46,.9);border:1px solid rgba(78,203,138,.3);border-radius:20px;padding:50px 44px;max-width:500px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.conf-icon{font-size:62px;margin-bottom:20px;display:block}
-.conf-card h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--green);margin-bottom:10px}
-.conf-card p{font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:8px}
-.conf-items{background:rgba(0,0,0,.2);border:1px solid rgba(78,203,138,.15);border-radius:10px;padding:16px 18px;margin:20px 0;text-align:left}
-.ci-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px}
-.ci-row:last-child{border:none;font-weight:600;color:var(--accent);margin-top:4px;padding-top:8px}
-.back-btn{background:none;border:1px solid rgba(0,200,238,.3);color:var(--accent);padding:11px 28px;border-radius:8px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:15px;font-weight:600;margin-top:8px;transition:background .2s}
-.back-btn:hover{background:rgba(0,200,238,.07)}
-
-/* ADMIN LOGIN */
-.alog{max-width:400px;margin:70px auto}
-.acard{background:var(--glass);border:1px solid var(--border);border-radius:18px;padding:42px 36px;text-align:center}
-.acard .ic{font-size:44px;margin-bottom:18px;display:block}
-.acard h2{font-family:'Playfair Display',serif;font-size:26px;color:var(--accent);margin-bottom:8px}
-.acard p{font-size:14px;color:var(--muted);margin-bottom:26px;line-height:1.6}
-
-/* ADMIN */
-.adm-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
-.adm-hdr h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--accent)}
-.adm-hdr p{font-size:13px;color:var(--muted);margin-top:3px}
-.adm-acts{display:flex;gap:10px;flex-wrap:wrap}
-.btn-p{background:linear-gradient(135deg,var(--accent2),#003d52);border:none;color:#fff;padding:10px 20px;border-radius:7px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:14px;font-weight:600;transition:opacity .2s}
-.btn-p:hover{opacity:.85}
-.btn-g{background:none;border:1px solid rgba(0,200,238,.3);color:var(--accent);padding:9px 18px;border-radius:7px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:14px;font-weight:600;transition:background .2s}
-.btn-g:hover{background:rgba(0,200,238,.07)}
-
-/* Stats */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-bottom:24px}
-.sc{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
-.sl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.sv{font-family:'Playfair Display',serif;font-size:26px;color:var(--accent)}
-
-/* Tabs */
-.tabs{display:flex;margin-bottom:20px;border-bottom:1px solid var(--border)}
-.tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);padding:9px 18px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:15px;font-weight:600;transition:all .2s;margin-bottom:-1px}
-.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
-
-/* Order cards */
-.ocard{background:var(--glass);border:1px solid var(--border);border-radius:12px;margin-bottom:11px;overflow:hidden;transition:border-color .2s}
-.ocard:hover{border-color:rgba(0,200,238,.25)}
-.ohead{display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;padding:14px 18px;cursor:pointer;user-select:none}
-.oh-info .oname{font-family:'Playfair Display',serif;font-size:17px;color:var(--text)}
-.oh-info .ometa{font-size:12px;color:var(--muted);margin-top:2px}
-.oh-phone{font-size:14px;color:rgba(0,200,238,.7);white-space:nowrap}
-.oh-total{font-family:'Playfair Display',serif;font-size:18px;color:var(--accent);white-space:nowrap}
-.badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
-.b-new{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
-.b-sent{background:rgba(78,203,138,.12);color:var(--green);border:1px solid rgba(78,203,138,.25)}
-.obody{display:none;padding:4px 18px 16px;border-top:1px solid rgba(0,200,238,.07)}
-.obody.open{display:block}
-.oitems{margin-top:12px}
-.oi{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px}
-.oi:last-child{border:none}
-.oie{font-size:22px}.oin{flex:1;color:var(--text)}.oiq{color:var(--muted)}.oip{color:var(--accent);font-family:'Playfair Display',serif}
-.oacts{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.msent{background:linear-gradient(135deg,#007a40,#004d28);border:none;color:#fff;padding:8px 18px;border-radius:6px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:14px;font-weight:600}
-.dord{background:none;border:1px solid rgba(224,85,85,.25);color:rgba(224,85,85,.7);padding:7px 14px;border-radius:6px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:14px}
-
-/* Inventory */
-.inv-top{display:flex;justify-content:flex-end;margin-bottom:16px}
-.fp{background:rgba(0,80,110,.1);border:1px solid rgba(0,200,238,.2);border-radius:13px;padding:24px;margin-bottom:22px;animation:fadeUp .3s ease}
-.fp h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--accent);margin-bottom:18px}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fg .full{grid-column:1/-1}
-.ep{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
-.epb{background:rgba(255,255,255,.05);border:2px solid rgba(0,200,238,.1);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:20px;transition:all .15s}
-.epb.on{border-color:rgba(0,200,238,.55);background:rgba(0,200,238,.1)}
-.fa{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-.bs{background:linear-gradient(135deg,var(--accent2),#003d52);border:none;color:#fff;padding:10px 24px;border-radius:7px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:15px;font-weight:600}
-.bc{background:none;border:1px solid rgba(0,200,238,.25);color:var(--accent);padding:9px 20px;border-radius:7px;cursor:pointer;font-family:'Crimson Pro',serif;font-size:15px}
-.prow{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:grid;grid-template-columns:40px 1fr auto auto auto;gap:12px;align-items:center;margin-bottom:9px;transition:border-color .2s}
-.prow:hover{border-color:rgba(0,200,238,.22)}
-.re{font-size:28px;text-align:center}
-.ri .rn{font-family:'Playfair Display',serif;font-size:15px;color:var(--text)}
-.ri .rm{font-size:11px;color:rgba(0,200,238,.5);margin-top:1px}
-.rprice{font-family:'Playfair Display',serif;font-size:17px;color:var(--accent);white-space:nowrap}
-.rstock{font-size:13px;white-space:nowrap}
-.ract{display:flex;gap:6px}
-.ab2{background:rgba(255,255,255,.06);border:1px solid rgba(0,200,238,.12);border-radius:5px;padding:5px 9px;cursor:pointer;font-size:14px}
-.ab2:hover{background:rgba(0,200,238,.1)}
-.ab2.d{border-color:rgba(224,85,85,.2)}.ab2.d:hover{background:rgba(224,85,85,.1)}
-
-/* NOTIF */
-#notif{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-70px);background:linear-gradient(135deg,#006688,#008aaa);color:#fff;padding:11px 26px;border-radius:28px;z-index:9999;font-size:14px;font-family:'Crimson Pro',serif;box-shadow:0 4px 22px rgba(0,150,200,.4);transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
-#notif.on{transform:translateX(-50%) translateY(0)}
-
-/* CONFIG TELEGRAM CONFIG */
-.tg-config-box { background: rgba(0,200,238,.05); border: 1px dashed var(--accent); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; font-size: 13px; }
-.tg-config-box input { background: #060f1a; border: 1px solid var(--border); color: #fff; padding: 6px 10px; border-radius: 5px; font-size: 12px; width: 100%; margin-top: 5px; outline: none; margin-bottom: 10px; }
-
-/* SCROLLBAR */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--deep)}
-::-webkit-scrollbar-thumb{background:rgba(0,200,238,.22);border-radius:2px}
-
-@media(max-width:600px){
-  .fg{grid-template-columns:1fr}
-  .prow{grid-template-columns:36px 1fr}
-  .rprice,.rstock,.ract{grid-column:2}
-  .ohead{grid-template-columns:1fr auto}
-  .oh-phone,.oh-total{display:none}
-  .welcome-card,.conf-card,.acard{padding:32px 22px}
-}
-</style>
-</head>
-<body>
-<canvas id="bg"></canvas>
-<div id="notif"></div>
-
-<header>
-  <div class="wrap">
-    <div class="hdr">
-      <button class="logo" onclick="goHome()">
-        <span class="logo-main">FISHING LINE</span>
-        <span class="logo-sub">Attrezzatura Pesca</span>
-      </button>
-      <nav>
-        <button id="n-shop" class="nb on" onclick="goPage('shop')">Negozio</button>
-        <button id="n-admin" class="nb" onclick="goPage('admin')">Pannello Admin</button>
-        <button class="cb" onclick="openCart()">
-          🛒 Carrello <span id="cbadge" class="cbadge">0</span>
-        </button>
-      </nav>
-    </div>
-  </div>
-</header>
-
-<div class="wrap">
-  <section id="p-welcome" class="page on">
-    <div class="welcome-shell">
-      <div class="welcome-card">
-        <span class="wc-fish">🎣</span>
-        <h1 class="wc-title">Fishing Line</h1>
-        <p class="wc-sub">Benvenuto! Inserisci il tuo nome e telefono per accedere al catalogo ed effettuare ordini.</p>
-        <div class="ig">
-          <label>Il tuo Nome</label>
-          <input type="text" id="uname" placeholder="Esempio: Mario Rossi">
-        </div>
-        <div class="ig">
-          <label>Numero di Telefono</label>
-          <input type="tel" id="uphone" placeholder="Esempio: 3331234567">
-        </div>
-        <button class="btn-cta" onclick="loginUser()">Entra nel Portale</button>
-        <div id="w-err" class="err"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="p-shop" class="page">
-    <div class="pp">
-      <div class="shop-top">
-        <div>
-          <h2>Catalogo Prodotti</h2>
-          <div id="greeting" class="greeting"></div>
-        </div>
-      </div>
-      <div class="filters">
-        <button class="fb on" onclick="filterCat('all')">Tutti</button>
-        <button class="fb" onclick="filterCat('Canne')">Canne</button>
-        <button class="fb" onclick="filterCat('Mulinelli')">Mulinelli</button>
-        <button class="fb" onclick="filterCat('Ami ed Esche')">Ami ed Esche</button>
-        <button class="fb" onclick="filterCat('Accessori')">Accessori</button>
-      </div>
-      <div id="pgrid" class="pgrid"></div>
-    </div>
-  </section>
-
-  <section id="p-confirm" class="page">
-    <div class="conf-wrap">
-      <div class="conf-card">
-        <span class="conf-icon">🎉</span>
-        <h2>Ordine Inviato!</h2>
-        <p>Grazie per l'ordine. La notifica è stata trasmessa istantaneamente all'amministratore.</p>
-        <div id="conf-items" class="conf-items"></div>
-        <button class="back-btn" onclick="goPage('shop')">Torna al catalogo</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="p-admin-login" class="page">
-    <div class="alog">
-      <div class="acard">
-        <span class="ic">🔐</span>
-        <h2>Accesso Riservato</h2>
-        <p>Inserisci la password amministratore per gestire prodotti e ordini.</p>
-        <div class="ig">
-          <label>Password</label>
-          <input type="password" id="apass" placeholder="••••">
-        </div>
-        <button class="btn-cta" onclick="loginAdmin()">Accedi</button>
-        <div id="a-err" class="err"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="p-admin" class="page">
-    <div class="pp">
-      <div class="adm-hdr">
-        <div>
-          <h2>Pannello di Controllo</h2>
-          <p>Gestisci in tempo reale la tua attività</p>
-        </div>
-        <div class="adm-acts">
-          <button class="btn-p" onclick="openNewForm()">＋ Nuovo Prodotto</button>
-          <button class="btn-g" onclick="logoutAdmin()">Esci</button>
-        </div>
-      </div>
-
-      <div class="tg-config-box">
-        <strong>⚙️ Collegamento Telegram:</strong> Inserisci qui i dati del tuo bot per ricevere gli ordini sul cellulare.
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
-          <div>
-            <label style="font-size:11px; color:var(--accent)">Token del Bot</label>
-            <input type="text" id="tg_token" placeholder="Es: 123456789:ABCdefGhI..." onchange="saveTgConfig()">
-          </div>
-          <div>
-            <label style="font-size:11px; color:var(--accent)">Tuo ID Chat (Chat ID)</label>
-            <input type="text" id="tg_chatid" placeholder="Es: 987654321" onchange="saveTgConfig()">
-          </div>
-        </div>
-      </div>
-
-      <div class="stats">
-        <div class="sc"><div class="sl">Ordini Totali</div><div id="s-tord" class="sv">0</div></div>
-        <div class="sc"><div class="sl">Nuovi</div><div id="s-new" class="sv">0</div></div>
-        <div class="sc"><div class="sl">In Evasione</div><div id="s-sent" class="sv">0</div></div>
-      </div>
-
-      <div class="tabs">
-        <button id="t-orders" class="tab on" onclick="switchTab('orders')">Ordini Ricevuti</button>
-        <button id="t-inv" class="tab" onclick="switchTab('inv')">Inventario Merci</button>
-      </div>
-
-      <div id="tab-orders">
-        <div id="orders-list"></div>
-      </div>
-
-      <div id="tab-inv" style="display:none">
-        <div id="prod-form" class="fp" style="display:none">
-          <h3 id="form-title">Aggiungi Prodotto</h3>
-          <div class="fg">
-            <div class="full">
-              <div class="ig"><label>Nome Articolo</label><input type="text" id="fn"></div>
-            </div>
-            <div class="ig">
-              <label>Categoria</label>
-              <input type="text" id="fc" placeholder="Canne, Mulinelli, ecc">
-            </div>
-            <div class="ig">
-              <label>Prezzo (€)</label>
-              <input type="number" step="0.01" id="fpr">
-            </div>
-            <div class="ig">
-              <label>Scorte Disponibili</label><input type="number" id="fst">
-            </div>
-            <div class="ig">
-              <label>Icona Emoji</label>
-              <div id="ep" class="ep"></div>
-            </div>
-            <div class="full">
-              <div class="ig"><label>Descrizione</label><input type="text" id="fde"></div>
-            </div>
-          </div>
-          <div class="fa">
-            <button class="bs" onclick="saveProd()">Salva Articolo</button>
-            <button class="bc" onclick="closeForm()">Annulla</button>
-          </div>
-        </div>
-        <div id="inv-list"></div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<div id="cart-ov" class="dov" onclick="closeCart()">
-  <div class="drw" onclick="event.stopPropagation()">
-    <div class="dh">
-      <h3>Il tuo Carrello</h3>
-      <button class="xbtn" onclick="closeCart()">✕</button>
-    </div>
-    <div id="cart-items" class="di"></div>
-    <div class="df">
-      <div class="tr">
-        <span class="tl">Totale Ordine:</span>
-        <span id="cart-total" class="tv">0.00 €</span>
-      </div>
-      <button class="obtn" onclick="submitOrder()">Invia ed Elabora Ordine</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// DATI INITIALI DI BACKUP SE LA MEMORIA E' VUOTA
-const defaultProducts = [
-  {id:"p1",name:"Canna da Carbonio Pro",category:"Canne",price:89.99,stock:5,image:"🎣",description:"Leggera, resistente, azione rapida."},
-  {id:"p2",name:"Mulinello Ocean Titan 4000",category:"Mulinelli",price:54.50,stock:3,image:"⚙️",description:"Frizione fluida, 9 cuscinetti."},
-  {id:"p3",name:"Kit Ami Carbon Steel",category:"Ami ed Esche",price:12.00,stock:15,image:"🪝",description:"Confezione da 50 pezzi misure varie."},
-  {id:"p4",name:"Guadino Telescopico",category:"Accessori",price:24.90,stock:0,image:"🕸️",description:"Rete gommata anti-groviglio."}
-];
-
-let products = JSON.parse(localStorage.getItem('f_products')) || defaultProducts;
-let orders = JSON.parse(localStorage.getItem('f_orders')) || [];
-let cart = [];
-let user = null;
-let currentCat = 'all';
-let currentTab = 'orders';
-let editingId = null;
-let selEmoji = '🎣';
-const emojis = ['🎣','⚙️','🪝','🕸️','🐟','🛶','🎒','🧥'];
-
-// Salvataggi veloci su memoria locale
-function syncData() {
-  localStorage.setItem('f_products', JSON.stringify(products));
-  localStorage.setItem('f_orders', JSON.stringify(orders));
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ivory);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-// Telegram Config
-function saveTgConfig() {
-  localStorage.setItem('tg_token', document.getElementById('tg_token').value.trim());
-  localStorage.setItem('tg_chatid', document.getElementById('tg_chatid').value.trim());
-}
-function loadTgConfig() {
-  if(document.getElementById('tg_token')) {
-    document.getElementById('tg_token').value = localStorage.getItem('tg_token') || '';
-    document.getElementById('tg_chatid').value = localStorage.getItem('tg_chatid') || '';
-  }
-}
+/* UTILITIES */
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.page { display: none; animation: fadeUp .35s ease both; }
+.page.on { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
-window.onload = function() {
-  initBg();
-  renderShop();
-  buildEP();
-  loadTgConfig();
-};
-
-function notify(txt){
-  const n=document.getElementById('notif');
-  n.innerText=txt; n.classList.add('on');
-  setTimeout(()=>n.classList.remove('on'),2500);
+/* DECORATIVE WAVE HEADER BG */
+.wave-bg {
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--teal), var(--teal2), var(--navy), var(--teal));
+  background-size: 200% 100%;
+  animation: waveShift 4s linear infinite;
 }
+@keyframes waveShift { 0%{background-position:0% 0%} 100%{background-position:200% 0%} }
 
-function goPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
-  const target = document.getElementById('p-'+id);
-  if(target) target.classList.add('on');
-  const navBtn = document.getElementById('n-'+id);
-  if(navBtn) navBtn.classList.add('on');
-  if(id==='admin' && !sessionStorage.getItem('f_admin')) {
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-    document.getElementById('p-admin-login').classList.add('on');
-  }
+/* ============================================================
+   HEADER
+   ============================================================ */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(13,33,55,.06);
+  backdrop-filter: blur(12px);
 }
-
-function goHome(){
-  if(user) goPage('shop');
-  else goPage('welcome');
+.hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0; height: 64px; gap: 16px; flex-wrap: wrap;
 }
-
-// USER LOGIN
-function loginUser(){
-  const name=document.getElementById('uname').value.trim();
-  const phone=document.getElementById('uphone').value.trim();
-  if(!name || !phone){ document.getElementById('w-err').innerText='⚠️ Compila tutti i campi!'; return; }
-  user = {name, phone};
-  document.getElementById('greeting').innerHTML=`Ciao, <strong>${name}</strong> (${phone})`;
-  notify('Accesso eseguito!');
-  goPage('shop');
+.logo { background: none; border: none; cursor: pointer; text-align: left; padding: 0; }
+.logo-main {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 700;
+  color: var(--navy); letter-spacing: 1.5px;
+  display: block;
 }
-
-// RENDER SHOP
-function renderShop(){
-  const grid=document.getElementById('pgrid');
-  grid.innerHTML='';
-  const filtered = currentCat==='all' ? products : products.filter(p=>p.category===currentCat);
-  
-  if(filtered.length===0){
-    grid.innerHTML='<div class="full ce">Nessun articolo disponibile in questa categoria.</div>';
-    return;
-  }
-  
-  filtered.forEach(p=>{
-    const card=document.createElement('div');
-    card.className='pcard';
-    const out = p.stock <= 0;
-    card.innerHTML=`
-      <div class="pimg">${p.image||'🎣'}</div>
-      <div class="pbody">
-        <div class="pcat">${p.category}</div>
-        <div class="pname">${p.name}</div>
-        <div class="pdesc">${p.description||''}</div>
-        <div class="pfoot">
-          <div>
-            <div class="pprice">${p.price.toFixed(2)} €</div>
-            <div class="pstock ${out?'sno':'sok'}">${out?'Esaurito':`Scorte: ${p.stock}`}</div>
-          </div>
-          <button class="abtn" ${out?'disabled':''} onclick="addToCart('${p.id}')">Aggiungi</button>
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
+.logo-hook { color: var(--teal); }
+.logo-sub {
+  font-size: 9px; letter-spacing: 3.5px; text-transform: uppercase;
+  color: var(--text3); display: block; margin-top: 1px;
+}
+nav { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.nb {
+  background: none; border: none; color: var(--text2);
+  padding: 7px 15px; border-radius: var(--r);
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 500; transition: all .18s;
+}
+.nb:hover { background: var(--teal-lt); color: var(--teal2); }
+.nb.on { background: var(--teal-lt); color: var(--teal2); font-weight: 600; }
+.cart-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--navy); border: none; color: var(--white);
+  padding: 9px 20px; border-radius: var(--r3);
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 500; transition: all .18s;
+}
+.cart-btn:hover { background: var(--navy2); transform: translateY(-1px); box-shadow: var(--shadow); }
+.cart-badge {
+  background: var(--teal); color: var(--white);
+  border-radius: 50%; width: 20px; height: 20px;
+  font-size: 11px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
 }
 
-function filterCat(cat){
-  currentCat=cat;
-  document.querySelectorAll('.fb').forEach(b=>{
-    b.classList.remove('on');
-    if(b.innerText===cat || (cat==='all'&&b.innerText==='Tutti')) b.classList.add('on');
-  });
-  renderShop();
+/* ============================================================
+   WELCOME PAGE
+   ============================================================ */
+.welcome-shell {
+  min-height: calc(100vh - 64px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(160deg, var(--ivory) 0%, #eaf3f5 50%, var(--ivory2) 100%);
+  position: relative; overflow: hidden;
+}
+.welcome-deco {
+  position: absolute; pointer-events: none; user-select: none;
+}
+.welcome-deco-1 {
+  top: -80px; right: -80px; width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(26,122,138,.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.welcome-deco-2 {
+  bottom: -60px; left: -60px; width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(13,33,55,.06) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.welcome-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 52px 44px;
+  max-width: 460px; width: 100%;
+  box-shadow: var(--shadow-lg);
+  position: relative; z-index: 2;
+}
+.wc-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--teal-lt); color: var(--teal2);
+  border: 1px solid var(--teal-mid);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 12px; font-weight: 600; letter-spacing: .3px;
+  margin-bottom: 22px;
+}
+.wc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px, 5vw, 42px);
+  font-weight: 700; color: var(--navy);
+  line-height: 1.1; margin-bottom: 10px;
+}
+.wc-title em { color: var(--teal); font-style: italic; }
+.wc-sub { font-size: 15px; color: var(--text2); margin-bottom: 32px; line-height: 1.7; }
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block; font-size: 11px; font-weight: 600;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 7px;
+}
+.form-group input {
+  width: 100%;
+  background: var(--ivory);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.form-group input:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(26,122,138,.1);
+  background: var(--white);
+}
+.form-group input::placeholder { color: var(--border2); }
+.btn-primary {
+  width: 100%;
+  background: var(--navy);
+  border: none; color: var(--white);
+  padding: 15px;
+  border-radius: var(--r);
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 700; letter-spacing: .5px;
+  transition: all .18s;
+  box-shadow: 0 4px 16px rgba(13,33,55,.2);
+  margin-top: 6px;
+}
+.btn-primary:hover { background: var(--navy2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,33,55,.28); }
+.err-msg { color: var(--red); font-size: 13px; margin-top: 10px; text-align: center; }
+
+/* ============================================================
+   SHOP PAGE
+   ============================================================ */
+.pp { padding: 36px 0 72px; }
+.shop-hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 60%, var(--teal2) 100%);
+  border-radius: var(--r2);
+  padding: 36px 40px;
+  margin-bottom: 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+  position: relative; overflow: hidden;
+}
+.shop-hero::after {
+  content: '';
+  position: absolute; right: -40px; top: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(26,122,138,.3) 0%, transparent 70%);
+  border-radius: 50%; pointer-events: none;
+}
+.shop-hero h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px; font-weight: 700; color: var(--white);
+}
+.shop-hero p { font-size: 14px; color: rgba(255,255,255,.65); margin-top: 4px; }
+#greeting { font-size: 14px; color: rgba(255,255,255,.75); margin-top: 5px; }
+#greeting strong { color: var(--white); }
+.filter-bar {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px;
+  padding-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.filter-bar span {
+  font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--text3);
+  display: flex; align-items: center; margin-right: 4px;
+}
+.fb {
+  background: var(--white); border: 1.5px solid var(--border);
+  color: var(--text2); border-radius: 20px; padding: 6px 18px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500; transition: all .18s;
+}
+.fb:hover { border-color: var(--teal); color: var(--teal); }
+.fb.on {
+  background: var(--navy); border-color: var(--navy);
+  color: var(--white); font-weight: 600;
+}
+.pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(265px, 1fr)); gap: 20px; }
+
+/* PRODUCT CARD */
+.pcard {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+  transition: all .22s;
+  box-shadow: var(--shadow-sm);
+}
+.pcard:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--teal-mid);
+}
+.pimg {
+  background: linear-gradient(135deg, var(--teal-lt), #d8eef2);
+  height: 110px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 52px;
+  position: relative;
+}
+.pimg-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 3px 8px;
+  font-size: 10px; font-weight: 600;
+  color: var(--text2); letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.pbody { padding: 18px 20px; }
+.pcat {
+  font-size: 10px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--teal);
+  margin-bottom: 5px;
+}
+.pname {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; font-weight: 700;
+  color: var(--navy); margin-bottom: 6px; line-height: 1.3;
+}
+.pdesc { font-size: 13px; color: var(--text3); margin-bottom: 18px; line-height: 1.55; }
+.pfoot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pprice-wrap {}
+.pprice {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 700; color: var(--navy);
+}
+.pstock {
+  font-size: 12px; font-weight: 500; margin-top: 2px;
+}
+.stock-ok { color: var(--green); }
+.stock-no { color: var(--red); }
+.add-btn {
+  background: var(--teal);
+  border: none; color: var(--white);
+  border-radius: var(--r);
+  padding: 10px 18px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  white-space: nowrap; transition: all .18s;
+  box-shadow: 0 2px 8px rgba(26,122,138,.25);
+}
+.add-btn:hover { background: var(--teal2); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(26,122,138,.35); }
+.add-btn:disabled {
+  background: var(--border); color: var(--text3);
+  cursor: not-allowed; box-shadow: none; transform: none;
+}
+.empty-grid {
+  grid-column: 1/-1; text-align: center;
+  padding: 60px 20px; color: var(--text3); font-size: 15px;
 }
 
-// CARRELLO MANAGEMENT
-function openCart(){ document.getElementById('cart-ov').classList.add('on'); renderCart(); }
-function closeCart(){ document.getElementById('cart-ov').classList.remove('on'); }
-
-function addToCart(id){
-  if(!user){ notify('⚠️ Effettua prima l\'accesso nella home!'); goPage('welcome'); return; }
-  const p = products.find(prod=>prod.id===id);
-  if(!p || p.stock<=0) return;
-  const inCart = cart.find(c=>c.id===id);
-  if(inCart){
-    if(inCart.qty >= p.stock){ notify('⚠️ Limite scorte raggiunto!'); return; }
-    inCart.qty++;
-  } else {
-    cart.push({id: p.id, name: p.name, price: p.price, image: p.image, qty: 1});
-  }
-  notify('Aggiunto al carrello 🛒');
-  updateCartBadge();
+/* ============================================================
+   CART DRAWER
+   ============================================================ */
+.cart-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(13,33,55,.45);
+  backdrop-filter: blur(4px);
 }
-
-function updateCartBadge(){
-  const tot = cart.reduce((a,c)=>a+c.qty,0);
-  document.getElementById('cbadge').innerText = tot;
+.cart-overlay.on { display: block; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+.cart-drawer {
+  position: absolute; right: 0; top: 0; bottom: 0;
+  width: min(400px, 100vw);
+  background: var(--white);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  box-shadow: -8px 0 40px rgba(13,33,55,.15);
+  animation: slideIn .28s cubic-bezier(.4,0,.2,1);
 }
-
-function changeQty(id, delta){
-  const inCart = cart.find(c=>c.id===id);
-  const p = products.find(prod=>prod.id===id);
-  if(!inCart) return;
-  inCart.qty += delta;
-  if(inCart.qty > p.stock) { inCart.qty = p.stock; notify('⚠️ Scorte massime raggiunte!'); }
-  if(inCart.qty <= 0) cart = cart.filter(c=>c.id!==id);
-  renderCart();
-  updateCartBadge();
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: none; } }
+.drawer-head {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
 }
-
-function renderCart(){
-  const box=document.getElementById('cart-items');
-  const totBox=document.getElementById('cart-total');
-  box.innerHTML='';
-  if(cart.length===0){
-    box.innerHTML='<div class="ce">Il tuo carrello è vuoto.<br>Aggiungi prodotti dal catalogo.</div>';
-    totBox.innerText='0.00 €';
-    return;
-  }
-  let total=0;
-  cart.forEach(c=>{
-    total += c.price * c.qty;
-    const row=document.createElement('div');
-    row.className='ci';
-    row.innerHTML=`
-      <div class="cie">${c.image}</div>
-      <div class="cin"><div class="n">${c.name}</div><div class="p">${c.price.toFixed(2)} €</div></div>
-      <div class="qc">
-        <button class="qb" onclick="changeQty('${c.id}',-1)">-</button>
-        <span class="qn">${c.qty}</span>
-        <button class="qb" onclick="changeQty('${c.id}',1)">+</button>
-      </div>
-    `;
-    box.appendChild(row);
-  });
-  totBox.innerText=total.toFixed(2)+' €';
+.drawer-head h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 700; color: var(--navy);
 }
-
-// INVIA ORDINE E TELEGRAM
-async function submitOrder(){
-  if(cart.length===0) return;
-  let total=0;
-  let summaryText = "";
-  
-  cart.forEach(c=>{
-    total += c.price * c.qty;
-    summaryText += `• ${c.qty}x ${c.name} (${(c.price*c.qty).toFixed(2)}€)\n`;
-    const p = products.find(prod=>prod.id===c.id);
-    if(p) p.stock = Math.max(0, p.stock - c.qty);
-  });
-  
-  const ord = {
-    id: 'O-' + Date.now(),
-    user: user.name,
-    phone: user.phone,
-    items: [...cart],
-    total: total,
-    status: 'new',
-    date: new Date().toLocaleDateString('it-IT') + ' ' + new Date().toLocaleTimeString('it-IT', {hour:'2-digit',minute:'2-digit'})
-  };
-  
-  orders.unshift(ord);
-  syncData();
-  
-  // SPEDIZIONE NOTIFICA SU TELEGRAM
-  const token = localStorage.getItem('tg_token');
-  const chatid = localStorage.getItem('tg_chatid');
-  
-  if(token && chatid) {
-    const messaggioTelegram = `🎣 *NUOVO ORDINE RICEVUTO!*\n\n` +
-                              `👤 *Cliente:* ${user.name}\n` +
-                              `📞 *Telefono:* ${user.phone}\n` +
-                              `📅 *Data:* ${ord.date}\n\n` +
-                              `📦 *Articoli Ordinate:*\n${summaryText}\n` +
-                              `💰 *TOTALE:* ${total.toFixed(2)} €`;
-                              
-    try {
-      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: chatid,
-          text: messaggioTelegram,
-          parse_mode: 'Markdown'
-        })
-      });
-    } catch(err) {
-      console.error("Errore invio Telegram", err);
-    }
-  }
-
-  // RENDER SCHERMATA CONFERMA CLIENTE
-  const cbox = document.getElementById('conf-items');
-  cbox.innerHTML = cart.map(c=>`<div class="ci-row"><span>${c.qty}x ${c.name}</span><span>${(c.price*c.qty).toFixed(2)} €</span></div>`).join('');
-  cbox.innerHTML += `<div class="ci-row"><span>Totale Complessivo</span><span>${total.toFixed(2)} €</span></div>`;
-  
-  cart=[];
-  updateCartBadge();
-  closeCart();
-  renderShop();
-  goPage('confirm');
+.drawer-close {
+  background: var(--ivory); border: 1px solid var(--border);
+  color: var(--text2); width: 34px; height: 34px;
+  border-radius: 50%; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  transition: all .18s;
 }
-
-// ADMIN LOGIN INTERNO
-function loginAdmin(){
-  const pass=document.getElementById('apass').value;
-  if(pass==='admin' || pass==='1234' || pass===''){ // Password vuota o semplice per facilitarti
-    sessionStorage.setItem('f_admin','1');
-    document.getElementById('apass').value='';
-    document.getElementById('a-err').innerText='';
-    goPage('admin');
-    loadAndRenderInventory();
-    renderOrders();
-  } else {
-    document.getElementById('a-err').innerText='❌ Password Errata!';
-  }
+.drawer-close:hover { background: var(--border); color: var(--text); }
+.drawer-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
+.cart-empty {
+  text-align: center; padding: 60px 0;
+  color: var(--text3); font-size: 15px; line-height: 1.9;
 }
-function logoutAdmin(){ sessionStorage.removeItem('f_admin'); goPage('shop'); }
-
-function switchTab(t){
-  currentTab=t;
-  document.getElementById('t-orders').className = t==='orders'?'tab on':'tab';
-  document.getElementById('t-inv').className = t==='inv'?'tab on':'tab';
-  document.getElementById('tab-orders').style.display = t==='orders'?'block':'none';
-  document.getElementById('tab-inv').style.display = t==='inv'?'block':'none';
-  if(t==='inv') loadAndRenderInventory();
-  else renderOrders();
+.cart-empty .empty-icon { font-size: 40px; display: block; margin-bottom: 12px; }
+.cart-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 0; border-bottom: 1px solid var(--ivory2);
 }
-
-// GESTIONE INVENTARIO (AGGIUNTA/MODIFICA PRODOTTI)
-function buildEP(){
-  const container=document.getElementById('ep');
-  if(!container) return;
-  container.innerHTML='';
-  emojis.forEach(emo=>{
-    const b=document.createElement('button');
-    b.className='epb'+(emo===selEmoji?' on':'');
-    b.innerText=emo;
-    b.type='button';
-    b.onclick=()=>{
-      selEmoji=emo;
-      document.querySelectorAll('.epb').forEach(btn=>btn.classList.remove('on'));
-      b.classList.add('on');
-    };
-    container.appendChild(b);
-  });
+.cart-item:last-child { border: none; }
+.ci-icon { font-size: 30px; flex-shrink: 0; }
+.ci-info { flex: 1; min-width: 0; }
+.ci-name {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-
-function openNewForm(){
-  editingId=null;
-  document.getElementById('form-title').innerText='Aggiungi Prodotto';
-  document.getElementById('fn').value='';
-  document.getElementById('fc').value='';
-  document.getElementById('fpr').value='';
-  document.getElementById('fst').value='';
-  document.getElementById('fde').value='';
-  selEmoji='🎣';
-  buildEP();
-  document.getElementById('prod-form').style.display='block';
+.ci-price { font-size: 13px; color: var(--teal); margin-top: 2px; }
+.qty-ctrl { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.qty-btn {
+  background: var(--ivory); border: 1px solid var(--border);
+  color: var(--text); width: 28px; height: 28px;
+  border-radius: 6px; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  transition: all .15s; font-weight: 600;
 }
-
-function closeForm(){ document.getElementById('prod-form').style.display='none'; editingId=null; }
-
-function saveProd(){
-  const name=document.getElementById('fn').value.trim();
-  const category=document.getElementById('fc').value.trim();
-  const price=parseFloat(document.getElementById('fpr').value);
-  const stock=parseInt(document.getElementById('fst').value);
-  const description=document.getElementById('fde').value.trim();
-  
-  if(!name||!category||isNaN(price)||isNaN(stock)){ notify('⚠️ Compila tutti i campi!'); return; }
-  
-  if(editingId){
-    // Modifica esistente
-    const p = products.find(prod=>prod.id===editingId);
-    if(p) {
-      p.name = name; p.category = category; p.price = price; p.stock = stock;
-      p.image = selEmoji; p.description = description;
-    }
-    notify('Prodotto aggiornato!');
-  } else {
-    // Nuovo prodotto
-    const newP = { id: 'P-' + Date.now(), name, category, price, stock, image: selEmoji, description };
-    products.push(newP);
-    notify('Prodotto aggiunto correttamente!');
-  }
-  
-  syncData();
-  closeForm();
-  loadAndRenderInventory();
-  renderShop();
+.qty-btn:hover { background: var(--teal-lt); border-color: var(--teal); color: var(--teal); }
+.qty-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-weight: 700; color: var(--navy);
+  min-width: 22px; text-align: center;
 }
-
-function editProd(id){
-  const p = products.find(prod=>prod.id===id);
-  if(!p) return;
-  editingId=id;
-  document.getElementById('form-title').innerText='Modifica Prodotto';
-  document.getElementById('fn').value=p.name;
-  document.getElementById('fc').value=p.category;
-  document.getElementById('fpr').value=p.price;
-  document.getElementById('fst').value=p.stock;
-  document.getElementById('fde').value=p.description||'';
-  selEmoji=p.image||'🎣';
-  buildEP();
-  document.getElementById('prod-form').style.display='block';
-  document.getElementById('prod-form').scrollIntoView({behavior:'smooth',block:'start'});
+.drawer-foot {
+  padding: 20px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--ivory);
 }
-
-function delProd(id){
-  if(!confirm('Eliminare questo prodotto definitivamente?')) return;
-  products = products.filter(p=>p.id!==id);
-  syncData();
-  notify('Prodotto eliminato!');
-  loadAndRenderInventory();
-  renderShop();
+.cart-total-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 16px;
 }
-
-function loadAndRenderInventory(){
-  const box=document.getElementById('inv-list');
-  if(!box) return;
-  box.innerHTML='';
-  products.forEach(p=>{
-    const r=document.createElement('div');
-    r.className='prow';
-    r.innerHTML=`
-      <div class="re">${p.image||'🎣'}</div>
-      <div class="ri"><div class="rn">${p.name}</div><div class="rm">${p.category}</div></div>
-      <div class="rprice">${p.price.toFixed(2)} €</div>
-      <div class="rstock">Scorte: ${p.stock}</div>
-      <div class="ract">
-        <button class="ab2" onclick="editProd('${p.id}')">✏️</button>
-        <button class="ab2 d" onclick="delProd('${p.id}')">🗑️</button>
-      </div>
-    `;
-    box.appendChild(r);
-  });
-  updateDashboardStats();
+.cart-total-label { font-size: 14px; color: var(--text2); font-weight: 500; }
+.cart-total-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; font-weight: 700; color: var(--navy);
 }
-
-// ORDERS RENDERING IN DASHBOARD
-function renderOrders(){
-  const box=document.getElementById('orders-list');
-  box.innerHTML='';
-  if(orders.length===0){
-    box.innerHTML='<div class="ce">Nessun ordine ricevuto fino ad ora.</div>';
-    return;
-  }
-  orders.forEach(o=>{
-    const card=document.createElement('div');
-    card.className='ocard';
-    const isNew = o.status==='new';
-    card.innerHTML=`
-      <div class="ohead" onclick="toggleOrderBody('${o.id}')">
-        <div class="oh-info">
-          <div class="oname">${o.user}</div>
-          <div class="ometa">${o.date} • ${o.items.reduce((a,c)=>a+c.qty,0)} articoli</div>
-        </div>
-        <div class="oh-phone">${o.phone}</div>
-        <div class="oh-total">${o.total.toFixed(2)} €</div>
-        <div><span class="badge ${isNew?'b-new':'b-sent'}">${isNew?'Nuovo':'Evaso'}</span></div>
-      </div>
-      <div id="ob-${o.id}" class="obody">
-        <div class="oitems">
-          ${o.items.map(i=>`<div class="oi"><span class="oie">${i.image}</span><span class="oin">${i.name}</span><span class="oiq">x${i.qty}</span><span class="oip">${(i.price*i.qty).toFixed(2)} €</span></div>`).join('')}
-        </div>
-        <div class="oacts">
-          ${isNew?`<button class="msent" onclick="setStatus('${o.id}','sent')">Segna come Evaso / Spedito</button>`:''}
-          <button class="dord" onclick="deleteOrder('${o.id}')">Elimina Storico</button>
-        </div>
-      </div>
-    `;
-    box.appendChild(card);
-  });
-  updateDashboardStats();
+.order-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--teal2), var(--teal));
+  border: none; color: var(--white);
+  padding: 15px;
+  border-radius: var(--r);
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 700; letter-spacing: .3px;
+  transition: all .18s;
+  box-shadow: 0 4px 16px rgba(26,122,138,.3);
 }
-
-function toggleOrderBody(id){ document.getElementById('ob-'+id).classList.toggle('open'); }
-
-function setStatus(id, stat){
-  const o = orders.find(ord=>ord.id===id);
-  if(o) o.status=stat;
-  syncData();
-  renderOrders();
-  notify('Stato ordine aggiornato!');
-}
-
-function deleteOrder(id){
-  if(!confirm('Cancellare questo ordine dallo storico?')) return;
-  orders = orders.filter(o=>o.id!==id);
-  syncData();
-  renderOrders();
-  notify('Ordine rimosso.');
-}
-
-function updateDashboardStats(){
-  if(!document.getElementById('s-tord')) return;
-  document.getElementById('s-tord').innerText = orders.length;
-  document.getElementById('s-new').innerText = orders.filter(o=>o.status==='new').length;
-  document.getElementById('s-sent').innerText = orders.filter(o=>o.status==='sent').length;
-}
-
-// SFONDO ANIMATO DI BACKUP (CANVAS)
-function initBg(){
-  const c=document.getElementById('bg'); const ctx=c.getContext('2d');
-  let w=c.width=window.innerWidth; let h=c.height=window.innerHeight;
-  window.onresize=()=>{w=c.width=window.innerWidth;h=c.height=window.innerHeight;};
-  let pts=[]; for(let i=0;i<35;i++)pts.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+1,d:Math.random()*w,s:Math.random()*0.4+0.1});
-  function draw(){
-    ctx.clearRect(0,0,w,h); ctx.fillStyle='rgba(0,200,238,0.08)';
-    pts.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); p.y-=p.s; if(p.y<0){p.y=h;p.x=Math.random()*w;} });
-    requestAnimationFrame(draw);
-  }
-  draw();
-}
-</script>
-</body>
-</html>
-￼
+.order-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,122,138,.4); }
+.order-btn:disabled { background: var(--border); color: var(--text3); cursor: not-allowed; transform: none; box
