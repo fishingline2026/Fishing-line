@@ -183,7 +183,6 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .re{font-size:28px;text-align:center}
 .ri .rn{font-family:'Playfair Display',serif;font-size:15px;color:var(--text)}
 .ri .rm{font-size:11px;color:rgba(0,200,238,.5);margin-top:1px}
-.rprice覆{font-family:'Playfair Display',serif;font-size:17px;color:var(--accent);white-space:nowrap}
 .rprice{font-family:'Playfair Display',serif;font-size:17px;color:var(--accent);white-space:nowrap}
 .rstock{font-size:13px;white-space:nowrap}
 .ract{display:flex;gap:6px}
@@ -383,7 +382,6 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 </div>
 
 <script>
-// CONFIGURAZIONE UNIVERASLE E INSTANTANEA CON I TUOI DATI DI TELEGRAM BLOCCATI ALL'INTERNO
 const TG_TOKEN = "8874779673:AAEpDbPeO1INY2UlRygcg-87Lc09ARSpQSU";
 const TG_CHAT_ID = "1936338166";
 
@@ -578,7 +576,6 @@ async function submitOrder(){
   orders.unshift(ord);
   syncData();
   
-  // INVIA IN BACKGROUND SILENZIOSO AL TUO TELEGRAM
   const messaggioTelegram = `🎣 *NUOVO ORDINE RICEVUTO!*\n\n` +
                             `👤 *Cliente:* ${user.name}\n` +
                             `📞 *Telefono:* ${user.phone}\n` +
@@ -753,6 +750,7 @@ function renderOrders(){
   }
   orders.forEach(o=>{
     const card=document.createElement('div');
+    card.className='ocamp';
     card.className='ocard';
     const isNew = o.status==='new';
     card.innerHTML=`
