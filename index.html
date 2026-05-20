@@ -96,7 +96,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .qb{background:rgba(255,255,255,.07);border:none;color:var(--text);width:26px;height:26px;border-radius:4px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center}
 .qb:hover{background:rgba(0,200,238,.15)}
 .qn{font-family:'Playfair Display',serif;color:var(--accent);min-width:18px;text-align:center;font-size:15px}
-.rb{background:none;border:none;color:rgba(224,85,85,.6);cursor:pointer;font-size:16px;padding:3px}
+.rb{background:none;border:1px solid rgba(224,85,85,.6);cursor:pointer;font-size:16px;padding:3px}
 .rb:hover{color:var(--red)}
 .df{padding:16px 22px;border-top:1px solid var(--border)}
 .tr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
@@ -171,7 +171,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .fp{background:rgba(0,80,110,.1);border:1px solid rgba(0,200,238,.2);border-radius:13px;padding:24px;margin-bottom:22px;animation:fadeUp .3s ease}
 .fp h3{font-family:'Playfair Display',serif;font-size:19px;color:var(--accent);margin-bottom:18px}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fg .full{grid-column:1/-1}
+.fg .full { grid-column: 1/-1; }
 .ep{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
 .epb{background:rgba(255,255,255,.05);border:2px solid rgba(0,200,238,.1);border-radius:7px;padding:5px 9px;cursor:pointer;font-size:20px;transition:all .15s}
 .epb.on{border-color:rgba(0,200,238,.55);background:rgba(0,200,238,.1)}
@@ -183,6 +183,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .re{font-size:28px;text-align:center}
 .ri .rn{font-family:'Playfair Display',serif;font-size:15px;color:var(--text)}
 .ri .rm{font-size:11px;color:rgba(0,200,238,.5);margin-top:1px}
+.rprice覆{font-family:'Playfair Display',serif;font-size:17px;color:var(--accent);white-space:nowrap}
 .rprice{font-family:'Playfair Display',serif;font-size:17px;color:var(--accent);white-space:nowrap}
 .rstock{font-size:13px;white-space:nowrap}
 .ract{display:flex;gap:6px}
@@ -193,10 +194,6 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 /* NOTIF */
 #notif{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-70px);background:linear-gradient(135deg,#006688,#008aaa);color:#fff;padding:11px 26px;border-radius:28px;z-index:9999;font-size:14px;font-family:'Crimson Pro',serif;box-shadow:0 4px 22px rgba(0,150,200,.4);transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
 #notif.on{transform:translateX(-50%) translateY(0)}
-
-/* CONFIG TELEGRAM CONFIG */
-.tg-config-box { background: rgba(0,200,238,.05); border: 1px dashed var(--accent); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; font-size: 13px; }
-.tg-config-box input { background: #060f1a; border: 1px solid var(--border); color: #fff; padding: 6px 10px; border-radius: 5px; font-size: 12px; width: 100%; margin-top: 5px; outline: none; margin-bottom: 10px; }
 
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:4px}
@@ -292,10 +289,10 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       <div class="acard">
         <span class="ic">🔐</span>
         <h2>Accesso Riservato</h2>
-        <p>Inserisci la password amministratore per gestire prodotti e ordini.</p>
+        <p>Inserisci la password amministratore per gestire l'inventario.</p>
         <div class="ig">
           <label>Password</label>
-          <input type="password" id="apass" placeholder="••••">
+          <input type="password" id="apass" placeholder="Predefinita: 1234">
         </div>
         <button class="btn-cta" onclick="loginAdmin()">Accedi</button>
         <div id="a-err" class="err"></div>
@@ -308,25 +305,11 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       <div class="adm-hdr">
         <div>
           <h2>Pannello di Controllo</h2>
-          <p>Gestisci in tempo reale la tua attività</p>
+          <p>Gestisci in tempo reale i tuoi prodotti pubblici</p>
         </div>
         <div class="adm-acts">
           <button class="btn-p" onclick="openNewForm()">＋ Nuovo Prodotto</button>
           <button class="btn-g" onclick="logoutAdmin()">Esci</button>
-        </div>
-      </div>
-
-      <div class="tg-config-box">
-        <strong>⚙️ Collegamento Telegram:</strong> Inserisci qui i dati del tuo bot per ricevere gli ordini sul cellulare.
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:5px;">
-          <div>
-            <label style="font-size:11px; color:var(--accent)">Token del Bot</label>
-            <input type="text" id="tg_token" placeholder="Es: 123456789:ABCdefGhI..." onchange="saveTgConfig()">
-          </div>
-          <div>
-            <label style="font-size:11px; color:var(--accent)">Tuo ID Chat (Chat ID)</label>
-            <input type="text" id="tg_chatid" placeholder="Es: 987654321" onchange="saveTgConfig()">
-          </div>
         </div>
       </div>
 
@@ -400,6 +383,10 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 </div>
 
 <script>
+// CONFIGURAZIONE UNIVERASLE E INSTANTANEA CON I TUOI DATI DI TELEGRAM BLOCCATI ALL'INTERNO
+const TG_TOKEN = "8874779673:AAEpDbPeO1INY2UlRygcg-87Lc09ARSpQSU";
+const TG_CHAT_ID = "1936338166";
+
 const defaultProducts = [
   {id:"p1",name:"Canna da Carbonio Pro",category:"Canne",price:89.99,stock:5,image:"🎣",description:"Leggera, resistente, azione rapida."},
   {id:"p2",name:"Mulinello Ocean Titan 4000",category:"Mulinelli",price:54.50,stock:3,image:"⚙️",description:"Frizione fluida, 9 cuscinetti."},
@@ -422,22 +409,10 @@ function syncData() {
   localStorage.setItem('f_orders', JSON.stringify(orders));
 }
 
-function saveTgConfig() {
-  localStorage.setItem('tg_token', document.getElementById('tg_token').value.trim());
-  localStorage.setItem('tg_chatid', document.getElementById('tg_chatid').value.trim());
-}
-function loadTgConfig() {
-  if(document.getElementById('tg_token')) {
-    document.getElementById('tg_token').value = localStorage.getItem('tg_token') || '';
-    document.getElementById('tg_chatid').value = localStorage.getItem('tg_chatid') || '';
-  }
-}
-
 window.onload = function() {
   initBg();
   renderShop();
   buildEP();
-  loadTgConfig();
 };
 
 function notify(txt){
@@ -603,30 +578,26 @@ async function submitOrder(){
   orders.unshift(ord);
   syncData();
   
-  const token = localStorage.getItem('tg_token');
-  const chatid = localStorage.getItem('tg_chatid');
-  
-  if(token && chatid) {
-    const messaggioTelegram = `🎣 *NUOVO ORDINE RICEVUTO!*\n\n` +
-                              `👤 *Cliente:* ${user.name}\n` +
-                              `📞 *Telefono:* ${user.phone}\n` +
-                              `📅 *Data:* ${ord.date}\n\n` +
-                              `📦 *Articoli Ordinati:*\n${summaryText}\n` +
-                              `💰 *TOTALE:* ${total.toFixed(2)} €`;
-                              
-    try {
-      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: chatid,
-          text: messaggioTelegram,
-          parse_mode: 'Markdown'
-        })
-      });
-    } catch(err) {
-      console.error("Errore invio Telegram", err);
-    }
+  // INVIA IN BACKGROUND SILENZIOSO AL TUO TELEGRAM
+  const messaggioTelegram = `🎣 *NUOVO ORDINE RICEVUTO!*\n\n` +
+                            `👤 *Cliente:* ${user.name}\n` +
+                            `📞 *Telefono:* ${user.phone}\n` +
+                            `📅 *Data:* ${ord.date}\n\n` +
+                            `📦 *Articoli Ordinati:*\n${summaryText}\n` +
+                            `💰 *TOTALE:* ${total.toFixed(2)} €`;
+                            
+  try {
+    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: TG_CHAT_ID,
+        text: messaggioTelegram,
+        parse_mode: 'Markdown'
+      })
+    });
+  } catch(err) {
+    console.error("Errore di rete Telegram", err);
   }
 
   const cbox = document.getElementById('conf-items');
@@ -642,7 +613,7 @@ async function submitOrder(){
 
 function loginAdmin(){
   const pass=document.getElementById('apass').value;
-  if(pass==='admin' || pass==='1234' || pass===''){
+  if(pass==='1234' || pass==='admin'){
     sessionStorage.setItem('f_admin','1');
     document.getElementById('apass').value='';
     document.getElementById('a-err').innerText='';
@@ -738,7 +709,6 @@ function editProd(id){
   document.getElementById('fde').value=p.description||'';
   selEmoji=p.image||'🎣';
   buildEP();
-  document.getElementById('prod-form').style.add='display:block';
   document.getElementById('prod-form').style.display='block';
   document.getElementById('prod-form').scrollIntoView({behavior:'smooth',block:'start'});
 }
@@ -747,7 +717,7 @@ function delProd(id){
   if(!confirm('Eliminare questo prodotto definitivamente?')) return;
   products = products.filter(p=>p.id!==id);
   syncData();
-  notify('Prodotto eliminado!');
+  notify('Prodotto eliminato!');
   loadAndRenderInventory();
   renderShop();
 }
@@ -783,7 +753,6 @@ function renderOrders(){
   }
   orders.forEach(o=>{
     const card=document.createElement('div');
-    card.className='ocamp';
     card.className='ocard';
     const isNew = o.status==='new';
     card.innerHTML=`
