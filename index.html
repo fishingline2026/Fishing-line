@@ -3,125 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fishing Line — Attrezzatura da Pesca</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Fishing Line — Attrezzatura Professionale</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --white:#ffffff; --ivory:#f8f6f2; --ivory2:#f0ede6;
-  --navy:#0d2137; --navy2:#163350;
-  --teal:#1a7a8a; --teal2:#0f5a68; --teal-lt:#e8f4f6; --teal-mid:#b8dde3;
-  --text:#1a2633; --text2:#4a5a6a; --text3:#7a8a9a;
-  --border:#dde4e8; --border2:#c8d4da;
-  --red:#c0392b; --green:#1a7a55;
-  --shadow-sm:0 1px 4px rgba(13,33,55,.07);
-  --shadow:0 4px 16px rgba(13,33,55,.10);
-  --shadow-lg:0 12px 40px rgba(13,33,55,.14);
-  --r:8px; --r2:14px; --r3:22px;
+/* === VARIABILI E RESET === */
+:root {
+  --white: #ffffff; --ivory: #f8f6f2; --ivory2: #f0ede6;
+  --navy: #0d2137; --navy2: #163350;
+  --teal: #1a7a8a; --teal2: #0f5a68; --teal-lt: #e8f4f6; --teal-mid: #b8dde3;
+  --text: #1a2633; --text2: #4a5a6a; --text3: #7a8a9a;
+  --border: #dde4e8; --red: #c0392b; --green: #1a7a55; --orange: #d35400;
+  --shadow-sm: 0 2px 8px rgba(13,33,55,.05);
+  --shadow: 0 8px 24px rgba(13,33,55,.08);
+  --r: 8px; --r2: 16px;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--ivory);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden}
-.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--ivory); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; width: 100%; }
 
-/* SPAs Logic */
-.page{display:none;animation:fadeUp .35s ease both}
-.page.on{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* === SPA LOGIC === */
+.page { display: none; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; flex-grow: 1; }
+.page.on { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-/* HEADER */
-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border);box-shadow:0 2px 12px rgba(13,33,55,.06);backdrop-filter:blur(12px)}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:70px;gap:16px;}
-.logo{background:none;border:none;cursor:pointer;text-align:left;padding:0}
-.logo-main{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--navy);letter-spacing:1px;display:block;line-height:1.2}
-.logo-hook{color:var(--teal)}
-.logo-sub{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);display:block}
-nav{display:flex;align-items:center;gap:10px;}
-.nb{background:none;border:none;color:var(--text2);padding:8px 16px;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .2s}
-.nb:hover,.nb.on{background:var(--teal-lt);color:var(--teal2)}
-.nb.on{font-weight:600}
-.cart-btn{display:flex;align-items:center;gap:8px;background:var(--navy);border:none;color:#fff;padding:9px 20px;border-radius:var(--r3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .2s}
-.cart-btn:hover{background:var(--navy2);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
-.cart-badge{background:var(--teal);color:#fff;border-radius:50%;width:22px;height:22px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+/* === HEADER & NAVBAR === */
+header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.95); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
+.hdr { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; flex-wrap: wrap; }
+.logo { background: none; border: none; cursor: pointer; text-align: left; }
+.logo-main { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: var(--navy); }
+.logo-hook { color: var(--teal); }
+.logo-sub { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); display: block; }
+nav { display: flex; align-items: center; gap: 8px; }
+.nb { background: none; border: none; color: var(--text2); padding: 8px 16px; border-radius: var(--r); cursor: pointer; font-family: inherit; font-weight: 500; transition: 0.2s; }
+.nb:hover, .nb.on { background: var(--teal-lt); color: var(--teal2); }
+.admin-nb { color: var(--red); }
+.admin-nb:hover, .admin-nb.on { background: #fde8e8; color: var(--red); }
+.cart-btn { display: flex; align-items: center; gap: 8px; background: var(--navy); border: none; color: #fff; padding: 10px 20px; border-radius: 24px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+.cart-btn:hover { background: var(--teal); }
+.cart-badge { background: var(--white); color: var(--navy); border-radius: 50%; width: 22px; height: 22px; font-size: 12px; display: flex; align-items: center; justify-content: center; }
 
-/* WELCOME */
-.welcome-shell{min-height:calc(100vh - 70px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:linear-gradient(160deg,var(--ivory) 0%,#eaf3f5 50%,var(--ivory2) 100%);position:relative;overflow:hidden}
-.welcome-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:40px;max-width:420px;width:100%;box-shadow:var(--shadow-lg);position:relative;z-index:2}
-.wc-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--navy);line-height:1.1;margin-bottom:10px}
-.wc-title em{color:var(--teal);font-style:italic}
-.wc-sub{font-size:15px;color:var(--text2);margin-bottom:24px;line-height:1.5}
-.fg{margin-bottom:16px}
-.fg label{display:block;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
-.fg input{width:100%;background:var(--ivory);border:1.5px solid var(--border);color:var(--text);border-radius:var(--r);padding:12px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:all .2s}
-.fg input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,122,138,.1);background:var(--white)}
-.btn-primary{width:100%;background:var(--navy);border:none;color:#fff;padding:14px;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;transition:all .2s;display:flex;justify-content:center;align-items:center;gap:8px;}
-.btn-primary:hover:not(:disabled){background:var(--navy2);transform:translateY(-2px);box-shadow:var(--shadow)}
-.btn-primary:disabled{opacity:0.7;cursor:not-allowed}
-.err-msg{color:var(--red);font-size:13px;margin-top:10px;text-align:center;min-height:20px}
+/* === FORMS & BUTTONS === */
+.fg { margin-bottom: 16px; }
+.fg label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+.fg input, .fg select, .fg textarea { width: 100%; background: var(--white); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; font-family: inherit; font-size: 15px; transition: 0.2s; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--teal); outline: none; box-shadow: 0 0 0 3px var(--teal-lt); }
+.btn-primary { width: 100%; background: var(--navy); color: #fff; border: none; padding: 14px; border-radius: var(--r); cursor: pointer; font-family: inherit; font-size: 16px; font-weight: 600; transition: 0.2s; }
+.btn-primary:hover { background: var(--teal); }
 
-/* SHOP */
-.pp{padding:40px 0 80px}
-.shop-hero{background:linear-gradient(135deg,var(--navy),var(--teal2));border-radius:var(--r2);padding:30px 40px;margin-bottom:30px;color:#fff}
-.shop-hero h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+/* === CARDS & GRIDS === */
+.pp { padding: 40px 0; }
+.hero-box { background: linear-gradient(135deg, var(--navy), var(--teal2)); border-radius: var(--r2); padding: 40px; margin-bottom: 32px; color: #fff; }
+.hero-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+.card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r2); overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: 0.2s; }
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--teal-mid); }
+.c-img { height: 200px; background: var(--teal-lt); display: flex; align-items: center; justify-content: center; font-size: 60px; }
+.c-img img { width: 100%; height: 100%; object-fit: cover; }
+.c-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+.c-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--navy); margin-bottom: 8px; }
+.c-body p { color: var(--text2); font-size: 14px; flex-grow: 1; margin-bottom: 16px; }
+.c-foot { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 16px; }
+.price { font-weight: 700; font-size: 18px; color: var(--navy); }
+.btn-add { background: var(--teal-lt); color: var(--teal2); border: none; padding: 8px 16px; border-radius: var(--r); cursor: pointer; font-weight: 600; }
+.btn-add:hover { background: var(--teal); color: #fff; }
 
-/* PRODUCT CARD */
-.pcard{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .2s;display:flex;flex-direction:column;height:100%}
-.pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--teal-mid)}
-.pimg{background:var(--teal-lt);height:180px;display:flex;align-items:center;justify-content:center;font-size:40px;}
-.pinfo{padding:20px;display:flex;flex-direction:column;flex-grow:1}
-.pinfo h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:4px;color:var(--navy)}
-.pinfo p{color:var(--text2);font-size:14px;margin-bottom:16px;flex-grow:1}
-.p-price-row{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
-.price{font-size:18px;font-weight:700;color:var(--teal2)}
-.btn-add{background:var(--teal-lt);color:var(--teal2);border:none;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer;transition:all .2s;font-size:13px}
-.btn-add:hover{background:var(--teal);color:#fff}
+/* === TABLES (Cart & Admin) === */
+.table-wrap { overflow-x: auto; background: var(--white); border-radius: var(--r2); border: 1px solid var(--border); margin-bottom: 24px; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: 16px; border-bottom: 1px solid var(--border); }
+th { background: var(--ivory2); font-size: 12px; text-transform: uppercase; color: var(--text3); font-weight: 600; }
+.badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.bg-wait { background: #fff3cd; color: var(--orange); }
+.bg-done { background: #d1e7dd; color: var(--green); }
 
-/* CART & CHECKOUT */
-.cart-table{width:100%;border-collapse:collapse;margin-bottom:24px;background:var(--white);border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow-sm)}
-.cart-table th,.cart-table td{padding:16px;text-align:left;border-bottom:1px solid var(--border)}
-.cart-table th{background:var(--ivory2);font-weight:600;color:var(--text2);text-transform:uppercase;font-size:12px;letter-spacing:1px}
-.qty-ctrl{display:flex;align-items:center;gap:12px}
-.qty-btn{background:var(--ivory2);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-weight:700;color:var(--text2);transition:all .2s}
-.qty-btn:hover{background:var(--teal);color:#fff}
-.cart-totals{background:var(--white);padding:24px;border-radius:var(--r2);box-shadow:var(--shadow-sm);max-width:400px;margin-left:auto}
-.tot-row{display:flex;justify-content:space-between;margin-bottom:12px;font-size:16px;color:var(--text2)}
-.tot-row.grand{font-size:20px;font-weight:700;color:var(--navy);border-top:1px solid var(--border);padding-top:12px;margin-top:12px}
-.empty-cart{text-align:center;padding:60px 20px;color:var(--text2)}
+/* === TOAST NOTIFICATIONS === */
+#toast-box { position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
+.toast { background: var(--navy); color: #fff; padding: 12px 24px; border-radius: var(--r); box-shadow: var(--shadow); font-size: 14px; font-weight: 500; animation: slideIn 0.3s ease; }
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
 
-/* due colonne per il checkout */
-.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
-.checkout-form{background:var(--white);padding:30px;border-radius:var(--r2);box-shadow:var(--shadow-sm)}
+/* === FOOTER === */
+footer { background: var(--navy); color: var(--teal-mid); padding: 32px 0; text-align: center; font-size: 14px; margin-top: auto; }
 
-/* TOAST NOTIFICATION */
-#toast-container{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:10px}
-.toast{background:var(--navy);color:#fff;padding:12px 24px;border-radius:var(--r);box-shadow:var(--shadow-lg);font-size:14px;font-weight:500;animation:slideIn .3s ease forwards}
-.toast.error{background:var(--red)}
-.toast.success{background:var(--green)}
-@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes fadeOut{to{opacity:0}}
-
-/* RESPONSIVE */
-@media(max-width:768px) {
-  .checkout-grid{grid-template-columns:1fr}
-  .cart-table{display:block;overflow-x:auto}
-  .hdr{flex-direction:column;height:auto;padding:16px;gap:12px}
-  nav{width:100%;justify-content:space-between}
-  .welcome-shell{padding:20px 16px}
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .hdr { height: auto; padding: 16px 0; justify-content: center; }
+  nav { width: 100%; justify-content: center; margin-top: 10px; }
+  .admin-grid { grid-template-columns: 1fr; }
+  .checkout-grid { grid-template-columns: 1fr; }
 }
+.admin-grid, .checkout-grid { display: grid; gap: 24px; grid-template-columns: 350px 1fr; margin-top: 24px; align-items: start; }
 </style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="wrap hdr">
-      <button class="logo" onclick="showPage('welcome')">
+      <button class="logo" onclick="nav('shop')">
         <span class="logo-main">Fishing<span class="logo-hook">Line</span></span>
-        <span class="logo-sub">Attrezzatura Professionale</span>
+        <span class="logo-sub">Store Professionale</span>
       </button>
-      <nav id="main-nav">
-        <button class="nb on" id="btn-welcome" onclick="showPage('welcome')">Home</button>
-        <button class="nb" id="btn-shop" onclick="showPage('shop')">Negozio</button>
-        <button class="cart-btn" onclick="showPage('cart')">
+      <nav>
+        <button class="nb on" id="nav-shop" onclick="nav('shop')">Negozio</button>
+        <button class="nb" id="nav-admin-login" onclick="nav('admin-login')">Area Admin</button>
+        <button class="cart-btn" onclick="nav('cart')">
           <span>Carrello</span>
           <span class="cart-badge" id="cart-count">0</span>
         </button>
@@ -129,337 +114,357 @@ nav{display:flex;align-items:center;gap:10px;}
     </div>
   </header>
 
-  <main id="page-welcome" class="page on">
-    <div class="welcome-shell">
-      <div class="welcome-card">
-        <h1 class="wc-title">La migliore lenza per le tue <em>sfide</em>.</h1>
-        <p class="wc-sub">Accedi per esplorare il catalogo di lenze, trecciati e accessori ad alta resistenza.</p>
-        <div class="fg">
-          <label for="username">Nome Utente</label>
-          <input type="text" id="username" placeholder="Es. Mario Rossi">
-        </div>
-        <button class="btn-primary" onclick="login()">Entra nel Negozio</button>
-        <div id="err" class="err-msg"></div>
-      </div>
-    </div>
-  </main>
-
-  <main id="page-shop" class="page">
+  <!-- PAGE: SHOP -->
+  <main id="page-shop" class="page on">
     <div class="wrap pp">
-      <div class="shop-hero">
-        <h2>Catalogo Prodotti</h2>
-        <div style="opacity:0.8; margin-top:4px">Benvenuto, <strong id="user-display">Ospite</strong></div>
+      <div class="hero-box">
+        <h2>Catalogo Attrezzatura</h2>
+        <p>Esplora i nostri fili ad alta resistenza per professionisti.</p>
       </div>
-      <div class="pgrid" id="product-grid">
-        </div>
+      <div class="grid" id="shop-grid"></div>
     </div>
   </main>
 
+  <!-- PAGE: CART -->
   <main id="page-cart" class="page">
     <div class="wrap pp">
-      <div class="shop-hero">
-        <h2>Il tuo Carrello</h2>
-      </div>
-      <div id="cart-content">
-        </div>
+      <h2 style="font-family:'Cormorant Garamond'; font-size:32px; margin-bottom:24px;">Il tuo Carrello</h2>
+      <div id="cart-content"></div>
     </div>
   </main>
 
+  <!-- PAGE: CHECKOUT -->
   <main id="page-checkout" class="page">
     <div class="wrap pp">
-      <div class="shop-hero">
-        <h2>Checkout Sicuro</h2>
-      </div>
+      <h2 style="font-family:'Cormorant Garamond'; font-size:32px; margin-bottom:24px;">Completa l'Ordine</h2>
       <div class="checkout-grid">
-        <div class="checkout-form">
-          <h3 style="margin-bottom:20px; color:var(--navy)">Dati di Spedizione</h3>
-          <div class="fg"><label>Nome Completo</label><input type="text" id="chk-nome"></div>
-          <div class="fg"><label>Email</label><input type="email" id="chk-email"></div>
-          <div class="fg"><label>Indirizzo di Consegna</label><input type="text" id="chk-indirizzo"></div>
-          <div class="fg"><label>Città</label><input type="text" id="chk-citta"></div>
+        <div class="card" style="padding: 24px; display: block;">
+          <h3 style="margin-bottom: 16px;">Dati di Spedizione</h3>
+          <div class="fg"><label>Nome e Cognome *</label><input type="text" id="chk-name"></div>
+          <div class="fg"><label>Telefono *</label><input type="tel" id="chk-phone"></div>
+          <div class="fg"><label>Città *</label><input type="text" id="chk-city"></div>
+          <div class="fg"><label>Indirizzo Completo *</label><input type="text" id="chk-address"></div>
+          <div class="fg"><label>Note Aggiuntive</label><textarea id="chk-notes" rows="3"></textarea></div>
+          <button class="btn-primary" onclick="submitOrder()">Conferma Ordine</button>
         </div>
-        <div>
-          <div class="cart-totals" style="margin:0; max-width:100%">
-            <h3 style="margin-bottom:20px; color:var(--navy)">Riepilogo Ordine</h3>
-            <div id="checkout-summary"></div>
-            <div class="tot-row grand">
-              <span>Totale:</span>
-              <span id="checkout-total">€0.00</span>
-            </div>
-            <button class="btn-primary" id="btn-submit-order" onclick="submitOrder()" style="margin-top:20px">Conferma Ordine</button>
-          </div>
+        <div class="card" style="padding: 24px; display: block;">
+          <h3 style="margin-bottom: 16px;">Riepilogo</h3>
+          <div id="checkout-summary"></div>
         </div>
       </div>
     </div>
   </main>
 
-  <div id="toast-container"></div>
+  <!-- PAGE: ADMIN LOGIN -->
+  <main id="page-admin-login" class="page">
+    <div class="wrap pp" style="max-width: 450px; text-align: center;">
+      <div class="card" style="padding: 40px; display: block;">
+        <h2 style="font-family:'Cormorant Garamond'; margin-bottom: 8px;">Accesso Riservato</h2>
+        <p style="color:var(--text3); margin-bottom: 24px; font-size:14px;">(Password demo: admin123)</p>
+        <div class="fg" style="text-align: left;"><label>Password</label><input type="password" id="admin-pwd"></div>
+        <button class="btn-primary" style="background:var(--red)" onclick="loginAdmin()">Entra nella Dashboard</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- PAGE: ADMIN DASHBOARD -->
+  <main id="page-admin-dash" class="page">
+    <div class="wrap pp">
+      <div class="hero-box" style="background: linear-gradient(135deg, #1e293b, #0f172a);">
+        <h2>Pannello di Controllo</h2>
+        <p>Gestione ordini e catalogo prodotti.</p>
+      </div>
+      
+      <div class="admin-grid">
+        <div class="card" style="padding: 24px; display: block;">
+          <h3 style="margin-bottom: 16px;">Aggiungi Prodotto</h3>
+          <div class="fg"><label>Nome Prodotto</label><input type="text" id="add-name"></div>
+          <div class="fg"><label>Prezzo (€)</label><input type="number" id="add-price"></div>
+          <div class="fg"><label>Emoji o URL Immagine</label><input type="text" id="add-img" value="🎣"></div>
+          <div class="fg"><label>Descrizione</label><textarea id="add-desc" rows="2"></textarea></div>
+          <button class="btn-primary" onclick="addProduct()">Salva nel Catalogo</button>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom: 16px; font-family:'Cormorant Garamond'; font-size:24px;">Ordini Ricevuti</h3>
+          <div class="table-wrap"><table id="admin-orders-table"></table></div>
+
+          <h3 style="margin-bottom: 16px; margin-top:32px; font-family:'Cormorant Garamond'; font-size:24px;">Catalogo Attivo</h3>
+          <div class="table-wrap"><table id="admin-products-table"></table></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <p>&copy; 2024 FishingLine Pro. Tutti i diritti riservati.</p>
+    </div>
+  </footer>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-box"></div>
 
   <script>
-    // ==========================================
-    // 1. DATA E STATO
-    // ==========================================
-    const products = [
+    /* =========================================
+       1. GESTIONE STATO & DATABASE (Local Storage)
+       ========================================= */
+    const defaultProducts = [
       { id: 1, name: "Filo Trecciato X8 300m", price: 24.90, desc: "Massima resistenza all'abrasione e sensibilità estrema.", img: "🎣" },
-      { id: 2, name: "Fluorocarbon Stealth 50m", price: 15.50, desc: "Invisibilità totale in acqua, ideale per terminali.", img: "🐟" },
-      { id: 3, name: "Monofilo Nylon Pro 500m", price: 12.00, desc: "Ottima elasticità, perfetto per lanci a lunga distanza.", img: "🌊" },
-      { id: 4, name: "Trecciato Ultra Light 150m", price: 18.90, desc: "Fibre PE purissime per la pesca a spinning leggero.", img: "🐠" }
+      { id: 2, name: "Fluorocarbon Stealth 50m", price: 14.50, desc: "Invisibilità totale in acqua, ideale per terminali.", img: "🌊" },
+      { id: 3, name: "Monofilo Super Cast 500m", price: 11.90, desc: "Ottima elasticità e scorrevolezza per lanci lunghissimi.", img: "🐟" }
     ];
 
-    let cart = JSON.parse(localStorage.getItem('fishingCart')) || [];
-    let currentUser = localStorage.getItem('fishingUser') || '';
+    // Carica dati da memoria o imposta default
+    let products = JSON.parse(localStorage.getItem('fl_products')) || defaultProducts;
+    let cart = JSON.parse(localStorage.getItem('fl_cart')) || [];
+    let orders = JSON.parse(localStorage.getItem('fl_orders')) || [];
 
-    // Inizializzazione al caricamento
-    window.onload = () => {
+    function saveData() {
+      localStorage.setItem('fl_products', JSON.stringify(products));
+      localStorage.setItem('fl_cart', JSON.stringify(cart));
+      localStorage.setItem('fl_orders', JSON.stringify(orders));
       updateCartBadge();
-      renderProducts();
-      if (currentUser) {
-        document.getElementById('user-display').innerText = currentUser;
-        document.getElementById('username').value = currentUser;
-      }
-    };
+    }
 
-    // ==========================================
-    // 2. NAVIGAZIONE E UI
-    // ==========================================
-    function showPage(pageId) {
+    /* =========================================
+       2. NAVIGAZIONE E UI
+       ========================================= */
+    function nav(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
       document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
       
-      const pageEl = document.getElementById('page-' + pageId);
-      const btnEl = document.getElementById('btn-' + pageId);
+      document.getElementById(`page-${pageId}`).classList.add('on');
+      const btn = document.getElementById(`nav-${pageId}`);
+      if(btn) btn.classList.add('on');
+
+      // Trigger rendering specifici
+      if(pageId === 'shop') renderShop();
+      if(pageId === 'cart') renderCart();
+      if(pageId === 'checkout') renderCheckout();
+      if(pageId === 'admin-dash') renderAdmin();
       
-      if(pageEl) pageEl.classList.add('on');
-      if(btnEl) btnEl.classList.add('on');
-      
-      if (pageId === 'cart') renderCart();
-      if (pageId === 'checkout') renderCheckout();
       window.scrollTo(0,0);
     }
 
-    function login() {
-      const name = document.getElementById('username').value.trim();
-      if (name === "") {
-        document.getElementById('err').innerText = "Per favore, inserisci un nome per continuare.";
-        return;
-      }
-      document.getElementById('err').innerText = "";
-      currentUser = name;
-      localStorage.setItem('fishingUser', name);
-      document.getElementById('user-display').innerText = name;
-      showToast(`Bentornato, ${name}!`, "success");
-      showPage('shop');
-    }
-
-    function showToast(message, type="normal") {
-      const container = document.getElementById('toast-container');
+    function showToast(msg) {
+      const box = document.getElementById('toast-box');
       const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.innerText = message;
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.animation = 'fadeOut 0.3s ease forwards';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      toast.className = 'toast';
+      toast.innerText = msg;
+      box.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
     }
 
-    // ==========================================
-    // 3. LOGICA CARRELLO
-    // ==========================================
-    function saveCart() {
-      localStorage.setItem('fishingCart', JSON.stringify(cart));
-      updateCartBadge();
+    /* =========================================
+       3. LOGICA NEGOZIO & CARRELLO
+       ========================================= */
+    function renderShop() {
+      const grid = document.getElementById('shop-grid');
+      grid.innerHTML = products.map(p => {
+        let media = p.img.startsWith('http') ? `<img src="${p.img}">` : p.img;
+        return `
+          <div class="card">
+            <div class="c-img">${media}</div>
+            <div class="c-body">
+              <h3>${p.name}</h3>
+              <p>${p.desc}</p>
+              <div class="c-foot">
+                <span class="price">€ ${parseFloat(p.price).toFixed(2)}</span>
+                <button class="btn-add" onclick="addToCart(${p.id})">Aggiungi</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addToCart(id) {
+      const prod = products.find(p => p.id === id);
+      const existing = cart.find(c => c.id === id);
+      if(existing) existing.qty++;
+      else cart.push({...prod, qty: 1});
+      
+      saveData();
+      showToast(`${prod.name} aggiunto al carrello!`);
     }
 
     function updateCartBadge() {
-      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-      document.getElementById('cart-count').innerText = totalItems;
+      const total = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cart-count').innerText = total;
     }
 
-    function addToCart(prodId) {
-      const prod = products.find(p => p.id === prodId);
-      const existing = cart.find(item => item.id === prodId);
-      
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cart.push({ ...prod, qty: 1 });
-      }
-      saveCart();
-      showToast(`${prod.name} aggiunto al carrello!`, "success");
-    }
-
-    function changeQty(prodId, delta) {
-      const item = cart.find(i => i.id === prodId);
-      if(!item) return;
-      item.qty += delta;
-      if (item.qty <= 0) {
-        cart = cart.filter(i => i.id !== prodId);
-      }
-      saveCart();
+    function removeCartItem(index) {
+      cart.splice(index, 1);
+      saveData();
       renderCart();
     }
 
-    function getCartTotal() {
-      return cart.reduce((sum, item) => sum + (item.price * item.qty), 0).toFixed(2);
-    }
-
-    // ==========================================
-    // 4. RENDERING DOM
-    // ==========================================
-    function renderProducts() {
-      const grid = document.getElementById('product-grid');
-      grid.innerHTML = products.map(p => `
-        <div class="pcard">
-          <div class="pimg">${p.img}</div>
-          <div class="pinfo">
-            <h3>${p.name}</h3>
-            <p>${p.desc}</p>
-            <div class="p-price-row">
-              <span class="price">€${p.price.toFixed(2)}</span>
-              <button class="btn-add" onclick="addToCart(${p.id})">Aggiungi</button>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
     function renderCart() {
-      const content = document.getElementById('cart-content');
-      if (cart.length === 0) {
-        content.innerHTML = `<div class="empty-cart">
-          <h3 style="margin-bottom:15px; color:var(--navy)">Il tuo carrello è vuoto</h3>
-          <button class="btn-add" onclick="showPage('shop')">Torna al Negozio</button>
-        </div>`;
+      const container = document.getElementById('cart-content');
+      if(cart.length === 0) {
+        container.innerHTML = `<p>Il carrello è vuoto. <a href="#" onclick="nav('shop')" style="color:var(--teal)">Torna al negozio</a></p>`;
         return;
       }
 
-      let html = `<table class="cart-table">
-        <thead><tr><th>Prodotto</th><th>Prezzo</th><th>Quantità</th><th>Subtotale</th></tr></thead>
-        <tbody>`;
+      let total = 0;
+      let html = `<div class="table-wrap"><table>
+        <tr><th>Prodotto</th><th>Q.tà</th><th>Prezzo</th><th>Azioni</th></tr>`;
       
-      cart.forEach(item => {
+      cart.forEach((item, i) => {
+        let sub = item.price * item.qty;
+        total += sub;
         html += `<tr>
           <td><strong>${item.name}</strong></td>
-          <td>€${item.price.toFixed(2)}</td>
-          <td>
-            <div class="qty-ctrl">
-              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
-              <span>${item.qty}</span>
-              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
-            </div>
-          </td>
-          <td><strong>€${(item.price * item.qty).toFixed(2)}</strong></td>
+          <td>${item.qty}</td>
+          <td>€ ${sub.toFixed(2)}</td>
+          <td><button class="btn-add" style="background:#fde8e8;color:var(--red)" onclick="removeCartItem(${i})">Rimuovi</button></td>
         </tr>`;
       });
-      html += `</tbody></table>
-      <div class="cart-totals">
-        <div class="tot-row grand"><span>Totale:</span><span>€${getCartTotal()}</span></div>
-        <button class="btn-primary" onclick="showPage('checkout')" style="width:100%; margin-top:20px">Procedi al Checkout</button>
+
+      html += `</table></div>
+      <div style="text-align:right; margin-top:20px;">
+        <h3 style="font-size:24px; color:var(--navy); margin-bottom:16px;">Totale: € ${total.toFixed(2)}</h3>
+        <button class="btn-primary" style="width:auto; padding:14px 32px;" onclick="nav('checkout')">Procedi al Checkout</button>
       </div>`;
       
-      content.innerHTML = html;
+      container.innerHTML = html;
     }
 
+    /* =========================================
+       4. LOGICA CHECKOUT & ORDINI
+       ========================================= */
     function renderCheckout() {
-      if(cart.length === 0){
-        showPage('cart');
-        return;
-      }
-      if(currentUser && !document.getElementById('chk-nome').value){
-        document.getElementById('chk-nome').value = currentUser;
-      }
+      if(cart.length === 0) return nav('shop');
+      let total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
       
-      const summary = document.getElementById('checkout-summary');
-      summary.innerHTML = cart.map(item => `
-        <div class="tot-row" style="font-size:14px">
-          <span>${item.qty}x ${item.name}</span>
-          <span>€${(item.price * item.qty).toFixed(2)}</span>
-        </div>
-      `).join('');
-      document.getElementById('checkout-total').innerText = `€${getCartTotal()}`;
+      let html = cart.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid var(--border)">
+        <span>${i.qty}x ${i.name}</span><strong>€ ${(i.price * i.qty).toFixed(2)}</strong>
+      </div>`).join('');
+      
+      html += `<div style="display:flex; justify-content:space-between; margin-top:16px; font-size:20px; color:var(--navy)">
+        <strong>Totale da pagare:</strong><strong>€ ${total.toFixed(2)}</strong>
+      </div>`;
+      
+      document.getElementById('checkout-summary').innerHTML = html;
     }
 
-    // ==========================================
-    // 5. SISTEMA ORDINI E TELEGRAM API
-    // ==========================================
-    async function submitOrder() {
-      const btn = document.getElementById('btn-submit-order');
-      
-      // Raccolta e sanitizzazione dati
-      const nome = document.getElementById('chk-nome').value.trim();
-      const email = document.getElementById('chk-email').value.trim();
-      const indirizzo = document.getElementById('chk-indirizzo').value.trim();
-      const citta = document.getElementById('chk-citta').value.trim();
+    function submitOrder() {
+      const name = document.getElementById('chk-name').value.trim();
+      const phone = document.getElementById('chk-phone').value.trim();
+      const city = document.getElementById('chk-city').value.trim();
+      const address = document.getElementById('chk-address').value.trim();
+      const notes = document.getElementById('chk-notes').value.trim();
 
-      if(!nome || !email || !indirizzo || !citta) {
-        showToast("Compila tutti i campi obbligatori.", "error");
+      if(!name || !phone || !city || !address) {
+        alert("Compila tutti i campi obbligatori (*)");
         return;
       }
 
-      if(cart.length === 0) return;
-
-      btn.disabled = true;
-      btn.innerText = "Elaborazione...";
-
-      // Preparazione stringa prodotti
-      let stringaProdotti = cart.map(item => `- ${item.qty}x ${item.name} (€${(item.price * item.qty).toFixed(2)})`).join('\n');
-      const dataOdierna = new Date().toLocaleString('it-IT');
-      const totale = getCartTotal();
-
-      // Formattazione Messaggio Telegram
-      const testoTelegram = `
-🛒 *Nuovo Ordine*
-
-👤 Cliente: ${nome}
-📧 Email: ${email}
-📍 Indirizzo: ${indirizzo}, ${citta}
-🕒 Data: ${dataOdierna}
-
-📦 *Prodotti:*
-${stringaProdotti}
-
-💰 *Totale:* €${totale}
-      `;
-
-      // CONFIGURAZIONE TELEGRAM (Sostituisci i placeholder con i tuoi dati reali)
-      const BOT_TOKEN = 'INSERISCI_TOKEN'; 
-      const CHAT_ID = 'INSERISCI_CHAT_ID';
+      const orderTotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
       
-      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      const newOrder = {
+        id: 'ORD-' + Math.floor(Math.random() * 10000),
+        date: new Date().toLocaleDateString(),
+        customer: name, phone, city, address, notes,
+        items: [...cart],
+        total: orderTotal,
+        status: 'In attesa'
+      };
 
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: testoTelegram,
-            parse_mode: 'Markdown'
-          })
-        });
+      orders.push(newOrder);
+      cart = []; // Svuota carrello
+      saveData();
+      
+      alert("Ordine inviato con successo! Grazie per l'acquisto.");
+      nav('shop');
+    }
 
-        if (!response.ok) throw new Error("Errore comunicazione server Telegram.");
-
-        // Ordine Completato con Successo
-        cart = [];
-        saveCart();
-        showToast("Ordine inviato con successo!", "success");
-        
-        // Pulisce form
-        document.getElementById('chk-indirizzo').value = "";
-        document.getElementById('chk-citta').value = "";
-        
-        setTimeout(() => showPage('welcome'), 2000);
-
-      } catch (error) {
-        console.error(error);
-        showToast("Errore durante l'invio dell'ordine. Riprova.", "error");
-      } finally {
-        btn.disabled = false;
-        btn.innerText = "Conferma Ordine";
+    /* =========================================
+       5. LOGICA ADMIN
+       ========================================= */
+    function loginAdmin() {
+      const pwd = document.getElementById('admin-pwd').value;
+      if(pwd === "admin123") {
+        document.getElementById('admin-pwd').value = "";
+        nav('admin-dash');
+      } else {
+        alert("Password errata!");
       }
     }
+
+    function renderAdmin() {
+      // Rendering Prodotti
+      const pTable = document.getElementById('admin-products-table');
+      pTable.innerHTML = `<tr><th>ID</th><th>Nome</th><th>Prezzo</th><th>Azioni</th></tr>` + 
+        products.map(p => `<tr>
+          <td>${p.id}</td><td><strong>${p.name}</strong></td><td>€ ${parseFloat(p.price).toFixed(2)}</td>
+          <td><button class="btn-add" style="background:#fde8e8;color:var(--red)" onclick="deleteProduct(${p.id})">Elimina</button></td>
+        </tr>`).join('');
+
+      // Rendering Ordini
+      const oTable = document.getElementById('admin-orders-table');
+      if(orders.length === 0) {
+        oTable.innerHTML = "<tr><td colspan='5'>Nessun ordine ricevuto.</td></tr>";
+      } else {
+        oTable.innerHTML = `<tr><th>ID Ordine</th><th>Cliente / Città</th><th>Totale</th><th>Stato</th><th>Azioni</th></tr>` + 
+          orders.slice().reverse().map((o, index) => {
+            let badgeClass = o.status === 'Spedito' ? 'bg-done' : 'bg-wait';
+            // Troviamo il vero indice nell'array originale per cambiarne lo stato
+            let realIndex = orders.findIndex(x => x.id === o.id);
+            return `<tr>
+              <td><strong>${o.id}</strong><br><small>${o.date}</small></td>
+              <td>${o.customer}<br><small>${o.city}</small></td>
+              <td>€ ${o.total.toFixed(2)}</td>
+              <td><span class="badge ${badgeClass}">${o.status}</span></td>
+              <td>
+                ${o.status === 'In attesa' ? `<button class="btn-add" onclick="markShipped(${realIndex})">Segna Spedito</button>` : 'OK'}
+              </td>
+            </tr>`;
+          }).join('');
+      }
+    }
+
+    function addProduct() {
+      const name = document.getElementById('add-name').value;
+      const price = parseFloat(document.getElementById('add-price').value);
+      const img = document.getElementById('add-img').value || '🎣';
+      const desc = document.getElementById('add-desc').value;
+
+      if(!name || isNaN(price)) return alert("Inserisci nome e prezzo validi.");
+
+      const newId = products.length > 0 ? Math.max(...products.map(p=>p.id)) + 1 : 1;
+      products.push({ id: newId, name, price, img, desc });
+      
+      saveData();
+      renderAdmin();
+      showToast("Prodotto aggiunto!");
+      
+      // Clear form
+      document.getElementById('add-name').value = '';
+      document.getElementById('add-price').value = '';
+      document.getElementById('add-desc').value = '';
+    }
+
+    function deleteProduct(id) {
+      if(confirm("Eliminare definitivamente?")) {
+        products = products.filter(p => p.id !== id);
+        saveData();
+        renderAdmin();
+      }
+    }
+
+    function markShipped(index) {
+      orders[index].status = 'Spedito';
+      saveData();
+      renderAdmin();
+      showToast("Stato ordine aggiornato!");
+    }
+
+    // --- INIZIALIZZAZIONE ---
+    updateCartBadge();
+    renderShop();
   </script>
 </body>
 </html>
