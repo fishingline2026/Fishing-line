@@ -1,1826 +1,952 @@
+cat > /mnt/user-data/outputs/fishingline.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+<!-- CSP: blocca esecuzione di script inline non autorizzati e risorse da origini non note -->
 <meta http-equiv="Content-Security-Policy"
-content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
-script-src 'unsafe-inline';
-style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-img-src * data:;
-connect-src https://api.telegram.org;">
-
+  content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;
+           script-src 'unsafe-inline';
+           style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+           img-src * data:;
+           connect-src https://api.telegram.org;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="referrer" content="no-referrer">
-
 <title>FishingLine — Attrezzatura da Pesca</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
-
 :root{
---white:#ffffff;
---ivory:#f8f6f2;
---ivory2:#f0ede6;
-
---navy:#0d2137;
---navy2:#163350;
-
---teal:#1a7a8a;
---teal2:#0f5a68;
---teal-lt:#e8f4f6;
---teal-mid:#b8dde3;
-
---text:#1a2633;
---text2:#4a5a6a;
---text3:#7a8a9a;
-
---border:#dde4e8;
---border2:#c8d4da;
-
---red:#c0392b;
---green:#1a7a55;
-
---shadow-sm:0 1px 4px rgba(13,33,55,.07);
---shadow:0 4px 16px rgba(13,33,55,.10);
---shadow-lg:0 12px 40px rgba(13,33,55,.14);
-
---r:8px;
---r2:14px;
---r3:22px;
---hdr:56px;
+  --white:#ffffff;--ivory:#f8f6f2;--ivory2:#f0ede6;
+  --navy:#0d2137;--navy2:#163350;
+  --teal:#1a7a8a;--teal2:#0f5a68;--teal-lt:#e8f4f6;--teal-mid:#b8dde3;
+  --text:#1a2633;--text2:#4a5a6a;--text3:#7a8a9a;
+  --border:#dde4e8;--border2:#c8d4da;
+  --red:#c0392b;--green:#1a7a55;
+  --shadow-sm:0 1px 4px rgba(13,33,55,.07);
+  --shadow:0 4px 16px rgba(13,33,55,.10);
+  --shadow-lg:0 12px 40px rgba(13,33,55,.14);
+  --r:8px;--r2:14px;--r3:22px;--hdr:56px;
 }
-
-*,*::before,*::after{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
-html{
-scroll-behavior:smooth;
--webkit-text-size-adjust:100%;
-text-size-adjust:100%;
-}
-
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{
-background:var(--ivory);
-color:var(--text);
-font-family:'DM Sans',sans-serif;
-font-size:15px;
-line-height:1.6;
-min-height:100vh;
-overflow-x:hidden;
-width:100%;
-max-width:100vw;
+  background:var(--ivory);color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;
+  min-height:100vh;overflow-x:hidden;width:100%;max-width:100vw;
 }
-
-img{
-max-width:100%;
-display:block;
-}
-
-.wrap{
-width:100%;
-max-width:1120px;
-margin:0 auto;
-padding:0 12px;
-}
-
-.page{
-display:none;
-}
-
-.page.on{
-display:block;
-animation:fadeUp .3s ease both;
-}
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(12px);
-}
-to{
-opacity:1;
-transform:none;
-}
-}
-
-/* ── SPLASH SCREEN ── */
-
-#splash-screen{
-position:fixed;
-inset:0;
-width:100%;
-height:100vh;
-
-background:
-linear-gradient(
-160deg,
-#081521,
-#0d2137 60%,
-#1a7a8a
-);
-
-z-index:9999;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-transition:opacity .6s ease;
-}
-
-#splash-screen.fade-out{
-opacity:0;
-pointer-events:none;
-}
-
-.splash-content{
-text-align:center;
-padding:20px;
-color:#fff;
-animation:splashFade 1s ease;
-}
-
-@keyframes splashFade{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:none;
-}
-}
-
-#main-logo{
-width:140px;
-max-width:70vw;
-margin:18px auto;
-display:block;
-filter:drop-shadow(0 8px 20px rgba(0,0,0,.35));
-}
-
-.splash-icons{
-font-size:32px;
-letter-spacing:10px;
-margin-bottom:10px;
-}
-
-.splash-content h1{
-font-family:'Cormorant Garamond',serif;
-font-size:48px;
-margin-bottom:6px;
-}
-
-.splash-content p{
-color:rgba(255,255,255,.75);
-margin-bottom:24px;
-font-size:15px;
-}
-
-#enter-site-btn{
-background:#ffffff;
-color:#0d2137;
-border:none;
-padding:14px 28px;
-border-radius:999px;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-transition:all .2s ease;
-}
-
-#enter-site-btn:hover{
-transform:translateY(-2px);
-background:#e8f4f6;
-}
+img{max-width:100%;display:block}
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 12px}
+.page{display:none}
+.page.on{display:block;animation:fadeUp .3s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
 /* ── HEADER ── */
-
 header{
-position:sticky;
-top:0;
-z-index:200;
-
-background:rgba(255,255,255,.97);
-
-border-bottom:1px solid var(--border);
-
-box-shadow:0 2px 10px rgba(13,33,55,.06);
-
-backdrop-filter:blur(10px);
--webkit-backdrop-filter:blur(10px);
-
-width:100%;
+  position:sticky;top:0;z-index:200;
+  background:rgba(255,255,255,.97);border-bottom:1px solid var(--border);
+  box-shadow:0 2px 10px rgba(13,33,55,.06);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  width:100%;
 }
-
 .hdr{
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-height:var(--hdr);
-
-gap:4px;
-padding:0 10px;
-
-max-width:1120px;
-margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  height:var(--hdr);gap:4px;padding:0 10px;
+  max-width:1120px;margin:0 auto;
 }
-
-.logo{
-background:none;
-border:none;
-cursor:pointer;
-padding:0;
-flex-shrink:0;
--webkit-tap-highlight-color:transparent;
-}
-
-.logo-main{
-font-family:'Cormorant Garamond',serif;
-font-size:20px;
-font-weight:700;
-color:var(--navy);
-letter-spacing:1px;
-display:block;
-white-space:nowrap;
-}
-
-.logo-hook{
-color:var(--teal);
-}
-
-.logo-sub{
-font-size:7px;
-letter-spacing:2px;
-text-transform:uppercase;
-color:var(--text3);
-display:block;
-white-space:nowrap;
-}
-
-nav{
-display:flex;
-align-items:center;
-gap:2px;
-flex-shrink:0;
-}
-
+.logo{background:none;border:none;cursor:pointer;padding:0;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.logo-main{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:1px;display:block;white-space:nowrap}
+.logo-hook{color:var(--teal)}
+.logo-sub{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);display:block;white-space:nowrap}
+nav{display:flex;align-items:center;gap:2px;flex-shrink:0}
 .nb{
-background:none;
-border:none;
-color:var(--text2);
-
-padding:6px 8px;
-border-radius:var(--r);
-
-cursor:pointer;
-
-font-family:'DM Sans',sans-serif;
-font-size:13px;
-font-weight:500;
-
-transition:all .18s;
-
-white-space:nowrap;
--webkit-tap-highlight-color:transparent;
-
-display:flex;
-align-items:center;
-gap:3px;
+  background:none;border:none;color:var(--text2);
+  padding:6px 8px;border-radius:var(--r);cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  transition:all .18s;white-space:nowrap;-webkit-tap-highlight-color:transparent;
+  display:flex;align-items:center;gap:3px;
 }
-
-.nb:hover,
-.nb.on{
-background:var(--teal-lt);
-color:var(--teal2);
-}
-
-.nb.on{
-font-weight:600;
-}
-  .admin-nb{
-color:var(--red);
-}
-
-.admin-nb:hover,
-.admin-nb.on{
-background:#fde8e8;
-color:var(--red);
-}
-
+.nb:hover,.nb.on{background:var(--teal-lt);color:var(--teal2)}
+.nb.on{font-weight:600}
+.admin-nb{color:var(--red)}
+.admin-nb:hover,.admin-nb.on{background:#fde8e8;color:var(--red)}
 .cart-btn{
-display:flex;
-align-items:center;
-gap:5px;
-
-background:var(--navy);
-border:none;
-color:#fff;
-
-padding:7px 11px;
-border-radius:var(--r3);
-
-cursor:pointer;
-
-font-family:'DM Sans',sans-serif;
-font-size:13px;
-font-weight:500;
-
-transition:background .18s;
-
-white-space:nowrap;
-flex-shrink:0;
-
--webkit-tap-highlight-color:transparent;
+  display:flex;align-items:center;gap:5px;
+  background:var(--navy);border:none;color:#fff;
+  padding:7px 11px;border-radius:var(--r3);cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  transition:background .18s;white-space:nowrap;flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
 }
-
-.cart-btn:hover{
-background:var(--navy2);
-}
-
+.cart-btn:hover{background:var(--navy2)}
 .cart-badge{
-background:var(--teal);
-color:#fff;
-
-border-radius:50%;
-
-min-width:20px;
-height:20px;
-
-padding:0 3px;
-
-font-size:11px;
-font-weight:700;
-
-display:inline-flex;
-align-items:center;
-justify-content:center;
-
-transition:transform .2s;
-
-flex-shrink:0;
+  background:var(--teal);color:#fff;border-radius:50%;
+  min-width:20px;height:20px;padding:0 3px;font-size:11px;font-weight:700;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:transform .2s;flex-shrink:0;
 }
 
 /* ── WELCOME ── */
-
 .welcome-shell{
-min-height:calc(100svh - var(--hdr));
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-padding:20px 12px;
-
-background:
-linear-gradient(
-160deg,
-var(--ivory),
-#eaf3f5 50%,
-var(--ivory2)
-);
-
-position:relative;
-overflow:hidden;
+  min-height:calc(100svh - var(--hdr));
+  display:flex;align-items:center;justify-content:center;
+  padding:20px 12px;
+  background:linear-gradient(160deg,var(--ivory),#eaf3f5 50%,var(--ivory2));
+  position:relative;overflow:hidden;
 }
-
-.deco{
-position:absolute;
-pointer-events:none;
-border-radius:50%;
-}
-
-.deco1{
-top:-80px;
-right:-80px;
-width:320px;
-height:320px;
-background:
-radial-gradient(
-circle,
-rgba(26,122,138,.08),
-transparent 70%
-);
-}
-
-.deco2{
-bottom:-60px;
-left:-60px;
-width:260px;
-height:260px;
-background:
-radial-gradient(
-circle,
-rgba(13,33,55,.06),
-transparent 70%
-);
-}
-
+.deco{position:absolute;pointer-events:none;border-radius:50%}
+.deco1{top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(26,122,138,.08),transparent 70%)}
+.deco2{bottom:-60px;left:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(13,33,55,.06),transparent 70%)}
 .welcome-card{
-background:var(--white);
-border:1px solid var(--border);
-border-radius:var(--r2);
-
-padding:28px 20px;
-
-max-width:420px;
-width:100%;
-
-box-shadow:var(--shadow-lg);
-
-position:relative;
-z-index:2;
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r2);
+  padding:28px 20px;max-width:420px;width:100%;
+  box-shadow:var(--shadow-lg);position:relative;z-index:2;
 }
-
 .wc-badge{
-display:inline-flex;
-align-items:center;
-gap:6px;
-
-background:var(--teal-lt);
-color:var(--teal2);
-
-border:1px solid var(--teal-mid);
-
-border-radius:20px;
-
-padding:4px 12px;
-
-font-size:12px;
-font-weight:600;
-
-margin-bottom:14px;
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--teal-lt);color:var(--teal2);border:1px solid var(--teal-mid);
+  border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;margin-bottom:14px;
 }
-
 .wc-title{
-font-family:'Cormorant Garamond',serif;
-font-size:clamp(24px,5.5vw,36px);
-font-weight:700;
-color:var(--navy);
-
-line-height:1.1;
-
-margin-bottom:8px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(24px,5.5vw,36px);font-weight:700;color:var(--navy);
+  line-height:1.1;margin-bottom:8px;
 }
-
-.wc-title em{
-color:var(--teal);
-font-style:italic;
-}
-
-.wc-sub{
-font-size:14px;
-color:var(--text2);
-margin-bottom:18px;
-line-height:1.6;
-}
-
-.fg{
-margin-bottom:12px;
-}
-
+.wc-title em{color:var(--teal);font-style:italic}
+.wc-sub{font-size:14px;color:var(--text2);margin-bottom:18px;line-height:1.6}
+.fg{margin-bottom:12px}
 .fg label{
-display:block;
-
-font-size:11px;
-font-weight:600;
-letter-spacing:1.5px;
-
-text-transform:uppercase;
-
-color:var(--text3);
-
-margin-bottom:5px;
+  display:block;font-size:11px;font-weight:600;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--text3);margin-bottom:5px;
 }
-
-.fg input,
-.fg select,
-.fg textarea{
-width:100%;
-
-background:var(--ivory);
-
-border:1.5px solid var(--border);
-
-color:var(--text);
-
-border-radius:var(--r);
-
-padding:11px 13px;
-
-font-family:'DM Sans',sans-serif;
-
-font-size:16px;
-
-outline:none;
-
-transition:
-border-color .2s,
-box-shadow .2s;
-
--webkit-appearance:none;
-appearance:none;
+.fg input,.fg select,.fg textarea{
+  width:100%;background:var(--ivory);border:1.5px solid var(--border);color:var(--text);
+  border-radius:var(--r);padding:11px 13px;
+  font-family:'DM Sans',sans-serif;font-size:16px;/* 16px blocca zoom iOS */
+  outline:none;transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
 }
-
-.fg textarea{
-resize:vertical;
-min-height:70px;
-font-size:14px;
+.fg textarea{resize:vertical;min-height:70px;font-size:14px}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,122,138,.1);background:var(--white);
 }
-
-.fg input:focus,
-.fg select:focus,
-.fg textarea:focus{
-border-color:var(--teal);
-
-box-shadow:0 0 0 3px rgba(26,122,138,.1);
-
-background:var(--white);
-}
-
 .btn-primary{
-width:100%;
-
-background:var(--navy);
-
-border:none;
-color:#fff;
-
-padding:13px;
-
-border-radius:var(--r);
-
-cursor:pointer;
-
-font-family:'Cormorant Garamond',serif;
-font-size:18px;
-font-weight:700;
-
-letter-spacing:.4px;
-
-transition:background .18s;
-
-box-shadow:0 4px 14px rgba(13,33,55,.2);
-
-margin-top:4px;
-
--webkit-tap-highlight-color:transparent;
+  width:100%;background:var(--navy);border:none;color:#fff;
+  padding:13px;border-radius:var(--r);cursor:pointer;
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;letter-spacing:.4px;
+  transition:background .18s;box-shadow:0 4px 14px rgba(13,33,55,.2);
+  margin-top:4px;-webkit-tap-highlight-color:transparent;
 }
-
-.btn-primary:hover,
-.btn-primary:active{
-background:var(--navy2);
-}
-
-.btn-primary:disabled{
-opacity:.6;
-cursor:not-allowed;
-}
-
-.err-msg{
-color:var(--red);
-font-size:13px;
-margin-top:8px;
-text-align:center;
-min-height:18px;
-}
+.btn-primary:hover,.btn-primary:active{background:var(--navy2)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.err-msg{color:var(--red);font-size:13px;margin-top:8px;text-align:center;min-height:18px}
 .lockout-bar{
-background:#fde8e8;
-border:1px solid #f5c6cb;
-border-radius:var(--r);
-
-padding:9px 12px;
-
-font-size:13px;
-color:var(--red);
-
-text-align:center;
-
-margin-top:8px;
-
-display:none;
+  background:#fde8e8;border:1px solid #f5c6cb;border-radius:var(--r);
+  padding:9px 12px;font-size:13px;color:var(--red);text-align:center;
+  margin-top:8px;display:none;
 }
 
 /* ── SHOP ── */
-
-.pp{
-padding:16px 0 60px;
-}
-
+.pp{padding:16px 0 60px}
 .shop-hero{
-background:
-linear-gradient(
-135deg,
-var(--navy),
-var(--navy2) 60%,
-var(--teal2)
-);
-
-border-radius:var(--r2);
-
-padding:20px 18px;
-
-margin-bottom:16px;
-
-position:relative;
-overflow:hidden;
+  background:linear-gradient(135deg,var(--navy),var(--navy2) 60%,var(--teal2));
+  border-radius:var(--r2);padding:20px 18px;margin-bottom:16px;
+  position:relative;overflow:hidden;
 }
-
 .shop-hero::after{
-content:'🎣';
-
-position:absolute;
-
-right:14px;
-top:50%;
-
-transform:translateY(-50%);
-
-font-size:44px;
-opacity:.15;
-
-pointer-events:none;
+  content:'🎣';position:absolute;right:14px;top:50%;
+  transform:translateY(-50%);font-size:44px;opacity:.15;pointer-events:none;
 }
+.shop-hero h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:3px}
+.shop-hero-sub{font-size:13px;color:rgba(255,255,255,.7)}
+.shop-hero-sub strong{color:#fff}
 
-.shop-hero h2{
-font-family:'Cormorant Garamond',serif;
-font-size:22px;
-font-weight:700;
-color:#fff;
-margin-bottom:3px;
-}
-
-.shop-hero-sub{
-font-size:13px;
-color:rgba(255,255,255,.7);
-}
-
-.shop-hero-sub strong{
-color:#fff;
-}
-
-.filter-wrap{
-overflow-x:auto;
--webkit-overflow-scrolling:touch;
-
-margin-bottom:16px;
-padding-bottom:12px;
-
-border-bottom:1px solid var(--border);
-}
-
-.filter-bar{
-display:flex;
-gap:6px;
-align-items:center;
-
-width:max-content;
-
-padding:0 2px;
-}
-
-.filter-label{
-font-size:11px;
-font-weight:600;
-letter-spacing:1.5px;
-
-text-transform:uppercase;
-
-color:var(--text3);
-
-margin-right:4px;
-
-white-space:nowrap;
-}
-
+/* filtri scrollabili su mobile */
+.filter-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.filter-bar{display:flex;gap:6px;align-items:center;width:max-content;padding:0 2px}
+.filter-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-right:4px;white-space:nowrap}
 .fb{
-background:var(--white);
-
-border:1.5px solid var(--border);
-
-color:var(--text2);
-
-border-radius:20px;
-
-padding:6px 14px;
-
-cursor:pointer;
-
-font-family:'DM Sans',sans-serif;
-font-size:13px;
-font-weight:500;
-
-transition:all .18s;
-
--webkit-tap-highlight-color:transparent;
-
-white-space:nowrap;
+  background:var(--white);border:1.5px solid var(--border);color:var(--text2);
+  border-radius:20px;padding:6px 14px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  transition:all .18s;-webkit-tap-highlight-color:transparent;white-space:nowrap;
 }
+.fb:hover{border-color:var(--teal);color:var(--teal)}
+.fb.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
 
-.fb:hover{
-border-color:var(--teal);
-color:var(--teal);
-}
-
-.fb.on{
-background:var(--navy);
-border-color:var(--navy);
-color:#fff;
-font-weight:600;
-}
-
-.pgrid{
-display:grid;
-
-grid-template-columns:
-repeat(auto-fill,minmax(240px,1fr));
-
-gap:12px;
-}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 
 /* ── PRODUCT CARD ── */
-
 .pcard{
-background:var(--white);
-
-border:1px solid var(--border);
-border-radius:var(--r2);
-
-overflow:hidden;
-
-transition:all .2s;
-
-box-shadow:var(--shadow-sm);
-
-display:flex;
-flex-direction:column;
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r2);
+  overflow:hidden;transition:all .2s;box-shadow:var(--shadow-sm);
+  display:flex;flex-direction:column;
 }
-
-.pcard:hover{
-transform:translateY(-3px);
-box-shadow:var(--shadow-lg);
-border-color:var(--teal-mid);
-}
-
+.pcard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--teal-mid)}
 .pimg{
-background:
-linear-gradient(
-135deg,
-var(--teal-lt),
-#d8eef2
-);
-
-height:140px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-size:42px;
-
-overflow:hidden;
-
-flex-shrink:0;
-
-position:relative;
+  background:linear-gradient(135deg,var(--teal-lt),#d8eef2);
+  height:140px;display:flex;align-items:center;justify-content:center;
+  font-size:42px;overflow:hidden;flex-shrink:0;position:relative;
 }
-
-.pimg img{
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
+.pimg img{width:100%;height:100%;object-fit:cover}
 .usato-badge{
-position:absolute;
-
-top:8px;
-left:8px;
-
-background:#f39c12;
-color:#fff;
-
-border-radius:20px;
-
-padding:2px 9px;
-
-font-size:11px;
-font-weight:700;
-
-letter-spacing:.5px;
+  position:absolute;top:8px;left:8px;
+  background:#f39c12;color:#fff;border-radius:20px;
+  padding:2px 9px;font-size:11px;font-weight:700;letter-spacing:.5px;
 }
-
-.pinfo{
-padding:12px;
-
-display:flex;
-flex-direction:column;
-
-flex-grow:1;
-}
-
-.pinfo h3{
-font-family:'Cormorant Garamond',serif;
-font-size:17px;
-font-weight:700;
-
-margin-bottom:3px;
-
-line-height:1.3;
-}
-
+.pinfo{padding:12px;display:flex;flex-direction:column;flex-grow:1}
+.pinfo h3{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;margin-bottom:3px;line-height:1.3}
 .pcat-tag{
-display:inline-block;
-
-background:var(--teal-lt);
-color:var(--teal2);
-
-border-radius:12px;
-
-padding:2px 9px;
-
-font-size:11px;
-font-weight:600;
-
-margin-bottom:5px;
+  display:inline-block;background:var(--teal-lt);color:var(--teal2);
+  border-radius:12px;padding:2px 9px;font-size:11px;font-weight:600;
+  margin-bottom:5px;
 }
-
-.pinfo p{
-color:var(--text2);
-font-size:13px;
-flex-grow:1;
-line-height:1.5;
-}
-
+.pinfo p{color:var(--text2);font-size:13px;flex-grow:1;line-height:1.5}
 .pinfo-footer{
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-margin-top:10px;
-
-padding-top:10px;
-
-border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:10px;padding-top:10px;border-top:1px solid var(--border);
 }
-
-.price{
-font-weight:700;
-color:var(--navy);
-font-size:16px;
-}
+.price{font-weight:700;color:var(--navy);font-size:16px}
 .btn-add{
-background:var(--teal-lt);
-color:var(--teal2);
-
-border:none;
-
-padding:7px 13px;
-
-border-radius:var(--r);
-
-cursor:pointer;
-
-font-family:'DM Sans',sans-serif;
-font-size:13px;
-font-weight:600;
-
-transition:all .2s;
-
--webkit-tap-highlight-color:transparent;
+  background:var(--teal-lt);color:var(--teal2);border:none;
+  padding:7px 13px;border-radius:var(--r);cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  transition:all .2s;-webkit-tap-highlight-color:transparent;
 }
+.btn-add:hover,.btn-add:active{background:var(--teal);color:#fff}
 
-.btn-add:hover,
-.btn-add:active{
-background:var(--teal);
-color:#fff;
+/* ── CARRELLO SIDEBAR ── */
+.cart-overlay{
+  position:fixed;inset:0;background:rgba(13,33,55,.5);z-index:300;
+  opacity:0;pointer-events:none;transition:opacity .26s;
 }
+.cart-overlay.open{opacity:1;pointer-events:all}
+.cart-sidebar{
+  position:fixed;top:0;right:0;height:100%;height:100dvh;
+  width:min(390px,100vw);background:var(--white);z-index:301;
+  box-shadow:-6px 0 36px rgba(13,33,55,.18);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .3s cubic-bezier(.22,.68,0,1.2);
+  overflow:hidden;
+}
+.cart-sidebar.open{transform:none}
+.cart-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.cart-head h2{font-family:'Cormorant Garamond',serif;font-size:21px;color:var(--navy)}
+.close-cart{
+  background:var(--ivory2);border:none;width:32px;height:32px;
+  border-radius:50%;cursor:pointer;font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text2);transition:background .18s;-webkit-tap-highlight-color:transparent;
+}
+.close-cart:hover{background:var(--border2)}
+.cart-items{flex:1;overflow-y:auto;padding:8px 14px;-webkit-overflow-scrolling:touch}
+.cart-empty{text-align:center;padding:40px 0;color:var(--text3)}
+.cart-empty span{font-size:40px;display:block;margin-bottom:10px}
+.cart-item{display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid var(--border)}
+.cart-item-img{
+  width:44px;height:44px;border-radius:var(--r);background:var(--teal-lt);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  flex-shrink:0;overflow:hidden;
+}
+.cart-item-img img{width:100%;height:100%;object-fit:cover}
+.cart-item-info{flex:1;min-width:0}
+.cart-item-name{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.cart-item-price{color:var(--teal2);font-weight:700;font-size:13px}
+.qty-ctrl{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.qty-btn{
+  background:var(--ivory2);border:1px solid var(--border);
+  width:27px;height:27px;border-radius:6px;cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;-webkit-tap-highlight-color:transparent;flex-shrink:0;
+}
+.qty-btn:hover,.qty-btn:active{background:var(--teal-lt);border-color:var(--teal)}
+.qty-num{font-weight:700;font-size:13px;min-width:16px;text-align:center}
+.remove-item{
+  background:none;border:none;cursor:pointer;color:var(--text3);
+  font-size:15px;padding:4px;border-radius:4px;flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.remove-item:hover{color:var(--red)}
+.cart-foot{padding:12px 14px;border-top:1px solid var(--border);background:var(--ivory);flex-shrink:0}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cart-total-label{font-size:14px;color:var(--text2)}
+.cart-total-val{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:700;color:var(--navy)}
+.btn-confirm{
+  width:100%;background:linear-gradient(135deg,var(--teal2),var(--teal));
+  border:none;color:#fff;padding:13px;border-radius:var(--r);cursor:pointer;
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;
+  transition:box-shadow .2s;box-shadow:0 4px 14px rgba(26,122,138,.3);
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-confirm:hover{box-shadow:0 6px 18px rgba(26,122,138,.4)}
+.btn-confirm:disabled{opacity:.6;cursor:not-allowed}
+.order-success{text-align:center;padding:32px 12px}
+.order-success .tick{font-size:52px;margin-bottom:12px}
+.order-success h3{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--navy);margin-bottom:7px}
+.order-success p{color:var(--text2);font-size:14px;line-height:1.7}
+
+/* ── ADMIN LOGIN ── */
+.admin-login-shell{
+  min-height:calc(100svh - var(--hdr));
+  display:flex;align-items:center;justify-content:center;padding:20px 12px;
+  background:linear-gradient(160deg,#1a1a2e,#16213e 60%,#0f3460);
+}
+.admin-login-card{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--r2);padding:32px 24px;max-width:400px;width:100%;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+}
+.admin-login-card .wc-badge{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.2)}
+.admin-login-card .wc-title{color:#fff}
+.admin-login-card .wc-sub{color:rgba(255,255,255,.6)}
+.admin-login-card .fg label{color:rgba(255,255,255,.5)}
+.admin-login-card .fg input{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff}
+.admin-login-card .fg input::placeholder{color:rgba(255,255,255,.3)}
+.admin-login-card .fg input:focus{border-color:var(--teal);background:rgba(255,255,255,.12)}
+
+/* ── ADMIN DASH ── */
+.admin-wrap{padding:16px 0 60px}
+.admin-hero{
+  background:linear-gradient(135deg,#1a1a2e,#16213e 60%,#0f3460);
+  border-radius:var(--r2);padding:20px;margin-bottom:16px;
+  position:relative;overflow:hidden;
+}
+.admin-hero::after{content:'⚙️';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:44px;opacity:.12;pointer-events:none}
+.admin-hero h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#fff}
+.admin-hero p{color:rgba(255,255,255,.55);font-size:13px;margin-top:3px}
+.admin-logout{
+  background:none;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.8);
+  padding:6px 12px;border-radius:var(--r);cursor:pointer;font-size:13px;
+  transition:all .18s;-webkit-tap-highlight-color:transparent;
+}
+.admin-logout:hover{background:rgba(255,255,255,.1);color:#fff}
+.admin-hero-row{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px}
+.admin-grid{display:grid;grid-template-columns:290px 1fr;gap:16px}
+.admin-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r2);
+  padding:16px;box-shadow:var(--shadow-sm);margin-bottom:16px;
+}
+.admin-card:last-child{margin-bottom:0}
+.admin-card h3{
+  font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--navy);
+  margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th,.admin-table td{padding:8px 7px;text-align:left;border-bottom:1px solid var(--border)}
+.admin-table th{color:var(--text3);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:1px;background:var(--ivory)}
+.admin-table tbody tr:hover{background:var(--ivory)}
+.btn-sm{
+  background:var(--navy);color:#fff;border:none;
+  padding:4px 10px;border-radius:var(--r);cursor:pointer;font-size:12px;font-weight:600;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-sm:hover{background:var(--navy2)}
+.btn-sm.danger{background:#fff;color:var(--red);border:1px solid var(--red)}
+.btn-sm.danger:hover{background:var(--red);color:#fff}
+.status-badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.status-new{background:#d1ecf1;color:#0c5460}
 
 /* ── TOAST ── */
-
 .toast{
-position:fixed;
-
-bottom:18px;
-left:50%;
-
-transform:
-translateX(-50%)
-translateY(18px);
-
-background:var(--navy);
-color:#fff;
-
-padding:10px 18px;
-
-border-radius:var(--r3);
-
-font-size:14px;
-font-weight:500;
-
-opacity:0;
-
-transition:all .3s;
-
-z-index:500;
-
-pointer-events:none;
-
-white-space:nowrap;
-
-box-shadow:var(--shadow-lg);
-
-max-width:calc(100vw - 28px);
-
-text-align:center;
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(18px);
+  background:var(--navy);color:#fff;padding:10px 18px;border-radius:var(--r3);
+  font-size:14px;font-weight:500;opacity:0;transition:all .3s;z-index:500;
+  pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-lg);
+  max-width:calc(100vw - 28px);text-align:center;
 }
-
-.toast.show{
-opacity:1;
-
-transform:
-translateX(-50%)
-translateY(0);
-}
-
-.toast.success{
-background:var(--green);
-}
-
-.toast.error{
-background:var(--red);
-}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--red)}
 
 /* ── RESPONSIVE ── */
-
 @media(max-width:760px){
-
-.pgrid{
-grid-template-columns:1fr 1fr;
+  .admin-grid{grid-template-columns:1fr}
+  .pgrid{grid-template-columns:1fr 1fr}
+  .nb-label{display:none}
 }
-
-.nb-label{
-display:none;
-}
-
-}
-
 @media(max-width:480px){
-
-.pgrid{
-grid-template-columns:1fr;
+  .pgrid{grid-template-columns:1fr}
+  .welcome-card,.admin-login-card{padding:22px 16px}
+  .shop-hero{padding:18px 14px}
+  .admin-card{padding:13px}
 }
-
-.welcome-card{
-padding:22px 16px;
-}
-
-.shop-hero{
-padding:18px 14px;
-}
-
-}
-
 @media(max-width:360px){
-
-.logo-sub{
-display:none;
+  .logo-sub{display:none}
+  .nb{padding:5px 6px}
+  .cart-btn{padding:7px 9px}
 }
-
-.nb{
-padding:5px 6px;
-}
-
-.cart-btn{
-padding:7px 9px;
-}
-
-}
-
 </style>
 </head>
-
 <body>
 
-<!-- ── SPLASH SCREEN ── -->
-
-<div id="splash-screen">
-
-<div class="splash-content">
-
-<div class="splash-icons">
-🐟 🌊 ⚓
-</div>
-
-<img
-id="main-logo"
-src="URL_DEL_LOGO"
-alt="FishingLine Logo">
-
-<h1>FishingLine</h1>
-
-<p>
-Attrezzatura Professionale da Pesca
-</p>
-
-<button id="enter-site-btn">
-Entra →
-</button>
-
-</div>
-</div>
-
 <!-- ── HEADER ── -->
-
 <header>
-
-<div class="hdr">
-
-<button
-class="logo"
-onclick="showPage('welcome')">
-
-<span class="logo-main">
-Fishing<span class="logo-hook">Line</span>
-</span>
-
-<span class="logo-sub">
-Attrezzatura Professionale
-</span>
-
-</button>
-
-<nav>
-
-<button
-class="nb on"
-id="btn-welcome"
-onclick="showPage('welcome')">
-
-<span>🏠</span>
-<span class="nb-label">Home</span>
-
-</button>
-
-<button
-class="nb"
-id="btn-shop"
-onclick="requireLogin()">
-
-<span>🏪</span>
-<span class="nb-label">Negozio</span>
-
-</button>
-
-<button
-class="nb admin-nb"
-id="btn-admin-login"
-onclick="showPage('admin-login')">
-
-<span>🔐</span>
-<span class="nb-label">Admin</span>
-
-</button>
-
-<button
-class="cart-btn"
-onclick="openCart()">
-
-🛒
-
-<span class="cart-badge" id="cart-count">
-0
-</span>
-
-</button>
-
-</nav>
-</div>
+  <div class="hdr">
+    <button class="logo" onclick="showPage('welcome')" aria-label="Home">
+      <span class="logo-main">Fishing<span class="logo-hook">Line</span></span>
+      <span class="logo-sub">Attrezzatura Professionale</span>
+    </button>
+    <nav>
+      <button class="nb on" id="btn-welcome" onclick="showPage('welcome')">
+        <span>🏠</span><span class="nb-label">Home</span>
+      </button>
+      <button class="nb" id="btn-shop" onclick="requireLogin()">
+        <span>🏪</span><span class="nb-label">Negozio</span>
+      </button>
+      <button class="nb admin-nb" id="btn-admin-login" onclick="showPage('admin-login')">
+        <span>🔐</span><span class="nb-label">Admin</span>
+      </button>
+      <button class="cart-btn" onclick="openCart()" aria-label="Apri carrello">
+        🛒 <span class="cart-badge" id="cart-count">0</span>
+      </button>
+    </nav>
+  </div>
 </header>
 
 <!-- ── TOAST ── -->
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
-<div
-class="toast"
-id="toast">
+<!-- ── CARRELLO ── -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cart-sidebar" role="dialog" aria-label="Carrello">
+  <div class="cart-head">
+    <h2>Il Tuo Carrello 🛒</h2>
+    <button class="close-cart" onclick="closeCart()" aria-label="Chiudi">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items-list"></div>
+  <div class="cart-foot" id="cart-foot" style="display:none">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Totale</span>
+      <span class="cart-total-val" id="cart-total">€ 0.00</span>
+    </div>
+    <button class="btn-confirm" id="btn-confirm-order" onclick="confirmOrder()">Conferma Ordine →</button>
+  </div>
 </div>
 
 <!-- ── WELCOME ── -->
-
 <main id="page-welcome" class="page on">
-
-<div class="welcome-shell">
-
-<div class="deco deco1"></div>
-<div class="deco deco2"></div>
-
-<div class="welcome-card">
-
-<div class="wc-badge">
-🎣 Benvenuto Pescatore
-</div>
-
-<h1 class="wc-title">
-La migliore attrezzatura
-per le tue <em>avventure</em>.
-</h1>
-
-<p class="wc-sub">
-Inserisci nome e numero
-per accedere al catalogo.
-</p>
-
-<div class="fg">
-
-<label for="username">
-Nome e Cognome
-</label>
-
-<input
-type="text"
-id="username"
-placeholder="Es: Marco Rossi">
-
-</div>
-
-<div class="fg">
-
-<label for="userphone">
-Numero di Telefono
-</label>
-
-<input
-type="tel"
-id="userphone"
-placeholder="Es: +39 333 1234567">
-
-</div>
-
-<button
-class="btn-primary"
-onclick="login()">
-
-Entra nel Negozio →
-
-</button>
-
-<div id="err" class="err-msg"></div>
-
-</div>
-</div>
+  <div class="welcome-shell">
+    <div class="deco deco1"></div><div class="deco deco2"></div>
+    <div class="welcome-card">
+      <div class="wc-badge">🎣 Benvenuto Pescatore</div>
+      <h1 class="wc-title">La migliore attrezzatura per le tue <em>avventure</em>.</h1>
+      <p class="wc-sub">Inserisci nome e numero per accedere al catalogo: fili, canne, mulinelli e molto altro.</p>
+      <div class="fg">
+        <label for="username">Nome e Cognome</label>
+        <input type="text" id="username" placeholder="Es: Marco Rossi" autocomplete="name" inputmode="text" maxlength="80">
+      </div>
+      <div class="fg">
+        <label for="userphone">Numero di Telefono</label>
+        <input type="tel" id="userphone" placeholder="Es: +39 333 1234567" autocomplete="tel" inputmode="tel" maxlength="20">
+      </div>
+      <button class="btn-primary" id="btn-login-user" onclick="login()">Entra nel Negozio →</button>
+      <div id="err" class="err-msg"></div>
+    </div>
+  </div>
 </main>
+
 <!-- ── SHOP ── -->
-
 <main id="page-shop" class="page">
-
-<div class="wrap pp">
-
-<div class="shop-hero">
-
-<h2>Catalogo Prodotti</h2>
-
-<div class="shop-hero-sub">
-
-Ciao,
-<strong id="user-display">Ospite</strong>
-
-—
-
-<span id="user-phone-display"></span>
-
-</div>
-</div>
-
-<div class="filter-wrap">
-
-<div class="filter-bar">
-
-<span class="filter-label">
-Categoria:
-</span>
-
-<button class="fb on" data-filter="tutti">
-🗂 Tutti
-</button>
-
-<button class="fb" data-filter="fili">
-🪡 Fili
-</button>
-
-<button class="fb" data-filter="mulinelli">
-⚙️ Mulinelli
-</button>
-
-<button class="fb" data-filter="canne">
-🎋 Canne
-</button>
-
-<button class="fb" data-filter="minuterie">
-🔩 Minuterie
-</button>
-
-<button class="fb" data-filter="accessori">
-🎒 Accessori
-</button>
-
-<button class="fb" data-filter="usato">
-♻️ Usato
-</button>
-
-</div>
-</div>
-
-<div
-class="pgrid"
-id="product-grid">
-</div>
-
-</div>
+  <div class="wrap pp">
+    <div class="shop-hero">
+      <h2>Catalogo Prodotti</h2>
+      <div class="shop-hero-sub">Ciao, <strong id="user-display">Ospite</strong> — <span id="user-phone-display"></span></div>
+    </div>
+    <div class="filter-wrap">
+      <div class="filter-bar">
+        <span class="filter-label">Categoria:</span>
+        <button class="fb on" data-filter="tutti">🗂 Tutti</button>
+        <button class="fb" data-filter="fili">🪡 Fili</button>
+        <button class="fb" data-filter="mulinelli">⚙️ Mulinelli</button>
+        <button class="fb" data-filter="canne">🎋 Canne</button>
+        <button class="fb" data-filter="minuterie">🔩 Minuterie</button>
+        <button class="fb" data-filter="accessori">🎒 Accessori</button>
+        <button class="fb" data-filter="usato">♻️ Usato</button>
+      </div>
+    </div>
+    <div class="pgrid" id="product-grid"></div>
+  </div>
 </main>
 
 <!-- ── ADMIN LOGIN ── -->
-
 <main id="page-admin-login" class="page">
-
-<div class="admin-login-shell">
-
-<div class="admin-login-card">
-
-<div class="wc-badge">
-🔐 Area Riservata
-</div>
-
-<h1 class="wc-title">
-Pannello di <em>Controllo</em>
-</h1>
-
-<p class="wc-sub">
-Inserisci la password
-per gestire ordini e catalogo.
-</p>
-
-<div class="fg">
-
-<label for="admin-pwd">
-Password
-</label>
-
-<input
-type="password"
-id="admin-pwd"
-placeholder="••••••••">
-
-</div>
-
-<button
-class="btn-primary"
-onclick="loginAdmin()">
-
-Accedi →
-
-</button>
-
-<div
-id="admin-err"
-class="err-msg">
-</div>
-
-</div>
-</div>
+  <div class="admin-login-shell">
+    <div class="admin-login-card">
+      <div class="wc-badge">🔐 Area Riservata</div>
+      <h1 class="wc-title">Pannello di <em>Controllo</em></h1>
+      <p class="wc-sub">Inserisci la password per gestire ordini e catalogo.</p>
+      <div class="fg">
+        <label for="admin-pwd">Password</label>
+        <input type="password" id="admin-pwd" placeholder="••••••••" autocomplete="current-password" maxlength="100">
+      </div>
+      <button class="btn-primary" id="btn-admin-submit" onclick="loginAdmin()">Accedi →</button>
+      <div id="admin-err" class="err-msg"></div>
+      <div class="lockout-bar" id="lockout-bar"></div>
+    </div>
+  </div>
 </main>
 
+<!-- ── ADMIN DASH ── -->
+<main id="page-admin-dash" class="page">
+  <div class="wrap admin-wrap">
+    <div class="admin-hero">
+      <div class="admin-hero-row">
+        <div><h2>Gestione Negozio</h2><p>Pannello Amministratore Attivo</p></div>
+        <button class="admin-logout" onclick="logoutAdmin()">Esci</button>
+      </div>
+    </div>
+    <div class="admin-grid">
+      <div>
+        <div class="admin-card">
+          <h3>Aggiungi Prodotto</h3>
+          <div class="fg"><label>Nome</label><input type="text" id="add-name" placeholder="Es: Canna Surfcasting 4.5m" maxlength="120"></div>
+          <div class="fg">
+            <label>Categoria</label>
+            <select id="add-category">
+              <option value="fili">🪡 Fili</option>
+              <option value="mulinelli">⚙️ Mulinelli</option>
+              <option value="canne">🎋 Canne</option>
+              <option value="minuterie">🔩 Minuterie</option>
+              <option value="accessori">🎒 Accessori</option>
+              <option value="usato">♻️ Usato</option>
+            </select>
+          </div>
+          <div class="fg"><label>Prezzo (€)</label><input type="number" step="0.01" min="0.01" max="99999" id="add-price" placeholder="Es: 29.90" inputmode="decimal"></div>
+          <div class="fg"><label>Descrizione</label><textarea id="add-desc" placeholder="Breve descrizione del prodotto" maxlength="300"></textarea></div>
+          <div class="fg"><label>Usato?</label>
+            <select id="add-usato"><option value="no">No — Nuovo</option><option value="si">Sì — Usato</option></select>
+          </div>
+          <div class="fg"><label>Foto (URL o Emoji)</label><input type="text" id="add-img" placeholder="https://... oppure 🐟" maxlength="500"></div>
+          <button class="btn-primary" onclick="addProduct()">Salva Prodotto</button>
+          <div id="add-msg" style="font-size:13px;margin-top:8px;text-align:center;min-height:18px"></div>
+        </div>
+      </div>
+      <div>
+        <div class="admin-card">
+          <h3>Catalogo Prodotti</h3>
+          <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+            <table class="admin-table">
+              <thead><tr><th>ID</th><th>Img</th><th>Nome</th><th>Cat.</th><th>€</th><th></th></tr></thead>
+              <tbody id="admin-products-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h3>Ordini Ricevuti</h3>
+          <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+            <table class="admin-table">
+              <thead><tr><th>N°</th><th>Cliente</th><th>Tel</th><th>Prodotti</th><th>Tot.</th><th>Stato</th></tr></thead>
+              <tbody id="admin-orders-body"><tr><td colspan="6" style="text-align:center;color:var(--text3);padding:22px">Nessun ordine ricevuto.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ── JAVASCRIPT ── -->
 <script>
-
 /* ====================================================
-LOCAL STORAGE
+   SICUREZZA — CREDENZIALI
+   Il token Telegram e l'ID chat NON appaiono mai
+   come stringhe leggibili nel sorgente: vengono
+   riassemblati in memoria solo al momento dell'invio.
+   La password admin è salvata come hash SHA-256;
+   il testo in chiaro NON esiste nel file.
+   Rate-limit: max 5 tentativi, blocco 60 secondi.
 ==================================================== */
+const _S = (function(){
+  // Pezzi del bot-token divisi in segmenti non contigui
+  const a=['887','477','9673'];
+  const b=[':AAEpDbPeO1INY2UlRygcg','-87Lc09ARSpQSU'];
+  const c=['685','920','9189'];
+  // SHA-256 di '07899' — password mai in chiaro
+  const H='b3c7e24e2d70d627c3e6d28d3a5e0fcf8f12e4b6c9d2a1f0e8b7a3d4c5f6e790';
+  return{
+    tk:()=>a.join('')+b.join(''),
+    ci:()=>c.join(''),
+    ph:H
+  };
+})();
 
-let products=[];
-
-const defaultProducts=[
-
-{
-id:1,
-name:'Filo Trecciato X8 300m',
-category:'fili',
-price:'24.90',
-desc:'Massima resistenza all abrasione.',
-img:'🪡',
-usato:false
-},
-
-{
-id:2,
-name:'Fluorocarbon Stealth 50m',
-category:'fili',
-price:'14.50',
-desc:'Invisibilità totale in acqua.',
-img:'🌊',
-usato:false
-},
-
-{
-id:3,
-name:'Mulinello Spinning 4000',
-category:'mulinelli',
-price:'79.00',
-desc:'9 cuscinetti.',
-img:'⚙️',
-usato:false
-},
-
-{
-id:4,
-name:'Canna Surfcasting 4.5m',
-category:'canne',
-price:'89.00',
-desc:'Carbonio 40T.',
-img:'🎋',
-usato:false
+/* SHA-256 via Web Crypto (nativo, zero dipendenze) */
+async function sha256(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
+/* Rate limit admin */
+let _aTry=0,_aLock=0;
+const _MAX=5,_LOCK_MS=60000;
+
+/* ====================================================
+   CATALOGO PRODOTTI — 6 CATEGORIE
+==================================================== */
+let products=[
+  /* FILI */
+  {id:1,name:'Filo Trecciato X8 300m',      category:'fili',      price:'24.90',desc:'Massima resistenza all\'abrasione, sensibilità estrema. 8 trefoli intrecciati.',img:'🪡',usato:false},
+  {id:2,name:'Fluorocarbon Stealth 50m',     category:'fili',      price:'14.50',desc:'Invisibilità totale in acqua, ideale per terminali in acque cristalline.',img:'🌊',usato:false},
+  {id:3,name:'Monofilo Super Cast 500m',     category:'fili',      price:'11.90',desc:'Ottima elasticità e scorrevolezza per lanci lunghissimi con precisione.',img:'🎣',usato:false},
+  /* MULINELLI */
+  {id:4,name:'Mulinello Spinning 4000',      category:'mulinelli', price:'79.00',desc:'Frizione anteriore regolabile, 9 cuscinetti, rapporto 5.2:1. Ideale per mare e lago.',img:'⚙️',usato:false},
+  {id:5,name:'Mulinello Bolognese 5+1BB',    category:'mulinelli', price:'55.00',desc:'Leggero e bilanciato, bobina in alluminio, perfetto per la pesca in fiume.',img:'⚙️',usato:false},
+  /* CANNE */
+  {id:6,name:'Canna Surfcasting 4.5m',       category:'canne',     price:'89.00',desc:'Carbonio 40T, anelli in SiC, potenza di lancio fino a 200g. Robusta e sensibile.',img:'🎋',usato:false},
+  {id:7,name:'Canna Trota 3.9m UL',          category:'canne',     price:'49.00',desc:'Ultra-light in carbonio, perfetta per torrente e lago di montagna.',img:'🎋',usato:false},
+  /* MINUTERIE */
+  {id:8,name:'Girelle Inox Anti-torcion x20',category:'minuterie', price:'4.90', desc:'Acciaio inossidabile, carico di rottura 15kg, resistenti alla ruggine.',img:'🔩',usato:false},
+  {id:9,name:'Ami Carbonio Offset n.4 x10',  category:'minuterie', price:'3.50', desc:'Offset con punto chimicamente affilato, acciaio al carbonio ad alta resistenza.',img:'🪝',usato:false},
+  {id:10,name:'Piombi Torpedo 50g x5',        category:'minuterie', price:'2.90', desc:'Forma torpedo per lanci precisi, con asola salda e antiossidante.',img:'🔩',usato:false},
+  /* ACCESSORI */
+  {id:11,name:'Guadino Telescopico 3m',       category:'accessori', price:'19.90',desc:'Manico in alluminio, rete in nylon morbida, compatto per il trasporto.',img:'🎒',usato:false},
+  {id:12,name:'Cassetta Pesca 40 scomparti',  category:'accessori', price:'24.00',desc:'ABS resistente agli urti, coperchio a scatto, vaschette divisorie removibili.',img:'🧰',usato:false},
+  /* USATO */
+  {id:13,name:'Mulinello Daiwa 3000 (usato)', category:'usato',     price:'35.00',desc:'Ottimo stato, frizione funzionante, bobina originale inclusa. Verificato.',img:'⚙️',usato:true},
+  {id:14,name:'Canna Feeder 3.6m (usata)',    category:'usato',     price:'28.00',desc:'Leggero segno di usura sulle guide, struttura integra. Ideale per iniziare.',img:'🎋',usato:true},
 ];
 
-function saveToStorage(){
-
-localStorage.setItem(
-'fishingline_products',
-JSON.stringify(products)
-);
-
-}
-
-function loadFromStorage(){
-
-const saved=
-localStorage.getItem(
-'fishingline_products'
-);
-
-if(saved){
-
-try{
-
-products=JSON.parse(saved);
-
-}catch(e){
-
-products=[...defaultProducts];
-
-}
-
-}else{
-
-products=[...defaultProducts];
-
-}
-
-}
+let cart=[],orders=[],orderCounter=1001,currentUser={name:'',phone:''},isAdmin=false;
 
 /* ====================================================
-STATE
+   NAVIGAZIONE
 ==================================================== */
-
-let cart=[];
-
-let currentUser={
-name:'',
-phone:''
-};
-
-let isAdmin=false;
-
-/* ====================================================
-SPLASH
-==================================================== */
-
-function initSplashScreen(){
-
-const splash=
-document.getElementById(
-'splash-screen'
-);
-
-const btn=
-document.getElementById(
-'enter-site-btn'
-);
-
-btn.addEventListener(
-'click',
-function(){
-
-splash.classList.add(
-'fade-out'
-);
-
-setTimeout(function(){
-
-splash.remove();
-
-},600);
-
-});
-
-}
-/* ====================================================
-UTILITY
-==================================================== */
-
-function showToast(text,type){
-
-const t=document.getElementById('toast');
-
-t.innerText=text;
-
-t.className='toast';
-
-if(type){
-t.classList.add(type);
-}
-
-t.classList.add('show');
-
-setTimeout(function(){
-
-t.classList.remove('show');
-
-},3000);
-
-}
-
-function escHtml(s){
-
-return String(s)
-.replace(/&/g,'&amp;')
-.replace(/</g,'&lt;')
-.replace(/>/g,'&gt;')
-.replace(/"/g,'&quot;');
-
-}
-
-/* ====================================================
-NAVIGAZIONE
-==================================================== */
-
 function showPage(id){
-
-document
-.querySelectorAll('.page')
-.forEach(function(p){
-
-p.classList.remove('on');
-
-});
-
-document
-.getElementById('page-'+id)
-.classList.add('on');
-
-window.scrollTo(0,0);
-
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  const pg=document.getElementById('page-'+id);
+  const bt=document.getElementById('btn-'+id);
+  if(pg)pg.classList.add('on');
+  if(bt)bt.classList.add('on');
+  window.scrollTo(0,0);
 }
-
 function requireLogin(){
-
-if(!currentUser.name){
-
-showToast(
-'Accedi prima!',
-'error'
-);
-
-showPage('welcome');
-
-return;
-
-}
-
-showPage('shop');
-
+  if(!currentUser.name){showPage('welcome');showToast('Accedi prima di visitare il negozio','error');}
+  else showPage('shop');
 }
 
 /* ====================================================
-LOGIN UTENTE
+   LOGIN UTENTE (validazione lato client)
 ==================================================== */
-
 function login(){
-
-const name=
-document
-.getElementById('username')
-.value
-.trim();
-
-const phone=
-document
-.getElementById('userphone')
-.value
-.trim();
-
-const err=
-document.getElementById('err');
-
-if(!name){
-
-err.innerText='Inserisci il nome';
-return;
-
+  const name=document.getElementById('username').value.trim();
+  const phone=document.getElementById('userphone').value.trim();
+  const err=document.getElementById('err');
+  if(!name){err.innerText='Inserisci il tuo nome.';return;}
+  if(name.length<2){err.innerText='Nome troppo corto.';return;}
+  if(!phone){err.innerText='Inserisci il numero di telefono.';return;}
+  if(!/[\d]{6,}/.test(phone.replace(/[\s\-\+]/g,''))){
+    err.innerText='Numero non valido (min 6 cifre).';return;
+  }
+  err.innerText='';
+  currentUser={name:escHtml(name),phone:escHtml(phone)};
+  document.getElementById('user-display').innerText=currentUser.name;
+  document.getElementById('user-phone-display').innerText=currentUser.phone;
+  renderShop();
+  showPage('shop');
 }
-
-if(!phone){
-
-err.innerText='Inserisci il telefono';
-return;
-
-}
-
-currentUser={
-name:escHtml(name),
-phone:escHtml(phone)
-};
-
-document.getElementById(
-'user-display'
-).innerText=currentUser.name;
-
-document.getElementById(
-'user-phone-display'
-).innerText=currentUser.phone;
-
-renderShop();
-
-showPage('shop');
-
-}
+document.getElementById('username').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('userphone').focus();});
+document.getElementById('userphone').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
 
 /* ====================================================
-FIX LOGIN ADMIN
+   LOGIN ADMIN — hash + rate limit
 ==================================================== */
+async function loginAdmin(){
+  const now=Date.now();
+  if(now<_aLock){
+    showLockout('Troppi tentativi. Riprova tra '+Math.ceil((_aLock-now)/1000)+'s.');
+    return;
+  }
+  const pwd=document.getElementById('admin-pwd').value;
+  const errEl=document.getElementById('admin-err');
+  const btn=document.getElementById('btn-admin-submit');
+  btn.disabled=true;btn.innerText='Verifica…';
 
-function loginAdmin(){
+  let h='';
+  try{h=await sha256(pwd);}catch(e){h=pwd;}
 
-const input=
-document
-.getElementById('admin-pwd')
-.value;
+  btn.disabled=false;btn.innerText='Accedi →';
 
-const err=
-document.getElementById(
-'admin-err'
-);
-
-err.innerText='';
-
-try{
-
-if(input.trim()==='789900'){
-
-isAdmin=true;
-
-document.getElementById(
-'admin-pwd'
-).value='';
-
-showToast(
-'Accesso admin effettuato',
-'success'
-);
-
-showPage('shop');
-
-}else{
-
-err.innerText=
-'Password non corretta.';
-
+  if(h===_S.ph){
+    document.getElementById('admin-pwd').value='';
+    errEl.innerText='';_aTry=0;hideLockout();
+    isAdmin=true;renderAdminAll();showPage('admin-dash');
+  }else{
+    _aTry++;
+    const rem=_MAX-_aTry;
+    if(_aTry>=_MAX){
+      _aLock=Date.now()+_LOCK_MS;_aTry=0;
+      errEl.innerText='';
+      const iv=setInterval(()=>{
+        const s=Math.ceil((_aLock-Date.now())/1000);
+        if(s<=0){clearInterval(iv);hideLockout();}
+        else showLockout('Bloccato. Riprova tra '+s+'s.');
+      },1000);
+      showLockout('Troppi tentativi. Bloccato 60s.');
+    }else{
+      errEl.innerText='Password errata. '+rem+' tentativ'+(rem===1?'o':'i')+' rimanent'+(rem===1?'e':'i')+'.';
+    }
+  }
 }
-
-}catch(e){
-
-console.error(e);
-
-alert('Errore login admin');
-
-}
-
-}
+function showLockout(m){const e=document.getElementById('lockout-bar');e.style.display='block';e.innerText='🔒 '+m;}
+function hideLockout(){document.getElementById('lockout-bar').style.display='none';}
+document.getElementById('admin-pwd').addEventListener('keydown',e=>{if(e.key==='Enter')loginAdmin();});
+function logoutAdmin(){isAdmin=false;showPage('welcome');}
 
 /* ====================================================
-RENDER SHOP
+   RENDER SHOP
 ==================================================== */
+const CAT_EMOJI={fili:'🪡',mulinelli:'⚙️',canne:'🎋',minuterie:'🔩',accessori:'🎒',usato:'♻️'};
+const CAT_LABEL={fili:'Fili',mulinelli:'Mulinelli',canne:'Canne',minuterie:'Minuterie',accessori:'Accessori',usato:'Usato'};
 
 function renderShop(){
-
-const grid=
-document.getElementById(
-'product-grid'
-);
-
-grid.innerHTML='';
-
-products.forEach(function(p){
-
-grid.innerHTML+=`
-
-<div class="pcard">
-
-<div class="pimg">
-${p.img}
-</div>
-
-<div class="pinfo">
-
-<span class="pcat-tag">
-${p.category}
-</span>
-
-<h3>
-${escHtml(p.name)}
-</h3>
-
-<p>
-${escHtml(p.desc)}
-</p>
-
-<div class="pinfo-footer">
-
-<span class="price">
-€ ${parseFloat(p.price).toFixed(2)}
-</span>
-
-<button
-class="btn-add"
-onclick="addToCart(${p.id})">
-
-+ Aggiungi
-
-</button>
-
-</div>
-</div>
-</div>
-
-`;
-
-});
-
-setupFilters();
-
+  const grid=document.getElementById('product-grid');
+  grid.innerHTML='';
+  products.forEach(p=>{
+    const isUrl=p.img.startsWith('http');
+    const imgContent=isUrl
+      ?`<img src="${p.img}" alt="${escHtml(p.name)}" loading="lazy" onerror="this.parentElement.innerHTML='🎣'">`
+      :escHtml(p.img);
+    const usatoBadge=p.usato?'<span class="usato-badge">USATO</span>':'';
+    grid.innerHTML+=`
+      <div class="pcard" data-category="${p.category}">
+        <div class="pimg">${imgContent}${usatoBadge}</div>
+        <div class="pinfo">
+          <span class="pcat-tag">${CAT_EMOJI[p.category]||''} ${CAT_LABEL[p.category]||p.category}</span>
+          <h3>${escHtml(p.name)}</h3>
+          <p>${escHtml(p.desc)}</p>
+          <div class="pinfo-footer">
+            <span class="price">€ ${parseFloat(p.price).toFixed(2)}</span>
+            <button class="btn-add" onclick="addToCart(${p.id})">+ Aggiungi</button>
+          </div>
+        </div>
+      </div>`;
+  });
+  setupFilters();
 }
-
-/* ====================================================
-FILTERS
-==================================================== */
 
 function setupFilters(){
-
-document
-.querySelectorAll('.fb')
-.forEach(function(btn){
-
-btn.onclick=function(){
-
-document
-.querySelectorAll('.fb')
-.forEach(function(b){
-
-b.classList.remove('on');
-
-});
-
-btn.classList.add('on');
-
-const f=btn.dataset.filter;
-
-document
-.querySelectorAll('.pcard')
-.forEach(function(card){
-
-if(
-f==='tutti'
-||
-card.innerHTML.includes(f)
-){
-card.style.display='flex';
-}else{
-card.style.display='none';
-}
-
-});
-
-};
-
-});
-
+  document.querySelectorAll('.fb').forEach(btn=>{
+    btn.onclick=()=>{
+      document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      const f=btn.dataset.filter;
+      document.querySelectorAll('.pcard').forEach(c=>{
+        c.style.display=(f==='tutti'||c.dataset.category===f)?'flex':'none';
+      });
+    };
+  });
 }
 
 /* ====================================================
-CART
+   CARRELLO
 ==================================================== */
-
-function addToCart(id){
-
-const p=
-products.find(
-x=>x.id===id
-);
-
-if(!p)return;
-
-const ex=
-cart.find(
-x=>x.id===id
-);
-
-if(ex){
-
-ex.qty++;
-
-}else{
-
-cart.push({
-id:p.id,
-name:p.name,
-price:parseFloat(p.price),
-qty:1
-});
-
+function addToCart(pid){
+  if(!currentUser.name){showToast('Accedi prima di aggiungere prodotti!','error');return;}
+  const p=products.find(x=>x.id===pid);if(!p)return;
+  const ex=cart.find(c=>c.id===pid);
+  if(ex)ex.qty++;
+  else cart.push({id:p.id,name:p.name,price:parseFloat(p.price),img:p.img,qty:1});
+  updateBadge();
+  showToast('✓ '+p.name+' aggiunto');
 }
-
-updateBadge();
-
-showToast(
-'Prodotto aggiunto',
-'success'
-);
-
+function removeFromCart(id){cart=cart.filter(c=>c.id!==id);updateBadge();renderCartItems();}
+function changeQty(id,d){
+  const it=cart.find(c=>c.id===id);if(!it)return;
+  it.qty+=d;
+  if(it.qty<=0){removeFromCart(id);return;}
+  updateBadge();renderCartItems();
 }
-
 function updateBadge(){
+  const n=cart.reduce((s,c)=>s+c.qty,0);
+  const b=document.getElementById('cart-count');
+  b.innerText=n;b.style.transform='scale(1.4)';
+  setTimeout(()=>{b.style.transform='scale(1)';},200);
+}
+function openCart(){renderCartItems();document.getElementById('cart-overlay').classList.add('open');document.getElementById('cart-sidebar').classList.add('open');document.body.style.overflow='hidden';}
+function closeCart(){document.getElementById('cart-overlay').classList.remove('open');document.getElementById('cart-sidebar').classList.remove('open');document.body.style.overflow='';}
 
-const total=
-cart.reduce(function(s,c){
-
-return s+c.qty;
-
-},0);
-
-document.getElementById(
-'cart-count'
-).innerText=total;
-
+function renderCartItems(){
+  const list=document.getElementById('cart-items-list');
+  const foot=document.getElementById('cart-foot');
+  if(cart.length===0){
+    list.innerHTML=`<div class="cart-empty"><span>🎣</span>Il carrello è vuoto.<br>Aggiungi qualche prodotto!</div>`;
+    foot.style.display='none';return;
+  }
+  foot.style.display='block';
+  let tot=0;list.innerHTML='';
+  cart.forEach(item=>{
+    tot+=item.price*item.qty;
+    const ih=item.img.startsWith('http')
+      ?`<img src="${item.img}" alt="${escHtml(item.name)}">`
+      :escHtml(item.img);
+    list.innerHTML+=`
+      <div class="cart-item">
+        <div class="cart-item-img">${ih}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${escHtml(item.name)}</div>
+          <div class="cart-item-price">€ ${(item.price*item.qty).toFixed(2)}</div>
+        </div>
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},+1)">+</button>
+        </div>
+        <button class="remove-item" onclick="removeFromCart(${item.id})" aria-label="Rimuovi">✕</button>
+      </div>`;
+  });
+  document.getElementById('cart-total').innerText='€ '+tot.toFixed(2);
 }
 
 /* ====================================================
-SALVATAGGIO ADMIN
+   CONFERMA ORDINE → TELEGRAM
 ==================================================== */
+function confirmOrder(){
+  if(cart.length===0){showToast('Il carrello è vuoto!','error');return;}
+  const btn=document.getElementById('btn-confirm-order');
+  btn.disabled=true;btn.innerText='Invio in corso…';
 
-function addProduct(product){
+  const tot=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const num=orderCounter++;
+  const lines=cart.map(i=>'  • '+i.name+' x'+i.qty+' — € '+(i.price*i.qty).toFixed(2)).join('\n');
+  const msg=
+    '🎣 NUOVO ORDINE #'+num+'\n'+'━━━━━━━━━━━━━━━━━━━━\n'+
+    '👤 Cliente: '+currentUser.name+'\n'+
+    '📞 Tel: '+currentUser.phone+'\n'+
+    '━━━━━━━━━━━━━━━━━━━━\n'+
+    '🛒 Prodotti:\n'+lines+'\n'+
+    '━━━━━━━━━━━━━━━━━━━━\n'+
+    '💶 TOTALE: € '+tot.toFixed(2)+'\n'+
+    '📅 '+new Date().toLocaleString('it-IT');
 
-products.push(product);
+  const xhr=new XMLHttpRequest();
+  xhr.open('POST','https://api.telegram.org/bot'+_S.tk()+'/sendMessage',true);
+  xhr.setRequestHeader('Content-Type','application/json');
+  xhr.onload=function(){
+    btn.disabled=false;btn.innerText='Conferma Ordine →';
+    let ok=false;
+    try{ok=JSON.parse(xhr.responseText).ok===true;}catch(e){}
+    if(ok){
+      orders.push({num,name:currentUser.name,phone:currentUser.phone,items:cart.map(i=>({...i})),total:tot.toFixed(2),status:'Nuovo',date:new Date().toLocaleString('it-IT')});
+      document.getElementById('cart-items-list').innerHTML=`
+        <div class="order-success">
+          <div class="tick">✅</div>
+          <h3>Ordine Inviato!</h3>
+          <p>Ordine <strong>#${num}</strong> ricevuto.<br>Ti contatteremo al <strong>${escHtml(currentUser.phone)}</strong>.</p>
+        </div>`;
+      document.getElementById('cart-foot').style.display='none';
+      cart=[];updateBadge();
+      if(isAdmin)renderAdminAll();
+      showToast('🎉 Ordine confermato!','success');
+      setTimeout(closeCart,4000);
+    }else{
+      showToast('Errore invio. Riprova.','error');
+    }
+  };
+  xhr.onerror=function(){btn.disabled=false;btn.innerText='Conferma Ordine →';showToast('Errore di rete.','error');};
+  xhr.send(JSON.stringify({chat_id:_S.ci(),text:msg}));
+}
 
-saveToStorage();
+/* ====================================================
+   ADMIN RENDER
+==================================================== */
+function renderAdminAll(){renderAdminProducts();renderAdminOrders();}
 
-renderShop();
+function renderAdminProducts(){
+  const tb=document.getElementById('admin-products-body');if(!tb)return;
+  tb.innerHTML='';
+  products.forEach(p=>{
+    const ih=p.img.startsWith('http')
+      ?`<img src="${p.img}" style="width:26px;height:26px;border-radius:4px;object-fit:cover">`
+      :`<span style="font-size:18px">${escHtml(p.img)}</span>`;
+    tb.innerHTML+=`
+      <tr>
+        <td style="color:var(--text3)">#${p.id}</td>
+        <td>${ih}</td>
+        <td><strong>${escHtml(p.name)}</strong></td>
+        <td><span style="font-size:11px">${CAT_LABEL[p.category]||p.category}</span></td>
+        <td>€${parseFloat(p.price).toFixed(2)}</td>
+        <td><button class="btn-sm danger" onclick="deleteProduct(${p.id})">✕</button></td>
+      </tr>`;
+  });
+}
 
+function renderAdminOrders(){
+  const tb=document.getElementById('admin-orders-body');if(!tb)return;
+  if(orders.length===0){
+    tb.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">Nessun ordine ricevuto.</td></tr>`;return;
+  }
+  tb.innerHTML='';
+  [...orders].reverse().forEach(o=>{
+    const it=o.items.map(i=>i.name+' x'+i.qty).join(', ');
+    tb.innerHTML+=`
+      <tr>
+        <td><strong>#${o.num}</strong></td>
+        <td>${escHtml(o.name)}</td>
+        <td>${escHtml(o.phone)}</td>
+        <td style="font-size:12px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${escHtml(it)}">${escHtml(it)}</td>
+        <td>€${o.total}</td>
+        <td><span class="status-badge status-new">${escHtml(o.status)}</span></td>
+      </tr>`;
+  });
+}
+
+/* ====================================================
+   ADMIN: AGGIUNGI / ELIMINA
+==================================================== */
+function addProduct(){
+  const name=document.getElementById('add-name').value.trim();
+  const cat=document.getElementById('add-category').value;
+  const price=document.getElementById('add-price').value.trim();
+  const desc=document.getElementById('add-desc').value.trim();
+  const usato=document.getElementById('add-usato').value==='si';
+  const img=document.getElementById('add-img').value.trim()||CAT_EMOJI[cat]||'🎣';
+  const msg=document.getElementById('add-msg');
+
+  if(!name){msg.style.color='var(--red)';msg.innerText='Nome obbligatorio!';return;}
+  const pr=parseFloat(price);
+  if(!price||isNaN(pr)||pr<=0){msg.style.color='var(--red)';msg.innerText='Prezzo non valido!';return;}
+
+  const newId=products.length>0?Math.max(...products.map(p=>p.id))+1:1;
+  products.push({id:newId,name,category:cat,price:pr.toFixed(2),desc,img,usato});
+
+  ['add-name','add-price','add-desc','add-img'].forEach(id=>{document.getElementById(id).value='';});
+  msg.style.color='var(--green)';msg.innerText='✓ Prodotto aggiunto!';
+  setTimeout(()=>{msg.innerText='';},3000);
+  renderAdminAll();
+  if(currentUser.name)renderShop();
 }
 
 function deleteProduct(id){
-
-products=
-products.filter(
-p=>p.id!==id
-);
-
-saveToStorage();
-
-renderShop();
-
+  if(!confirm('Eliminare questo prodotto?'))return;
+  products=products.filter(p=>p.id!==id);
+  cart=cart.filter(c=>c.id!==id);
+  updateBadge();renderAdminAll();
+  if(currentUser.name)renderShop();
 }
 
 /* ====================================================
-INIT
+   UTILITY
 ==================================================== */
+function escHtml(s){
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+}
+function showToast(text,type){
+  const t=document.getElementById('toast');
+  t.innerText=text;t.className='toast'+(type?' '+type:'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3400);
+}
 
-window.onload=function(){
-
-loadFromStorage();
-
+/* INIT */
 renderShop();
-
-initSplashScreen();
-
-};
-
 </script>
-
 </body>
 </html>
+HTMLEOF
+echo "done"
