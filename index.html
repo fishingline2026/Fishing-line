@@ -63,7 +63,6 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 /* SHOP */
 .pp{padding:36px 0 72px}
 .shop-hero{background:linear-gradient(135deg,var(--navy),var(--navy2) 60%,var(--teal2));border-radius:var(--r2);padding:36px 40px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;position:relative;overflow:hidden}
-.shop-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(26,122,138,.3),transparent 70%);border-radius:50%}
 .shop-hero h2{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:#fff}
 #greeting{font-size:14px;color:rgba(255,255,255,.75);margin-top:5px}
 #greeting strong{color:#fff}
@@ -77,4 +76,114 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 /* PRODUCT CARD */
 .pcard{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .22s;box-shadow:var(--shadow-sm)}
 .pcard:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--teal-mid)}
-.pimg{background:linear-gradient(135deg,var(--teal-lt),#d8eef2);height:180
+.pimg{background:linear-gradient(135deg,var(--teal-lt),#d8eef2);height:180px;position:relative} /* Fixato l'errore qui */
+.pinfo{padding:20px}
+.pinfo h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:5px}
+.pinfo p{color:var(--text2);font-size:14px}
+</style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="wrap hdr">
+      <button class="logo" onclick="showPage('welcome')">
+        <span class="logo-main">Fishing<span class="logo-hook">Line</span></span>
+        <span class="logo-sub">Attrezzatura Professionale</span>
+      </button>
+      <nav>
+        <button class="nb on" id="btn-welcome" onclick="showPage('welcome')">Home</button>
+        <button class="nb" id="btn-shop" onclick="showPage('shop')">Negozio</button>
+        <button class="cart-btn">
+          <span>Carrello</span>
+          <span class="cart-badge">0</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGINA ACCESSO / WELCOME -->
+  <main id="page-welcome" class="page on">
+    <div class="welcome-shell">
+      <div class="deco deco1"></div>
+      <div class="deco deco2"></div>
+      <div class="welcome-card">
+        <div class="wc-badge">Benvenuto Pescatore</div>
+        <h1 class="wc-title">La migliore linea per le tue <em>sfide</em>.</h1>
+        <p class="wc-sub">Accedi per esplorare il catalogo di lenze, fili trecciati e accessori ad alta resistenza.</p>
+        
+        <div class="fg">
+          <label for="username">Nome Utente</label>
+          <input type="text" id="username" placeholder="Inserisci il tuo nome">
+        </div>
+        <button class="btn-primary" onclick="login()">Entra nel Negozio</button>
+        <div id="err" class="err-msg"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- PAGINA SHOP (Inizialmente nascosta) -->
+  <main id="page-shop" class="page">
+    <div class="wrap pp">
+      <div class="shop-hero">
+        <div>
+          <h2>Catalogo Prodotti</h2>
+          <div id="greeting">Pronto per la pesca, <strong id="user-display">Ospite</strong>?</div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <span class="filter-label">Filtra per:</span>
+        <button class="fb on">Tutti</button>
+        <button class="fb">Trecciati</button>
+        <button class="fb">Monofilo</button>
+        <button class="fb">Fluorocarbon</button>
+      </div>
+
+      <div class="pgrid">
+        <!-- Prodotto Esempio 1 -->
+        <div class="pcard">
+          <div class="pimg"></div>
+          <div class="pinfo">
+            <h3>Filo Trecciato X8 300m</h3>
+            <p>Massima resistenza all'abrasione e sensibilità estrema.</p>
+          </div>
+        </div>
+        <!-- Prodotto Esempio 2 -->
+        <div class="pcard">
+          <div class="pimg"></div>
+          <div class="pinfo">
+            <h3>Fluorocarbon Stealth 50m</h3>
+            <p>Invisibilità totale in acqua, ideale per terminali.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- SCRIPT DI NAVIGAZIONE INTERNA -->
+  <script>
+    function showPage(pageId) {
+      // Nascondi tutte le pagine
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+      document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+      
+      // Mostra la pagina selezionata
+      document.getElementById('page-' + pageId).classList.add('on');
+      document.getElementById('btn-' + pageId).classList.add('on');
+    }
+
+    function login() {
+      const name = document.getElementById('username').value.trim();
+      if(name === "") {
+        document.getElementById('err').innerText = "Per favore, inserisci un nome per continuare.";
+      } else {
+        document.getElementById('err').innerText = "";
+        document.getElementById('user-display').innerText = name;
+        showPage('shop');
+      }
+    }
+  </script>
+
+</body>
+</html>
