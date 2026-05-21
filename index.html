@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fishing Line — Attrezzatura da Pesca</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --white:#ffffff; --ivory:#f8f6f2; --ivory2:#f0ede6;
@@ -22,98 +22,106 @@
 html{scroll-behavior:smooth}
 body{background:var(--ivory);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden}
 .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* SPAs Logic */
 .page{display:none;animation:fadeUp .35s ease both}
 .page.on{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 /* HEADER */
 header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border);box-shadow:0 2px 12px rgba(13,33,55,.06);backdrop-filter:blur(12px)}
-.hdr{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px;flex-wrap:wrap}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:70px;gap:16px;}
 .logo{background:none;border:none;cursor:pointer;text-align:left;padding:0}
-.logo-main{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--navy);letter-spacing:1.5px;display:block}
+.logo-main{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--navy);letter-spacing:1px;display:block;line-height:1.2}
 .logo-hook{color:var(--teal)}
-.logo-sub{font-size:9px;letter-spacing:3.5px;text-transform:uppercase;color:var(--text3);display:block;margin-top:1px}
-nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.nb{background:none;border:none;color:var(--text2);padding:7px 15px;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .18s}
+.logo-sub{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);display:block}
+nav{display:flex;align-items:center;gap:10px;}
+.nb{background:none;border:none;color:var(--text2);padding:8px 16px;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .2s}
 .nb:hover,.nb.on{background:var(--teal-lt);color:var(--teal2)}
 .nb.on{font-weight:600}
-.admin-nb{color:var(--red);}
-.admin-nb:hover,.admin-nb.on{background:#fde8e8;color:var(--red);}
-.cart-btn{display:flex;align-items:center;gap:8px;background:var(--navy);border:none;color:#fff;padding:9px 20px;border-radius:var(--r3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .18s}
-.cart-btn:hover{background:var(--navy2);transform:translateY(-1px)}
-.cart-badge{background:var(--teal);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.cart-btn{display:flex;align-items:center;gap:8px;background:var(--navy);border:none;color:#fff;padding:9px 20px;border-radius:var(--r3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .2s}
+.cart-btn:hover{background:var(--navy2);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.cart-badge{background:var(--teal);color:#fff;border-radius:50%;width:22px;height:22px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
 
-/* WELCOME / LOGIN */
-.welcome-shell{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:linear-gradient(160deg,var(--ivory) 0%,#eaf3f5 50%,var(--ivory2) 100%);position:relative;overflow:hidden}
-.deco{position:absolute;pointer-events:none;border-radius:50%}
-.deco1{top:-80px;right:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(26,122,138,.08),transparent 70%)}
-.deco2{bottom:-60px;left:-60px;width:320px;height:320px;background:radial-gradient(circle,rgba(13,33,55,.06),transparent 70%)}
-.welcome-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:52px 44px;max-width:460px;width:100%;box-shadow:var(--shadow-lg);position:relative;z-index:2}
-.wc-badge{display:inline-flex;align-items:center;gap:7px;background:var(--teal-lt);color:var(--teal2);border:1px solid var(--teal-mid);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;margin-bottom:22px}
-.wc-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,5vw,42px);font-weight:700;color:var(--navy);line-height:1.1;margin-bottom:10px}
+/* WELCOME */
+.welcome-shell{min-height:calc(100vh - 70px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:linear-gradient(160deg,var(--ivory) 0%,#eaf3f5 50%,var(--ivory2) 100%);position:relative;overflow:hidden}
+.welcome-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:40px;max-width:420px;width:100%;box-shadow:var(--shadow-lg);position:relative;z-index:2}
+.wc-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--navy);line-height:1.1;margin-bottom:10px}
 .wc-title em{color:var(--teal);font-style:italic}
-.wc-sub{font-size:15px;color:var(--text2);margin-bottom:32px;line-height:1.7}
+.wc-sub{font-size:15px;color:var(--text2);margin-bottom:24px;line-height:1.5}
 .fg{margin-bottom:16px}
-.fg label{display:block;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
-.fg input,.fg select{width:100%;background:var(--ivory);border:1.5px solid var(--border);color:var(--text);border-radius:var(--r);padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
-.fg input:focus,.fg select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,122,138,.1);background:var(--white)}
-.btn-primary{width:100%;background:var(--navy);border:none;color:#fff;padding:15px;border-radius:var(--r);cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;letter-spacing:.5px;transition:all .18s;box-shadow:0 4px 16px rgba(13,33,55,.2);margin-top:6px}
-.btn-primary:hover{background:var(--navy2);transform:translateY(-2px)}
-.err-msg{color:var(--red);font-size:13px;margin-top:10px;text-align:center;min-height: 20px;}
+.fg label{display:block;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.fg input{width:100%;background:var(--ivory);border:1.5px solid var(--border);color:var(--text);border-radius:var(--r);padding:12px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:all .2s}
+.fg input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,122,138,.1);background:var(--white)}
+.btn-primary{width:100%;background:var(--navy);border:none;color:#fff;padding:14px;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;transition:all .2s;display:flex;justify-content:center;align-items:center;gap:8px;}
+.btn-primary:hover:not(:disabled){background:var(--navy2);transform:translateY(-2px);box-shadow:var(--shadow)}
+.btn-primary:disabled{opacity:0.7;cursor:not-allowed}
+.err-msg{color:var(--red);font-size:13px;margin-top:10px;text-align:center;min-height:20px}
 
 /* SHOP */
-.pp{padding:36px 0 72px}
-.shop-hero{background:linear-gradient(135deg,var(--navy),var(--navy2) 60%,var(--teal2));border-radius:var(--r2);padding:36px 40px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;position:relative;overflow:hidden}
-.shop-hero h2{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:#fff}
-#greeting{font-size:14px;color:rgba(255,255,255,.75);margin-top:5px}
-#greeting strong{color:#fff}
-.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);align-items:center}
-.filter-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-right:4px}
-.fb{background:var(--white);border:1.5px solid var(--border);color:var(--text2);border-radius:20px;padding:6px 18px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .18s}
-.fb:hover{border-color:var(--teal);color:var(--teal)}
-.fb.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:20px}
+.pp{padding:40px 0 80px}
+.shop-hero{background:linear-gradient(135deg,var(--navy),var(--teal2));border-radius:var(--r2);padding:30px 40px;margin-bottom:30px;color:#fff}
+.shop-hero h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
 
 /* PRODUCT CARD */
-.pcard{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .22s;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
-.pcard:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--teal-mid)}
-.pimg{background:linear-gradient(135deg,var(--teal-lt),#d8eef2);height:180px;position:relative;display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:40px;overflow:hidden;} 
-.pimg img {width:100%;height:100%;object-fit:cover;}
+.pcard{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .2s;display:flex;flex-direction:column;height:100%}
+.pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--teal-mid)}
+.pimg{background:var(--teal-lt);height:180px;display:flex;align-items:center;justify-content:center;font-size:40px;}
 .pinfo{padding:20px;display:flex;flex-direction:column;flex-grow:1}
-.pinfo h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:5px}
-.pinfo p{color:var(--text2);font-size:14px;flex-grow:1}
-.pinfo-footer{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
-.price{font-weight:700;color:var(--navy);font-size:17px}
-.btn-add{background:var(--teal-lt);color:var(--teal2);border:none;padding:8px 14px;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;transition:all .2s}
+.pinfo h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:4px;color:var(--navy)}
+.pinfo p{color:var(--text2);font-size:14px;margin-bottom:16px;flex-grow:1}
+.p-price-row{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.price{font-size:18px;font-weight:700;color:var(--teal2)}
+.btn-add{background:var(--teal-lt);color:var(--teal2);border:none;padding:8px 16px;border-radius:20px;font-weight:600;cursor:pointer;transition:all .2s;font-size:13px}
 .btn-add:hover{background:var(--teal);color:#fff}
 
-/* ADMIN DASHBOARD */
-.admin-grid{display:grid;grid-template-columns:320px 1fr;gap:24px;margin-top:24px}
-@media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } }
-.admin-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:24px;box-shadow:var(--shadow-sm)}
-.admin-card h3{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--navy);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.admin-table{width:100%;border-collapse:collapse;font-size:14px}
-.admin-table th,.admin-table td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}
-.admin-table th{color:var(--text3);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:1px}
-.btn-sm{background:var(--navy);color:#fff;border:none;padding:6px 12px;border-radius:var(--r);cursor:pointer;font-size:12px;font-weight:600;}
-.btn-sm.danger{background:#fff;color:var(--red);border:1px solid var(--red);}
-.btn-sm.danger:hover{background:var(--red);color:#fff;}
+/* CART & CHECKOUT */
+.cart-table{width:100%;border-collapse:collapse;margin-bottom:24px;background:var(--white);border-radius:var(--r2);overflow:hidden;box-shadow:var(--shadow-sm)}
+.cart-table th,.cart-table td{padding:16px;text-align:left;border-bottom:1px solid var(--border)}
+.cart-table th{background:var(--ivory2);font-weight:600;color:var(--text2);text-transform:uppercase;font-size:12px;letter-spacing:1px}
+.qty-ctrl{display:flex;align-items:center;gap:12px}
+.qty-btn{background:var(--ivory2);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-weight:700;color:var(--text2);transition:all .2s}
+.qty-btn:hover{background:var(--teal);color:#fff}
+.cart-totals{background:var(--white);padding:24px;border-radius:var(--r2);box-shadow:var(--shadow-sm);max-width:400px;margin-left:auto}
+.tot-row{display:flex;justify-content:space-between;margin-bottom:12px;font-size:16px;color:var(--text2)}
+.tot-row.grand{font-size:20px;font-weight:700;color:var(--navy);border-top:1px solid var(--border);padding-top:12px;margin-top:12px}
+.empty-cart{text-align:center;padding:60px 20px;color:var(--text2)}
+
+/* due colonne per il checkout */
+.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.checkout-form{background:var(--white);padding:30px;border-radius:var(--r2);box-shadow:var(--shadow-sm)}
+
+/* TOAST NOTIFICATION */
+#toast-container{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:10px}
+.toast{background:var(--navy);color:#fff;padding:12px 24px;border-radius:var(--r);box-shadow:var(--shadow-lg);font-size:14px;font-weight:500;animation:slideIn .3s ease forwards}
+.toast.error{background:var(--red)}
+.toast.success{background:var(--green)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes fadeOut{to{opacity:0}}
+
+/* RESPONSIVE */
+@media(max-width:768px) {
+  .checkout-grid{grid-template-columns:1fr}
+  .cart-table{display:block;overflow-x:auto}
+  .hdr{flex-direction:column;height:auto;padding:16px;gap:12px}
+  nav{width:100%;justify-content:space-between}
+  .welcome-shell{padding:20px 16px}
+}
 </style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <div class="wrap hdr">
       <button class="logo" onclick="showPage('welcome')">
         <span class="logo-main">Fishing<span class="logo-hook">Line</span></span>
         <span class="logo-sub">Attrezzatura Professionale</span>
       </button>
-      <nav>
+      <nav id="main-nav">
         <button class="nb on" id="btn-welcome" onclick="showPage('welcome')">Home</button>
         <button class="nb" id="btn-shop" onclick="showPage('shop')">Negozio</button>
-        <button class="nb admin-nb" id="btn-admin-login" onclick="showPage('admin-login')">Admin</button>
-        <button class="cart-btn">
+        <button class="cart-btn" onclick="showPage('cart')">
           <span>Carrello</span>
           <span class="cart-badge" id="cart-count">0</span>
         </button>
@@ -121,19 +129,14 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
     </div>
   </header>
 
-  <!-- PAGINA ACCESSO / WELCOME -->
   <main id="page-welcome" class="page on">
     <div class="welcome-shell">
-      <div class="deco deco1"></div>
-      <div class="deco deco2"></div>
       <div class="welcome-card">
-        <div class="wc-badge">Benvenuto Pescatore</div>
-        <h1 class="wc-title">La migliore linea per le tue <em>sfide</em>.</h1>
-        <p class="wc-sub">Accedi per esplorare il catalogo di lenze, fili trecciati e accessori ad alta resistenza.</p>
-        
+        <h1 class="wc-title">La migliore lenza per le tue <em>sfide</em>.</h1>
+        <p class="wc-sub">Accedi per esplorare il catalogo di lenze, trecciati e accessori ad alta resistenza.</p>
         <div class="fg">
           <label for="username">Nome Utente</label>
-          <input type="text" id="username" placeholder="Inserisci il tuo nome">
+          <input type="text" id="username" placeholder="Es. Mario Rossi">
         </div>
         <button class="btn-primary" onclick="login()">Entra nel Negozio</button>
         <div id="err" class="err-msg"></div>
@@ -141,331 +144,322 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
     </div>
   </main>
 
-  <!-- PAGINA LOGIN ADMIN -->
-  <main id="page-admin-login" class="page">
-    <div class="welcome-shell">
-      <div class="welcome-card">
-        <div class="wc-badge" style="background:#fde8e8;color:var(--red);border-color:#f8b4b4;">Area Riservata</div>
-        <h1 class="wc-title">Pannello di <em>Controllo</em></h1>
-        <p class="wc-sub">Inserisci la password di amministrazione per gestire ordini e catalogo.</p>
-        
-        <div class="fg">
-          <label for="admin-pwd">Password</label>
-          <input type="password" id="admin-pwd" placeholder="Inserisci password">
-        </div>
-        <button class="btn-primary" style="background:var(--red)" onclick="loginAdmin()">Accedi all'Area Admin</button>
-        <div id="admin-err" class="err-msg"></div>
-      </div>
-    </div>
-  </main>
-
-  <!-- PAGINA SHOP -->
   <main id="page-shop" class="page">
     <div class="wrap pp">
       <div class="shop-hero">
-        <div>
-          <h2>Catalogo Prodotti</h2>
-          <div id="greeting">Pronto per la pesca, <strong id="user-display">Ospite</strong>?</div>
+        <h2>Catalogo Prodotti</h2>
+        <div style="opacity:0.8; margin-top:4px">Benvenuto, <strong id="user-display">Ospite</strong></div>
+      </div>
+      <div class="pgrid" id="product-grid">
         </div>
-      </div>
-
-      <div class="filter-bar">
-        <span class="filter-label">Filtra per:</span>
-        <button class="fb on" data-filter="tutti">Tutti</button>
-        <button class="fb" data-filter="trecciati">Trecciati</button>
-        <button class="fb" data-filter="monofilo">Monofilo</button>
-        <button class="fb" data-filter="fluorocarbon">Fluorocarbon</button>
-      </div>
-
-      <!-- I prodotti vengono caricati qui dinamicamente dal JS -->
-      <div class="pgrid" id="product-grid"></div>
     </div>
   </main>
 
-  <!-- PAGINA ADMIN DASHBOARD -->
-  <main id="page-admin-dash" class="page">
+  <main id="page-cart" class="page">
     <div class="wrap pp">
-      <div class="shop-hero" style="background:linear-gradient(135deg, #2c3e50, #000000);">
-        <div>
-          <h2>Gestione Negozio</h2>
-          <div id="greeting">Pannello Amministratore Attivo</div>
-        </div>
+      <div class="shop-hero">
+        <h2>Il tuo Carrello</h2>
       </div>
-
-      <div class="admin-grid">
-        <!-- Colonna 1: Aggiungi Prodotto -->
-        <div class="admin-card">
-          <h3>Aggiungi / Modifica</h3>
-          <div class="fg">
-            <label>Nome Prodotto</label>
-            <input type="text" id="add-name" placeholder="Es: Esca Artificiale">
-          </div>
-          <div class="fg">
-            <label>Categoria</label>
-            <select id="add-category">
-              <option value="trecciati">Trecciati</option>
-              <option value="monofilo">Monofilo</option>
-              <option value="fluorocarbon">Fluorocarbon</option>
-            </select>
-          </div>
-          <div class="fg">
-            <label>Prezzo (€)</label>
-            <input type="number" step="0.01" id="add-price" placeholder="Es: 12.50">
-          </div>
-          <div class="fg">
-            <label>Descrizione</label>
-            <input type="text" id="add-desc" placeholder="Breve descrizione">
-          </div>
-          <div class="fg">
-            <label>Foto (URL Immagine o Emoji)</label>
-            <input type="text" id="add-img" placeholder="Es: https://...jpg oppure 🐟">
-          </div>
-          <button class="btn-primary" onclick="addProduct()">Salva Prodotto</button>
-          <div id="add-msg" style="color:var(--green);font-size:13px;margin-top:10px;text-align:center;"></div>
+      <div id="cart-content">
         </div>
+    </div>
+  </main>
 
-        <!-- Colonna 2: Tabelle -->
+  <main id="page-checkout" class="page">
+    <div class="wrap pp">
+      <div class="shop-hero">
+        <h2>Checkout Sicuro</h2>
+      </div>
+      <div class="checkout-grid">
+        <div class="checkout-form">
+          <h3 style="margin-bottom:20px; color:var(--navy)">Dati di Spedizione</h3>
+          <div class="fg"><label>Nome Completo</label><input type="text" id="chk-nome"></div>
+          <div class="fg"><label>Email</label><input type="email" id="chk-email"></div>
+          <div class="fg"><label>Indirizzo di Consegna</label><input type="text" id="chk-indirizzo"></div>
+          <div class="fg"><label>Città</label><input type="text" id="chk-citta"></div>
+        </div>
         <div>
-          <div class="admin-card" style="margin-bottom: 24px;">
-            <h3>Catalogo Prodotti</h3>
-            <div style="overflow-x:auto;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Immagine</th>
-                    <th>Nome</th>
-                    <th>Prezzo</th>
-                    <th>Azioni</th>
-                  </tr>
-                </thead>
-                <tbody id="admin-products-body">
-                  <!-- Caricati dal JS -->
-                </tbody>
-              </table>
+          <div class="cart-totals" style="margin:0; max-width:100%">
+            <h3 style="margin-bottom:20px; color:var(--navy)">Riepilogo Ordine</h3>
+            <div id="checkout-summary"></div>
+            <div class="tot-row grand">
+              <span>Totale:</span>
+              <span id="checkout-total">€0.00</span>
             </div>
-          </div>
-
-          <div class="admin-card">
-            <h3>Ordini Ricevuti</h3>
-            <div style="overflow-x:auto;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>N° Ordine</th>
-                    <th>Cliente</th>
-                    <th>Totale</th>
-                    <th>Stato</th>
-                    <th>Azioni</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>#1001</td>
-                    <td>Marco Rossi</td>
-                    <td>€ 39.40</td>
-                    <td><span style="color:var(--teal);font-weight:bold;">Pagato</span></td>
-                    <td><button class="btn-sm">Gestisci</button></td>
-                  </tr>
-                  <tr>
-                    <td>#1002</td>
-                    <td>Luca Bianchi</td>
-                    <td>€ 14.50</td>
-                    <td><span style="color:orange;font-weight:bold;">In attesa</span></td>
-                    <td><button class="btn-sm">Gestisci</button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <button class="btn-primary" id="btn-submit-order" onclick="submitOrder()" style="margin-top:20px">Conferma Ordine</button>
           </div>
         </div>
       </div>
     </div>
   </main>
+
+  <div id="toast-container"></div>
 
   <script>
-    // --- STRUTTURA DATI (I nostri prodotti di base) ---
-    let products = [
-      { id: 1, name: "Filo Trecciato X8 300m", category: "trecciati", price: "24.90", desc: "Massima resistenza all'abrasione e sensibilità estrema.", img: "🎣" },
-      { id: 2, name: "Fluorocarbon Stealth 50m", category: "fluorocarbon", price: "14.50", desc: "Invisibilità totale in acqua, ideale per terminali.", img: "🌊" },
-      { id: 3, name: "Monofilo Super Cast 500m", category: "monofilo", price: "11.90", desc: "Ottima elasticità e scorrevolezza per lanci lunghissimi.", img: "🐟" }
+    // ==========================================
+    // 1. DATA E STATO
+    // ==========================================
+    const products = [
+      { id: 1, name: "Filo Trecciato X8 300m", price: 24.90, desc: "Massima resistenza all'abrasione e sensibilità estrema.", img: "🎣" },
+      { id: 2, name: "Fluorocarbon Stealth 50m", price: 15.50, desc: "Invisibilità totale in acqua, ideale per terminali.", img: "🐟" },
+      { id: 3, name: "Monofilo Nylon Pro 500m", price: 12.00, desc: "Ottima elasticità, perfetto per lanci a lunga distanza.", img: "🌊" },
+      { id: 4, name: "Trecciato Ultra Light 150m", price: 18.90, desc: "Fibre PE purissime per la pesca a spinning leggero.", img: "🐠" }
     ];
 
-    // --- NAVIGAZIONE ---
+    let cart = JSON.parse(localStorage.getItem('fishingCart')) || [];
+    let currentUser = localStorage.getItem('fishingUser') || '';
+
+    // Inizializzazione al caricamento
+    window.onload = () => {
+      updateCartBadge();
+      renderProducts();
+      if (currentUser) {
+        document.getElementById('user-display').innerText = currentUser;
+        document.getElementById('username').value = currentUser;
+      }
+    };
+
+    // ==========================================
+    // 2. NAVIGAZIONE E UI
+    // ==========================================
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
       document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
       
-      document.getElementById('page-' + pageId).classList.add('on');
-      const navBtn = document.getElementById('btn-' + pageId);
-      if(navBtn) navBtn.classList.add('on');
+      const pageEl = document.getElementById('page-' + pageId);
+      const btnEl = document.getElementById('btn-' + pageId);
+      
+      if(pageEl) pageEl.classList.add('on');
+      if(btnEl) btnEl.classList.add('on');
+      
+      if (pageId === 'cart') renderCart();
+      if (pageId === 'checkout') renderCheckout();
+      window.scrollTo(0,0);
     }
 
-    // --- LOGICA UTENTE / LOGIN ---
     function login() {
       const name = document.getElementById('username').value.trim();
-      if(name === "") {
-        document.getElementById('err').innerText = "Inserisci un nome per continuare.";
-      } else {
-        document.getElementById('err').innerText = "";
-        document.getElementById('user-display').innerText = name;
-        showPage('shop');
+      if (name === "") {
+        document.getElementById('err').innerText = "Per favore, inserisci un nome per continuare.";
+        return;
       }
+      document.getElementById('err').innerText = "";
+      currentUser = name;
+      localStorage.setItem('fishingUser', name);
+      document.getElementById('user-display').innerText = name;
+      showToast(`Bentornato, ${name}!`, "success");
+      showPage('shop');
     }
-    document.getElementById('username').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') login();
-    });
 
-    // --- LOGICA ADMIN (PASSWORD 0789) ---
-    function loginAdmin() {
-      const pwd = document.getElementById('admin-pwd').value;
-      if(pwd === "0789") {
-        document.getElementById('admin-pwd').value = ""; // Pulisce
-        document.getElementById('admin-err').innerText = "";
-        document.getElementById('btn-admin-login').classList.add('on');
-        showPage('admin-dash');
-        renderAll(); // Disegna le tabelle
-      } else {
-        document.getElementById('admin-err').innerText = "Password errata. Riprova.";
-      }
+    function showToast(message, type="normal") {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerText = message;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
     }
-    document.getElementById('admin-pwd').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') loginAdmin();
-    });
 
-    // --- LOGICA PRODOTTI (SHOP E ADMIN) ---
-    function renderAll() {
-      const shopGrid = document.getElementById('product-grid');
-      const adminTable = document.getElementById('admin-products-body');
+    // ==========================================
+    // 3. LOGICA CARRELLO
+    // ==========================================
+    function saveCart() {
+      localStorage.setItem('fishingCart', JSON.stringify(cart));
+      updateCartBadge();
+    }
+
+    function updateCartBadge() {
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cart-count').innerText = totalItems;
+    }
+
+    function addToCart(prodId) {
+      const prod = products.find(p => p.id === prodId);
+      const existing = cart.find(item => item.id === prodId);
       
-      shopGrid.innerHTML = '';
-      adminTable.innerHTML = '';
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...prod, qty: 1 });
+      }
+      saveCart();
+      showToast(`${prod.name} aggiunto al carrello!`, "success");
+    }
 
-      products.forEach(p => {
-        // Logica per mostrare un'immagine URL oppure una semplice Emoji
-        let imgContent = p.img.startsWith('http') 
-          ? `<img src="${p.img}" alt="foto">` 
-          : p.img;
+    function changeQty(prodId, delta) {
+      const item = cart.find(i => i.id === prodId);
+      if(!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== prodId);
+      }
+      saveCart();
+      renderCart();
+    }
 
-        // 1. Aggiunge al Negozio
-        shopGrid.innerHTML += `
-          <div class="pcard" data-category="${p.category}">
-            <div class="pimg">${imgContent}</div>
-            <div class="pinfo">
-              <h3>${p.name}</h3>
-              <p>${p.desc}</p>
-              <div class="pinfo-footer">
-                <span class="price">€ ${parseFloat(p.price).toFixed(2)}</span>
-                <button class="btn-add" onclick="addToCart()">Aggiungi</button>
-              </div>
+    function getCartTotal() {
+      return cart.reduce((sum, item) => sum + (item.price * item.qty), 0).toFixed(2);
+    }
+
+    // ==========================================
+    // 4. RENDERING DOM
+    // ==========================================
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = products.map(p => `
+        <div class="pcard">
+          <div class="pimg">${p.img}</div>
+          <div class="pinfo">
+            <h3>${p.name}</h3>
+            <p>${p.desc}</p>
+            <div class="p-price-row">
+              <span class="price">€${p.price.toFixed(2)}</span>
+              <button class="btn-add" onclick="addToCart(${p.id})">Aggiungi</button>
             </div>
           </div>
-        `;
-
-        // 2. Aggiunge alla Tabella Admin
-        adminTable.innerHTML += `
-          <tr>
-            <td>#${p.id}</td>
-            <td style="font-size:24px; line-height:1;">
-              ${p.img.startsWith('http') ? `<img src="${p.img}" style="width:30px;height:30px;border-radius:4px;object-fit:cover;">` : p.img}
-            </td>
-            <td><strong>${p.name}</strong><br><small style="color:var(--text3)">${p.category}</small></td>
-            <td>€ ${parseFloat(p.price).toFixed(2)}</td>
-            <td>
-              <button class="btn-sm danger" onclick="deleteProduct(${p.id})">Elimina</button>
-            </td>
-          </tr>
-        `;
-      });
-
-      setupFilters();
+        </div>
+      `).join('');
     }
 
-    // --- AGGIUNGERE UN PRODOTTO DAL PANNELLO ADMIN ---
-    function addProduct() {
-      const name = document.getElementById('add-name').value;
-      const cat = document.getElementById('add-category').value;
-      const price = document.getElementById('add-price').value;
-      const desc = document.getElementById('add-desc').value;
-      const img = document.getElementById('add-img').value || '🎣'; // Default emoji se vuoto
-
-      if(!name || !price) {
-        document.getElementById('add-msg').style.color = "var(--red)";
-        document.getElementById('add-msg').innerText = "Nome e Prezzo sono obbligatori!";
+    function renderCart() {
+      const content = document.getElementById('cart-content');
+      if (cart.length === 0) {
+        content.innerHTML = `<div class="empty-cart">
+          <h3 style="margin-bottom:15px; color:var(--navy)">Il tuo carrello è vuoto</h3>
+          <button class="btn-add" onclick="showPage('shop')">Torna al Negozio</button>
+        </div>`;
         return;
       }
 
-      const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
+      let html = `<table class="cart-table">
+        <thead><tr><th>Prodotto</th><th>Prezzo</th><th>Quantità</th><th>Subtotale</th></tr></thead>
+        <tbody>`;
       
-      products.push({
-        id: newId,
-        name: name,
-        category: cat,
-        price: price,
-        desc: desc,
-        img: img
+      cart.forEach(item => {
+        html += `<tr>
+          <td><strong>${item.name}</strong></td>
+          <td>€${item.price.toFixed(2)}</td>
+          <td>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+              <span>${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+          </td>
+          <td><strong>€${(item.price * item.qty).toFixed(2)}</strong></td>
+        </tr>`;
       });
-
-      // Pulisce il form
-      document.getElementById('add-name').value = '';
-      document.getElementById('add-price').value = '';
-      document.getElementById('add-desc').value = '';
-      document.getElementById('add-img').value = '';
-
-      document.getElementById('add-msg').style.color = "var(--green)";
-      document.getElementById('add-msg').innerText = "Prodotto aggiunto al catalogo!";
-      setTimeout(() => document.getElementById('add-msg').innerText = "", 3000);
-
-      renderAll(); // Aggiorna graficamente negozio e tabella
+      html += `</tbody></table>
+      <div class="cart-totals">
+        <div class="tot-row grand"><span>Totale:</span><span>€${getCartTotal()}</span></div>
+        <button class="btn-primary" onclick="showPage('checkout')" style="width:100%; margin-top:20px">Procedi al Checkout</button>
+      </div>`;
+      
+      content.innerHTML = html;
     }
 
-    // --- ELIMINARE UN PRODOTTO ---
-    function deleteProduct(id) {
-      if(confirm("Sei sicuro di voler eliminare questo prodotto?")) {
-        products = products.filter(p => p.id !== id);
-        renderAll();
+    function renderCheckout() {
+      if(cart.length === 0){
+        showPage('cart');
+        return;
+      }
+      if(currentUser && !document.getElementById('chk-nome').value){
+        document.getElementById('chk-nome').value = currentUser;
+      }
+      
+      const summary = document.getElementById('checkout-summary');
+      summary.innerHTML = cart.map(item => `
+        <div class="tot-row" style="font-size:14px">
+          <span>${item.qty}x ${item.name}</span>
+          <span>€${(item.price * item.qty).toFixed(2)}</span>
+        </div>
+      `).join('');
+      document.getElementById('checkout-total').innerText = `€${getCartTotal()}`;
+    }
+
+    // ==========================================
+    // 5. SISTEMA ORDINI E TELEGRAM API
+    // ==========================================
+    async function submitOrder() {
+      const btn = document.getElementById('btn-submit-order');
+      
+      // Raccolta e sanitizzazione dati
+      const nome = document.getElementById('chk-nome').value.trim();
+      const email = document.getElementById('chk-email').value.trim();
+      const indirizzo = document.getElementById('chk-indirizzo').value.trim();
+      const citta = document.getElementById('chk-citta').value.trim();
+
+      if(!nome || !email || !indirizzo || !citta) {
+        showToast("Compila tutti i campi obbligatori.", "error");
+        return;
+      }
+
+      if(cart.length === 0) return;
+
+      btn.disabled = true;
+      btn.innerText = "Elaborazione...";
+
+      // Preparazione stringa prodotti
+      let stringaProdotti = cart.map(item => `- ${item.qty}x ${item.name} (€${(item.price * item.qty).toFixed(2)})`).join('\n');
+      const dataOdierna = new Date().toLocaleString('it-IT');
+      const totale = getCartTotal();
+
+      // Formattazione Messaggio Telegram
+      const testoTelegram = `
+🛒 *Nuovo Ordine*
+
+👤 Cliente: ${nome}
+📧 Email: ${email}
+📍 Indirizzo: ${indirizzo}, ${citta}
+🕒 Data: ${dataOdierna}
+
+📦 *Prodotti:*
+${stringaProdotti}
+
+💰 *Totale:* €${totale}
+      `;
+
+      // CONFIGURAZIONE TELEGRAM (Sostituisci i placeholder con i tuoi dati reali)
+      const BOT_TOKEN = 'INSERISCI_TOKEN'; 
+      const CHAT_ID = 'INSERISCI_CHAT_ID';
+      
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: testoTelegram,
+            parse_mode: 'Markdown'
+          })
+        });
+
+        if (!response.ok) throw new Error("Errore comunicazione server Telegram.");
+
+        // Ordine Completato con Successo
+        cart = [];
+        saveCart();
+        showToast("Ordine inviato con successo!", "success");
+        
+        // Pulisce form
+        document.getElementById('chk-indirizzo').value = "";
+        document.getElementById('chk-citta').value = "";
+        
+        setTimeout(() => showPage('welcome'), 2000);
+
+      } catch (error) {
+        console.error(error);
+        showToast("Errore durante l'invio dell'ordine. Riprova.", "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Conferma Ordine";
       }
     }
-
-    // --- LOGICA FILTRI NEGOZIO ---
-    function setupFilters() {
-      const filterBtns = document.querySelectorAll('.fb');
-      const cards = document.querySelectorAll('.pcard');
-
-      filterBtns.forEach(btn => {
-        // Rimuove vecchi listener per evitare duplicazioni quando re-renderizziamo
-        const newBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(newBtn, btn);
-
-        newBtn.addEventListener('click', () => {
-          document.querySelectorAll('.fb').forEach(b => b.classList.remove('on'));
-          newBtn.classList.add('on');
-
-          const filterValue = newBtn.getAttribute('data-filter');
-          document.querySelectorAll('.pcard').forEach(card => {
-            if (filterValue === 'tutti' || card.getAttribute('data-category') === filterValue) {
-              card.style.display = 'flex';
-            } else {
-              card.style.display = 'none';
-            }
-          });
-        });
-      });
-    }
-
-    // --- CARRELLO ---
-    let cartItems = 0;
-    function addToCart() {
-      cartItems++;
-      const badge = document.getElementById('cart-count');
-      badge.innerText = cartItems;
-      badge.style.transform = 'scale(1.4)';
-      setTimeout(() => { badge.style.transform = 'scale(1)'; }, 200);
-    }
-
-    // Inizializza i prodotti all'avvio della pagina
-    renderAll();
   </script>
-
 </body>
 </html>
