@@ -37,11 +37,13 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .nb{background:none;border:none;color:var(--text2);padding:7px 15px;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .18s}
 .nb:hover,.nb.on{background:var(--teal-lt);color:var(--teal2)}
 .nb.on{font-weight:600}
+.admin-nb{color:var(--red);}
+.admin-nb:hover,.admin-nb.on{background:#fde8e8;color:var(--red);}
 .cart-btn{display:flex;align-items:center;gap:8px;background:var(--navy);border:none;color:#fff;padding:9px 20px;border-radius:var(--r3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .18s}
 .cart-btn:hover{background:var(--navy2);transform:translateY(-1px)}
 .cart-badge{background:var(--teal);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
 
-/* WELCOME */
+/* WELCOME / LOGIN */
 .welcome-shell{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:40px 20px;background:linear-gradient(160deg,var(--ivory) 0%,#eaf3f5 50%,var(--ivory2) 100%);position:relative;overflow:hidden}
 .deco{position:absolute;pointer-events:none;border-radius:50%}
 .deco1{top:-80px;right:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(26,122,138,.08),transparent 70%)}
@@ -53,9 +55,8 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .wc-sub{font-size:15px;color:var(--text2);margin-bottom:32px;line-height:1.7}
 .fg{margin-bottom:16px}
 .fg label{display:block;font-size:11px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
-.fg input,.fi{width:100%;background:var(--ivory);border:1.5px solid var(--border);color:var(--text);border-radius:var(--r);padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
-.fg input:focus,.fi:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,122,138,.1);background:var(--white)}
-.fg input::placeholder,.fi::placeholder{color:var(--border2)}
+.fg input,.fg select{width:100%;background:var(--ivory);border:1.5px solid var(--border);color:var(--text);border-radius:var(--r);padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
+.fg input:focus,.fg select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(26,122,138,.1);background:var(--white)}
 .btn-primary{width:100%;background:var(--navy);border:none;color:#fff;padding:15px;border-radius:var(--r);cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;letter-spacing:.5px;transition:all .18s;box-shadow:0 4px 16px rgba(13,33,55,.2);margin-top:6px}
 .btn-primary:hover{background:var(--navy2);transform:translateY(-2px)}
 .err-msg{color:var(--red);font-size:13px;margin-top:10px;text-align:center;min-height: 20px;}
@@ -76,7 +77,8 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 /* PRODUCT CARD */
 .pcard{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;transition:all .22s;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
 .pcard:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--teal-mid)}
-.pimg{background:linear-gradient(135deg,var(--teal-lt),#d8eef2);height:180px;position:relative;display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:40px;opacity:0.5} 
+.pimg{background:linear-gradient(135deg,var(--teal-lt),#d8eef2);height:180px;position:relative;display:flex;align-items:center;justify-content:center;color:var(--teal);font-size:40px;overflow:hidden;} 
+.pimg img {width:100%;height:100%;object-fit:cover;}
 .pinfo{padding:20px;display:flex;flex-direction:column;flex-grow:1}
 .pinfo h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:5px}
 .pinfo p{color:var(--text2);font-size:14px;flex-grow:1}
@@ -84,6 +86,18 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .price{font-weight:700;color:var(--navy);font-size:17px}
 .btn-add{background:var(--teal-lt);color:var(--teal2);border:none;padding:8px 14px;border-radius:var(--r);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;transition:all .2s}
 .btn-add:hover{background:var(--teal);color:#fff}
+
+/* ADMIN DASHBOARD */
+.admin-grid{display:grid;grid-template-columns:320px 1fr;gap:24px;margin-top:24px}
+@media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } }
+.admin-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:24px;box-shadow:var(--shadow-sm)}
+.admin-card h3{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--navy);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.admin-table{width:100%;border-collapse:collapse;font-size:14px}
+.admin-table th,.admin-table td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}
+.admin-table th{color:var(--text3);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:1px}
+.btn-sm{background:var(--navy);color:#fff;border:none;padding:6px 12px;border-radius:var(--r);cursor:pointer;font-size:12px;font-weight:600;}
+.btn-sm.danger{background:#fff;color:var(--red);border:1px solid var(--red);}
+.btn-sm.danger:hover{background:var(--red);color:#fff;}
 </style>
 </head>
 <body>
@@ -98,6 +112,7 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       <nav>
         <button class="nb on" id="btn-welcome" onclick="showPage('welcome')">Home</button>
         <button class="nb" id="btn-shop" onclick="showPage('shop')">Negozio</button>
+        <button class="nb admin-nb" id="btn-admin-login" onclick="showPage('admin-login')">Admin</button>
         <button class="cart-btn">
           <span>Carrello</span>
           <span class="cart-badge" id="cart-count">0</span>
@@ -126,6 +141,24 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
     </div>
   </main>
 
+  <!-- PAGINA LOGIN ADMIN -->
+  <main id="page-admin-login" class="page">
+    <div class="welcome-shell">
+      <div class="welcome-card">
+        <div class="wc-badge" style="background:#fde8e8;color:var(--red);border-color:#f8b4b4;">Area Riservata</div>
+        <h1 class="wc-title">Pannello di <em>Controllo</em></h1>
+        <p class="wc-sub">Inserisci la password di amministrazione per gestire ordini e catalogo.</p>
+        
+        <div class="fg">
+          <label for="admin-pwd">Password</label>
+          <input type="password" id="admin-pwd" placeholder="Inserisci password">
+        </div>
+        <button class="btn-primary" style="background:var(--red)" onclick="loginAdmin()">Accedi all'Area Admin</button>
+        <div id="admin-err" class="err-msg"></div>
+      </div>
+    </div>
+  </main>
+
   <!-- PAGINA SHOP -->
   <main id="page-shop" class="page">
     <div class="wrap pp">
@@ -144,40 +177,105 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
         <button class="fb" data-filter="fluorocarbon">Fluorocarbon</button>
       </div>
 
-      <div class="pgrid" id="product-grid">
-        <!-- Prodotto Esempio 1 -->
-        <div class="pcard" data-category="trecciati">
-          <div class="pimg">🎣</div>
-          <div class="pinfo">
-            <h3>Filo Trecciato X8 300m</h3>
-            <p>Massima resistenza all'abrasione e sensibilità estrema.</p>
-            <div class="pinfo-footer">
-              <span class="price">€ 24.90</span>
-              <button class="btn-add" onclick="addToCart()">Aggiungi</button>
+      <!-- I prodotti vengono caricati qui dinamicamente dal JS -->
+      <div class="pgrid" id="product-grid"></div>
+    </div>
+  </main>
+
+  <!-- PAGINA ADMIN DASHBOARD -->
+  <main id="page-admin-dash" class="page">
+    <div class="wrap pp">
+      <div class="shop-hero" style="background:linear-gradient(135deg, #2c3e50, #000000);">
+        <div>
+          <h2>Gestione Negozio</h2>
+          <div id="greeting">Pannello Amministratore Attivo</div>
+        </div>
+      </div>
+
+      <div class="admin-grid">
+        <!-- Colonna 1: Aggiungi Prodotto -->
+        <div class="admin-card">
+          <h3>Aggiungi / Modifica</h3>
+          <div class="fg">
+            <label>Nome Prodotto</label>
+            <input type="text" id="add-name" placeholder="Es: Esca Artificiale">
+          </div>
+          <div class="fg">
+            <label>Categoria</label>
+            <select id="add-category">
+              <option value="trecciati">Trecciati</option>
+              <option value="monofilo">Monofilo</option>
+              <option value="fluorocarbon">Fluorocarbon</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Prezzo (€)</label>
+            <input type="number" step="0.01" id="add-price" placeholder="Es: 12.50">
+          </div>
+          <div class="fg">
+            <label>Descrizione</label>
+            <input type="text" id="add-desc" placeholder="Breve descrizione">
+          </div>
+          <div class="fg">
+            <label>Foto (URL Immagine o Emoji)</label>
+            <input type="text" id="add-img" placeholder="Es: https://...jpg oppure 🐟">
+          </div>
+          <button class="btn-primary" onclick="addProduct()">Salva Prodotto</button>
+          <div id="add-msg" style="color:var(--green);font-size:13px;margin-top:10px;text-align:center;"></div>
+        </div>
+
+        <!-- Colonna 2: Tabelle -->
+        <div>
+          <div class="admin-card" style="margin-bottom: 24px;">
+            <h3>Catalogo Prodotti</h3>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Immagine</th>
+                    <th>Nome</th>
+                    <th>Prezzo</th>
+                    <th>Azioni</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-products-body">
+                  <!-- Caricati dal JS -->
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
-        <!-- Prodotto Esempio 2 -->
-        <div class="pcard" data-category="fluorocarbon">
-          <div class="pimg">🌊</div>
-          <div class="pinfo">
-            <h3>Fluorocarbon Stealth 50m</h3>
-            <p>Invisibilità totale in acqua, ideale per terminali.</p>
-            <div class="pinfo-footer">
-              <span class="price">€ 14.50</span>
-              <button class="btn-add" onclick="addToCart()">Aggiungi</button>
-            </div>
-          </div>
-        </div>
-        <!-- Prodotto Esempio 3 -->
-        <div class="pcard" data-category="monofilo">
-          <div class="pimg">🐟</div>
-          <div class="pinfo">
-            <h3>Monofilo Super Cast 500m</h3>
-            <p>Ottima elasticità e scorrevolezza per lanci lunghissimi.</p>
-            <div class="pinfo-footer">
-              <span class="price">€ 11.90</span>
-              <button class="btn-add" onclick="addToCart()">Aggiungi</button>
+
+          <div class="admin-card">
+            <h3>Ordini Ricevuti</h3>
+            <div style="overflow-x:auto;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>N° Ordine</th>
+                    <th>Cliente</th>
+                    <th>Totale</th>
+                    <th>Stato</th>
+                    <th>Azioni</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>#1001</td>
+                    <td>Marco Rossi</td>
+                    <td>€ 39.40</td>
+                    <td><span style="color:var(--teal);font-weight:bold;">Pagato</span></td>
+                    <td><button class="btn-sm">Gestisci</button></td>
+                  </tr>
+                  <tr>
+                    <td>#1002</td>
+                    <td>Luca Bianchi</td>
+                    <td>€ 14.50</td>
+                    <td><span style="color:orange;font-weight:bold;">In attesa</span></td>
+                    <td><button class="btn-sm">Gestisci</button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -186,7 +284,14 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
   </main>
 
   <script>
-    // Navigazione tra le pagine
+    // --- STRUTTURA DATI (I nostri prodotti di base) ---
+    let products = [
+      { id: 1, name: "Filo Trecciato X8 300m", category: "trecciati", price: "24.90", desc: "Massima resistenza all'abrasione e sensibilità estrema.", img: "🎣" },
+      { id: 2, name: "Fluorocarbon Stealth 50m", category: "fluorocarbon", price: "14.50", desc: "Invisibilità totale in acqua, ideale per terminali.", img: "🌊" },
+      { id: 3, name: "Monofilo Super Cast 500m", category: "monofilo", price: "11.90", desc: "Ottima elasticità e scorrevolezza per lanci lunghissimi.", img: "🐟" }
+    ];
+
+    // --- NAVIGAZIONE ---
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
       document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
@@ -196,58 +301,170 @@ nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
       if(navBtn) navBtn.classList.add('on');
     }
 
-    // Logica di Login
+    // --- LOGICA UTENTE / LOGIN ---
     function login() {
       const name = document.getElementById('username').value.trim();
       if(name === "") {
-        document.getElementById('err').innerText = "Per favore, inserisci un nome per continuare.";
+        document.getElementById('err').innerText = "Inserisci un nome per continuare.";
       } else {
         document.getElementById('err').innerText = "";
         document.getElementById('user-display').innerText = name;
         showPage('shop');
       }
     }
-
-    // Permette di fare login premendo 'Invio' sulla tastiera
     document.getElementById('username').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        login();
-      }
+      if (e.key === 'Enter') login();
     });
 
-    // Logica per i Filtri del Negozio
-    const filterBtns = document.querySelectorAll('.fb');
-    const products = document.querySelectorAll('.pcard');
+    // --- LOGICA ADMIN (PASSWORD 0789) ---
+    function loginAdmin() {
+      const pwd = document.getElementById('admin-pwd').value;
+      if(pwd === "0789") {
+        document.getElementById('admin-pwd').value = ""; // Pulisce
+        document.getElementById('admin-err').innerText = "";
+        document.getElementById('btn-admin-login').classList.add('on');
+        showPage('admin-dash');
+        renderAll(); // Disegna le tabelle
+      } else {
+        document.getElementById('admin-err').innerText = "Password errata. Riprova.";
+      }
+    }
+    document.getElementById('admin-pwd').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') loginAdmin();
+    });
 
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        // Rimuove la classe attiva da tutti i bottoni e la aggiunge a quello cliccato
-        filterBtns.forEach(b => b.classList.remove('on'));
-        btn.classList.add('on');
+    // --- LOGICA PRODOTTI (SHOP E ADMIN) ---
+    function renderAll() {
+      const shopGrid = document.getElementById('product-grid');
+      const adminTable = document.getElementById('admin-products-body');
+      
+      shopGrid.innerHTML = '';
+      adminTable.innerHTML = '';
 
-        // Mostra/Nascondi prodotti in base alla categoria
-        const filterValue = btn.getAttribute('data-filter');
-        products.forEach(product => {
-          if (filterValue === 'tutti' || product.getAttribute('data-category') === filterValue) {
-            product.style.display = 'flex';
-          } else {
-            product.style.display = 'none';
-          }
+      products.forEach(p => {
+        // Logica per mostrare un'immagine URL oppure una semplice Emoji
+        let imgContent = p.img.startsWith('http') 
+          ? `<img src="${p.img}" alt="foto">` 
+          : p.img;
+
+        // 1. Aggiunge al Negozio
+        shopGrid.innerHTML += `
+          <div class="pcard" data-category="${p.category}">
+            <div class="pimg">${imgContent}</div>
+            <div class="pinfo">
+              <h3>${p.name}</h3>
+              <p>${p.desc}</p>
+              <div class="pinfo-footer">
+                <span class="price">€ ${parseFloat(p.price).toFixed(2)}</span>
+                <button class="btn-add" onclick="addToCart()">Aggiungi</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // 2. Aggiunge alla Tabella Admin
+        adminTable.innerHTML += `
+          <tr>
+            <td>#${p.id}</td>
+            <td style="font-size:24px; line-height:1;">
+              ${p.img.startsWith('http') ? `<img src="${p.img}" style="width:30px;height:30px;border-radius:4px;object-fit:cover;">` : p.img}
+            </td>
+            <td><strong>${p.name}</strong><br><small style="color:var(--text3)">${p.category}</small></td>
+            <td>€ ${parseFloat(p.price).toFixed(2)}</td>
+            <td>
+              <button class="btn-sm danger" onclick="deleteProduct(${p.id})">Elimina</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      setupFilters();
+    }
+
+    // --- AGGIUNGERE UN PRODOTTO DAL PANNELLO ADMIN ---
+    function addProduct() {
+      const name = document.getElementById('add-name').value;
+      const cat = document.getElementById('add-category').value;
+      const price = document.getElementById('add-price').value;
+      const desc = document.getElementById('add-desc').value;
+      const img = document.getElementById('add-img').value || '🎣'; // Default emoji se vuoto
+
+      if(!name || !price) {
+        document.getElementById('add-msg').style.color = "var(--red)";
+        document.getElementById('add-msg').innerText = "Nome e Prezzo sono obbligatori!";
+        return;
+      }
+
+      const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1;
+      
+      products.push({
+        id: newId,
+        name: name,
+        category: cat,
+        price: price,
+        desc: desc,
+        img: img
+      });
+
+      // Pulisce il form
+      document.getElementById('add-name').value = '';
+      document.getElementById('add-price').value = '';
+      document.getElementById('add-desc').value = '';
+      document.getElementById('add-img').value = '';
+
+      document.getElementById('add-msg').style.color = "var(--green)";
+      document.getElementById('add-msg').innerText = "Prodotto aggiunto al catalogo!";
+      setTimeout(() => document.getElementById('add-msg').innerText = "", 3000);
+
+      renderAll(); // Aggiorna graficamente negozio e tabella
+    }
+
+    // --- ELIMINARE UN PRODOTTO ---
+    function deleteProduct(id) {
+      if(confirm("Sei sicuro di voler eliminare questo prodotto?")) {
+        products = products.filter(p => p.id !== id);
+        renderAll();
+      }
+    }
+
+    // --- LOGICA FILTRI NEGOZIO ---
+    function setupFilters() {
+      const filterBtns = document.querySelectorAll('.fb');
+      const cards = document.querySelectorAll('.pcard');
+
+      filterBtns.forEach(btn => {
+        // Rimuove vecchi listener per evitare duplicazioni quando re-renderizziamo
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+
+        newBtn.addEventListener('click', () => {
+          document.querySelectorAll('.fb').forEach(b => b.classList.remove('on'));
+          newBtn.classList.add('on');
+
+          const filterValue = newBtn.getAttribute('data-filter');
+          document.querySelectorAll('.pcard').forEach(card => {
+            if (filterValue === 'tutti' || card.getAttribute('data-category') === filterValue) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          });
         });
       });
-    });
+    }
 
-    // Logica base per il Carrello
+    // --- CARRELLO ---
     let cartItems = 0;
     function addToCart() {
       cartItems++;
       const badge = document.getElementById('cart-count');
       badge.innerText = cartItems;
-      
-      // Piccolo effetto visivo (animazione bounce) sul badge del carrello
       badge.style.transform = 'scale(1.4)';
       setTimeout(() => { badge.style.transform = 'scale(1)'; }, 200);
     }
+
+    // Inizializza i prodotti all'avvio della pagina
+    renderAll();
   </script>
 
 </body>
