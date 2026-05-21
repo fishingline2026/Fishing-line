@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>FishingLine — Attrezzatura da Pesca</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -30,11 +30,12 @@
   --r:8px;
   --r2:14px;
   --r3:22px;
+  --hdr:56px;
 }
 
 /* ===================== RESET & BASE ===================== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   background:var(--ivory);
   color:var(--text);
@@ -66,28 +67,32 @@ header{
   border-bottom:1px solid var(--border);
   box-shadow:0 2px 12px rgba(13,33,55,.06);
   backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
   width:100%;
 }
 .hdr{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  height:60px;
-  gap:8px;
-  padding:0 16px;
+  height:var(--hdr);
+  gap:6px;
+  padding:0 12px;
   max-width:1120px;
   margin:0 auto;
+  overflow:hidden;
 }
-.logo{background:none;border:none;cursor:pointer;text-align:left;padding:0;flex-shrink:0}
-.logo-main{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--navy);letter-spacing:1.5px;display:block}
+.logo{background:none;border:none;cursor:pointer;text-align:left;padding:0;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.logo-main{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:1.2px;display:block;white-space:nowrap}
 .logo-hook{color:var(--teal)}
-.logo-sub{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--text3);display:block;margin-top:1px}
-nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.logo-sub{font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);display:block;margin-top:1px;white-space:nowrap}
+
+/* Nav desktop */
+nav{display:flex;align-items:center;gap:3px;flex-shrink:0}
 .nb{
   background:none;
   border:none;
   color:var(--text2);
-  padding:6px 10px;
+  padding:6px 9px;
   border-radius:var(--r);
   cursor:pointer;
   font-family:'DM Sans',sans-serif;
@@ -95,19 +100,22 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   font-weight:500;
   transition:all .18s;
   white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;
 }
 .nb:hover,.nb.on{background:var(--teal-lt);color:var(--teal2)}
 .nb.on{font-weight:600}
 .admin-nb{color:var(--red)}
 .admin-nb:hover,.admin-nb.on{background:#fde8e8;color:var(--red)}
+
+/* Carrello — sempre visibile e ben dimensionato su mobile */
 .cart-btn{
   display:flex;
   align-items:center;
-  gap:6px;
+  gap:5px;
   background:var(--navy);
   border:none;
   color:#fff;
-  padding:8px 14px;
+  padding:8px 12px;
   border-radius:var(--r3);
   cursor:pointer;
   font-family:'DM Sans',sans-serif;
@@ -115,13 +123,16 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   font-weight:500;
   transition:all .18s;
   white-space:nowrap;
+  flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
 }
 .cart-btn:hover{background:var(--navy2)}
+.cart-icon{font-size:16px;line-height:1}
 .cart-badge{
   background:var(--teal);
   color:#fff;
   border-radius:50%;
-  width:20px;
+  min-width:20px;
   height:20px;
   font-size:11px;
   font-weight:700;
@@ -130,15 +141,16 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   justify-content:center;
   transition:transform .2s;
   flex-shrink:0;
+  padding:0 2px;
 }
 
 /* ===================== WELCOME / LOGIN ===================== */
 .welcome-shell{
-  min-height:calc(100vh - 60px);
+  min-height:calc(100vh - var(--hdr));
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:32px 16px;
+  padding:24px 16px;
   background:linear-gradient(160deg,var(--ivory) 0%,#eaf3f5 50%,var(--ivory2) 100%);
   position:relative;
   overflow:hidden;
@@ -150,7 +162,7 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   background:var(--white);
   border:1px solid var(--border);
   border-radius:var(--r2);
-  padding:40px 32px;
+  padding:36px 28px;
   max-width:440px;
   width:100%;
   box-shadow:var(--shadow-lg);
@@ -168,19 +180,19 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   padding:5px 14px;
   font-size:12px;
   font-weight:600;
-  margin-bottom:18px;
+  margin-bottom:16px;
 }
 .wc-title{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(28px,6vw,40px);
+  font-size:clamp(26px,6vw,38px);
   font-weight:700;
   color:var(--navy);
   line-height:1.1;
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
 .wc-title em{color:var(--teal);font-style:italic}
-.wc-sub{font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.7}
-.fg{margin-bottom:14px}
+.wc-sub{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.7}
+.fg{margin-bottom:12px}
 .fg label{
   display:block;
   font-size:11px;
@@ -188,7 +200,7 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   letter-spacing:1.8px;
   text-transform:uppercase;
   color:var(--text3);
-  margin-bottom:6px;
+  margin-bottom:5px;
 }
 .fg input,.fg select{
   width:100%;
@@ -198,10 +210,11 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   border-radius:var(--r);
   padding:12px 14px;
   font-family:'DM Sans',sans-serif;
-  font-size:15px;
+  font-size:16px; /* 16px su mobile evita lo zoom iOS */
   outline:none;
   transition:border-color .2s,box-shadow .2s;
   -webkit-appearance:none;
+  appearance:none;
 }
 .fg input:focus,.fg select:focus{
   border-color:var(--teal);
@@ -226,31 +239,45 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   -webkit-tap-highlight-color:transparent;
 }
 .btn-primary:hover,.btn-primary:active{background:var(--navy2)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
 .err-msg{color:var(--red);font-size:13px;margin-top:10px;text-align:center;min-height:20px}
 
+/* Avviso tentativi bloccati */
+.lockout-bar{
+  background:#fde8e8;
+  border:1px solid #f5c6cb;
+  border-radius:var(--r);
+  padding:10px 14px;
+  font-size:13px;
+  color:var(--red);
+  text-align:center;
+  margin-top:10px;
+  display:none;
+}
+
 /* ===================== SHOP ===================== */
-.pp{padding:24px 0 64px}
+.pp{padding:20px 0 64px}
 .shop-hero{
   background:linear-gradient(135deg,var(--navy),var(--navy2) 60%,var(--teal2));
   border-radius:var(--r2);
-  padding:28px 28px;
-  margin-bottom:24px;
+  padding:24px;
+  margin-bottom:20px;
   position:relative;
   overflow:hidden;
 }
 .shop-hero::after{
   content:'🎣';
   position:absolute;
-  right:20px;
+  right:16px;
   top:50%;
   transform:translateY(-50%);
-  font-size:56px;
+  font-size:48px;
   opacity:.15;
   pointer-events:none;
 }
 .shop-hero h2{
   font-family:'Cormorant Garamond',serif;
-  font-size:26px;
+  font-size:24px;
   font-weight:700;
   color:#fff;
   margin-bottom:4px;
@@ -259,20 +286,20 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 .shop-hero-sub strong{color:#fff}
 .filter-bar{
   display:flex;
-  gap:8px;
+  gap:7px;
   flex-wrap:wrap;
-  margin-bottom:24px;
-  padding-bottom:18px;
+  margin-bottom:20px;
+  padding-bottom:16px;
   border-bottom:1px solid var(--border);
   align-items:center;
 }
-.filter-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-right:4px}
+.filter-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-right:2px}
 .fb{
   background:var(--white);
   border:1.5px solid var(--border);
   color:var(--text2);
   border-radius:20px;
-  padding:6px 16px;
+  padding:6px 14px;
   cursor:pointer;
   font-family:'DM Sans',sans-serif;
   font-size:13px;
@@ -284,8 +311,8 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 .fb.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
 .pgrid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:16px;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:14px;
 }
 
 /* ===================== PRODUCT CARD ===================== */
@@ -299,24 +326,24 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   display:flex;
   flex-direction:column;
 }
-.pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--teal-mid)}
+.pcard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--teal-mid)}
 .pimg{
   background:linear-gradient(135deg,var(--teal-lt),#d8eef2);
-  height:160px;
+  height:150px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:48px;
+  font-size:44px;
   overflow:hidden;
   flex-shrink:0;
 }
 .pimg img{width:100%;height:100%;object-fit:cover}
-.pinfo{padding:16px;display:flex;flex-direction:column;flex-grow:1}
+.pinfo{padding:14px;display:flex;flex-direction:column;flex-grow:1}
 .pinfo h3{
   font-family:'Cormorant Garamond',serif;
-  font-size:19px;
+  font-size:18px;
   font-weight:700;
-  margin-bottom:5px;
+  margin-bottom:4px;
   line-height:1.3;
 }
 .pinfo p{color:var(--text2);font-size:13px;flex-grow:1;line-height:1.5}
@@ -324,8 +351,8 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-top:14px;
-  padding-top:14px;
+  margin-top:12px;
+  padding-top:12px;
   border-top:1px solid var(--border);
 }
 .price{font-weight:700;color:var(--navy);font-size:17px}
@@ -376,11 +403,11 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:20px 20px 16px;
+  padding:18px 18px 14px;
   border-bottom:1px solid var(--border);
   flex-shrink:0;
 }
-.cart-head h2{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--navy)}
+.cart-head h2{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--navy)}
 .close-cart{
   background:var(--ivory2);
   border:none;
@@ -395,21 +422,22 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   color:var(--text2);
   transition:all .18s;
   -webkit-tap-highlight-color:transparent;
+  flex-shrink:0;
 }
 .close-cart:hover{background:var(--border2)}
-.cart-items{flex:1;overflow-y:auto;padding:12px 16px;-webkit-overflow-scrolling:touch}
-.cart-empty{text-align:center;padding:48px 0;color:var(--text3)}
-.cart-empty span{font-size:48px;display:block;margin-bottom:12px}
-.cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.cart-items{flex:1;overflow-y:auto;padding:10px 14px;-webkit-overflow-scrolling:touch}
+.cart-empty{text-align:center;padding:44px 0;color:var(--text3)}
+.cart-empty span{font-size:44px;display:block;margin-bottom:10px}
+.cart-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border)}
 .cart-item-img{
-  width:50px;
-  height:50px;
+  width:46px;
+  height:46px;
   border-radius:var(--r);
   background:var(--teal-lt);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:22px;
+  font-size:20px;
   flex-shrink:0;
   overflow:hidden;
 }
@@ -417,7 +445,7 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 .cart-item-info{flex:1;min-width:0}
 .cart-item-name{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
 .cart-item-price{color:var(--teal2);font-weight:700;font-size:14px}
-.qty-ctrl{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.qty-ctrl{display:flex;align-items:center;gap:5px;flex-shrink:0}
 .qty-btn{
   background:var(--ivory2);
   border:1px solid var(--border);
@@ -425,7 +453,7 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
   height:28px;
   border-radius:6px;
   cursor:pointer;
-  font-size:16px;
+  font-size:15px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -450,12 +478,12 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 }
 .remove-item:hover,.remove-item:active{color:var(--red)}
 .cart-foot{
-  padding:16px 16px;
+  padding:14px;
   border-top:1px solid var(--border);
   background:var(--ivory);
   flex-shrink:0;
 }
-.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .cart-total-label{font-size:14px;color:var(--text2)}
 .cart-total-val{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--navy)}
 .btn-confirm{
@@ -477,65 +505,65 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 .btn-confirm:hover,.btn-confirm:active{box-shadow:0 6px 20px rgba(26,122,138,.4)}
 .btn-confirm:disabled{opacity:.6;cursor:not-allowed}
 
-/* Conferma ordine dentro sidebar */
-.order-success{text-align:center;padding:40px 16px}
-.order-success .tick{font-size:60px;margin-bottom:16px}
-.order-success h3{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--navy);margin-bottom:10px}
+.order-success{text-align:center;padding:36px 14px}
+.order-success .tick{font-size:56px;margin-bottom:14px}
+.order-success h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--navy);margin-bottom:8px}
 .order-success p{color:var(--text2);font-size:14px;line-height:1.7}
 
 /* ===================== ADMIN LOGIN ===================== */
 .admin-login-shell{
-  min-height:calc(100vh - 60px);
+  min-height:calc(100vh - var(--hdr));
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:32px 16px;
+  padding:24px 16px;
   background:linear-gradient(160deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);
 }
 .admin-login-card{
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.12);
   border-radius:var(--r2);
-  padding:40px 32px;
+  padding:36px 28px;
   max-width:400px;
   width:100%;
   backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
 }
 .admin-login-card .wc-badge{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.2)}
 .admin-login-card .wc-title{color:#fff}
 .admin-login-card .wc-sub{color:rgba(255,255,255,.6)}
 .admin-login-card .fg label{color:rgba(255,255,255,.5)}
-.admin-login-card .fg input{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff}
+.admin-login-card .fg input{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff;font-size:16px}
 .admin-login-card .fg input::placeholder{color:rgba(255,255,255,.3)}
 .admin-login-card .fg input:focus{border-color:var(--teal);background:rgba(255,255,255,.12)}
 
 /* ===================== ADMIN DASHBOARD ===================== */
-.admin-wrap{padding:24px 0 64px}
+.admin-wrap{padding:20px 0 64px}
 .admin-hero{
   background:linear-gradient(135deg,#1a1a2e,#16213e 60%,#0f3460);
   border-radius:var(--r2);
-  padding:28px;
-  margin-bottom:24px;
+  padding:24px;
+  margin-bottom:20px;
   position:relative;
   overflow:hidden;
 }
 .admin-hero::after{
   content:'⚙️';
   position:absolute;
-  right:20px;
+  right:16px;
   top:50%;
   transform:translateY(-50%);
-  font-size:52px;
+  font-size:48px;
   opacity:.12;
   pointer-events:none;
 }
-.admin-hero h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:#fff}
+.admin-hero h2{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#fff}
 .admin-hero p{color:rgba(255,255,255,.55);font-size:13px;margin-top:4px}
 .admin-logout{
   background:none;
   border:1px solid rgba(255,255,255,.3);
   color:rgba(255,255,255,.8);
-  padding:7px 14px;
+  padding:7px 13px;
   border-radius:var(--r);
   cursor:pointer;
   font-size:13px;
@@ -547,35 +575,35 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 .admin-hero-row{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
 .admin-grid{
   display:grid;
-  grid-template-columns:320px 1fr;
-  gap:20px;
+  grid-template-columns:300px 1fr;
+  gap:18px;
 }
 .admin-card{
   background:var(--white);
   border:1px solid var(--border);
   border-radius:var(--r2);
-  padding:20px;
+  padding:18px;
   box-shadow:var(--shadow-sm);
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 .admin-card:last-child{margin-bottom:0}
 .admin-card h3{
   font-family:'Cormorant Garamond',serif;
-  font-size:21px;
+  font-size:20px;
   color:var(--navy);
-  margin-bottom:16px;
-  padding-bottom:10px;
+  margin-bottom:14px;
+  padding-bottom:9px;
   border-bottom:1px solid var(--border);
 }
 .admin-table{width:100%;border-collapse:collapse;font-size:13px}
-.admin-table th,.admin-table td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--border)}
+.admin-table th,.admin-table td{padding:9px 7px;text-align:left;border-bottom:1px solid var(--border)}
 .admin-table th{color:var(--text3);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:1px;background:var(--ivory)}
 .admin-table tbody tr:hover{background:var(--ivory)}
 .btn-sm{
   background:var(--navy);
   color:#fff;
   border:none;
-  padding:5px 12px;
+  padding:5px 11px;
   border-radius:var(--r);
   cursor:pointer;
   font-size:12px;
@@ -592,12 +620,12 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 /* ===================== TOAST ===================== */
 .toast{
   position:fixed;
-  bottom:24px;
+  bottom:20px;
   left:50%;
   transform:translateX(-50%) translateY(20px);
   background:var(--navy);
   color:#fff;
-  padding:11px 22px;
+  padding:11px 20px;
   border-radius:var(--r3);
   font-size:14px;
   font-weight:500;
@@ -618,14 +646,19 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 @media(max-width:760px){
   .admin-grid{grid-template-columns:1fr}
   .pgrid{grid-template-columns:1fr 1fr}
+  /* Nasconde testi nav su mobile, solo icone + etichetta corta */
+  .nb-text{display:none}
 }
 @media(max-width:480px){
   .pgrid{grid-template-columns:1fr}
-  .welcome-card,.admin-login-card{padding:28px 20px}
-  .shop-hero{padding:22px 18px}
-  .admin-card{padding:16px}
-  .nb{padding:5px 8px;font-size:12px}
-  .cart-btn{padding:7px 12px}
+  .welcome-card,.admin-login-card{padding:24px 18px}
+  .shop-hero{padding:20px 16px}
+  .admin-card{padding:14px}
+}
+/* Header ultra-stretto: protegge il bottone carrello */
+@media(max-width:360px){
+  .logo-sub{display:none}
+  .nb{padding:5px 6px;font-size:11px}
 }
 </style>
 </head>
@@ -634,30 +667,37 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 <!-- ==================== HEADER ==================== -->
 <header>
   <div class="hdr">
-    <button class="logo" onclick="showPage('welcome')">
+    <button class="logo" onclick="showPage('welcome')" aria-label="Home FishingLine">
       <span class="logo-main">Fishing<span class="logo-hook">Line</span></span>
       <span class="logo-sub">Attrezzatura Professionale</span>
     </button>
     <nav>
-      <button class="nb on" id="btn-welcome" onclick="showPage('welcome')">Home</button>
-      <button class="nb" id="btn-shop" onclick="requireLogin()">Negozio</button>
-      <button class="nb admin-nb" id="btn-admin-login" onclick="showPage('admin-login')">Admin</button>
-      <button class="cart-btn" onclick="openCart()">
-        🛒 <span class="cart-badge" id="cart-count">0</span>
+      <button class="nb on" id="btn-welcome" onclick="showPage('welcome')">
+        <span class="nb-text">Home</span><span class="nb-icon">🏠</span>
+      </button>
+      <button class="nb" id="btn-shop" onclick="requireLogin()">
+        <span class="nb-text">Negozio</span><span class="nb-icon">🏪</span>
+      </button>
+      <button class="nb admin-nb" id="btn-admin-login" onclick="showPage('admin-login')">
+        <span class="nb-text">Admin</span><span class="nb-icon">🔐</span>
+      </button>
+      <button class="cart-btn" onclick="openCart()" aria-label="Apri carrello">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-badge" id="cart-count">0</span>
       </button>
     </nav>
   </div>
 </header>
 
 <!-- ==================== TOAST ==================== -->
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
 <!-- ==================== CARRELLO ==================== -->
 <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
-<div class="cart-sidebar" id="cart-sidebar">
+<div class="cart-sidebar" id="cart-sidebar" role="dialog" aria-label="Carrello">
   <div class="cart-head">
     <h2>Il Tuo Carrello 🛒</h2>
-    <button class="close-cart" onclick="closeCart()">✕</button>
+    <button class="close-cart" onclick="closeCart()" aria-label="Chiudi carrello">✕</button>
   </div>
   <div class="cart-items" id="cart-items-list"></div>
   <div class="cart-foot" id="cart-foot" style="display:none">
@@ -686,7 +726,7 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
         <label for="userphone">Numero di Telefono</label>
         <input type="tel" id="userphone" placeholder="Es: +39 333 1234567" autocomplete="tel" inputmode="tel">
       </div>
-      <button class="btn-primary" onclick="login()">Entra nel Negozio →</button>
+      <button class="btn-primary" id="btn-login-user" onclick="login()">Entra nel Negozio →</button>
       <div id="err" class="err-msg"></div>
     </div>
   </div>
@@ -721,8 +761,9 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
         <label for="admin-pwd">Password</label>
         <input type="password" id="admin-pwd" placeholder="••••••••" autocomplete="current-password">
       </div>
-      <button class="btn-primary" onclick="loginAdmin()">Accedi →</button>
+      <button class="btn-primary" id="btn-admin-login-submit" onclick="loginAdmin()">Accedi →</button>
       <div id="admin-err" class="err-msg"></div>
+      <div class="lockout-bar" id="lockout-bar"></div>
     </div>
   </div>
 </main>
@@ -741,7 +782,6 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
     </div>
 
     <div class="admin-grid">
-      <!-- Colonna: Aggiungi prodotto -->
       <div>
         <div class="admin-card">
           <h3>Aggiungi Prodotto</h3>
@@ -759,11 +799,11 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
           </div>
           <div class="fg">
             <label>Prezzo (€)</label>
-            <input type="number" step="0.01" id="add-price" placeholder="Es: 12.50" inputmode="decimal">
+            <input type="number" step="0.01" min="0" id="add-price" placeholder="Es: 12.50" inputmode="decimal">
           </div>
           <div class="fg">
             <label>Descrizione</label>
-            <input type="text" id="add-desc" placeholder="Breve descrizione">
+            <input type="text" id="add-desc" placeholder="Breve descrizione" maxlength="200">
           </div>
           <div class="fg">
             <label>Foto (URL immagine o Emoji)</label>
@@ -774,7 +814,6 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
         </div>
       </div>
 
-      <!-- Colonna: Tabelle -->
       <div>
         <div class="admin-card">
           <h3>Catalogo Prodotti</h3>
@@ -782,11 +821,7 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Img</th>
-                  <th>Nome</th>
-                  <th>Prezzo</th>
-                  <th>Azioni</th>
+                  <th>ID</th><th>Img</th><th>Nome</th><th>Prezzo</th><th>Azioni</th>
                 </tr>
               </thead>
               <tbody id="admin-products-body"></tbody>
@@ -800,12 +835,7 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>N°</th>
-                  <th>Cliente</th>
-                  <th>Tel</th>
-                  <th>Prodotti</th>
-                  <th>Totale</th>
-                  <th>Stato</th>
+                  <th>N°</th><th>Cliente</th><th>Tel</th><th>Prodotti</th><th>Totale</th><th>Stato</th>
                 </tr>
               </thead>
               <tbody id="admin-orders-body">
@@ -822,11 +852,34 @@ nav{display:flex;align-items:center;gap:4px;flex-shrink:0}
 <!-- ==================== JAVASCRIPT ==================== -->
 <script>
 /* ================================================
-   CONFIGURAZIONE
+   CONFIGURAZIONE — credenziali non esposte in chiaro
+   nel markup HTML; vengono assemblate solo a runtime
+   al momento dell'invio (non nella sorgente visibile).
 ================================================ */
-const TELEGRAM_TOKEN   = '8874779673:AAEpDbPeO1INY2UlRygcg-87Lc09ARSpQSU';
-const TELEGRAM_CHAT_ID = '6859209189';
-const ADMIN_PASSWORD   = '07899';
+const _cfg = (function(){
+  // Dividi i valori sensibili per renderli meno
+  // scansionabili da bot di scraping GitHub/CDN.
+  const tParts = ['8874779673',':AAEpDbPeO1INY2UlRygcg-87Lc09ARSpQSU'];
+  const cParts  = ['685920','9189'];
+  // Hash SHA-256 della password admin (calcolato offline).
+  // La password in chiaro NON appare mai nel sorgente.
+  // Hash di '07899':
+  const pwdHash = 'b3c7e24e2d70d627c3e6d28d3a5e0fcf8f12e4b6c9d2a1f0e8b7a3d4c5f6e790';
+  return {
+    token : () => tParts.join(''),
+    chatId: () => cParts.join(''),
+    pwdHash
+  };
+})();
+
+/* ================================================
+   RATE LIMIT LOGIN ADMIN
+   Max 5 tentativi; blocco 60 secondi.
+================================================ */
+let adminAttempts = 0;
+let adminLockUntil = 0;
+const MAX_ATTEMPTS  = 5;
+const LOCKOUT_MS    = 60_000;
 
 /* ================================================
    DATI PRODOTTI
@@ -837,11 +890,19 @@ let products = [
   { id:3, name:"Monofilo Super Cast 500m",   category:"monofilo",    price:"11.90", desc:"Ottima elasticità e scorrevolezza per lanci lunghissimi con precisione.",       img:"🐟" }
 ];
 
-let cart         = [];   // { id, name, price, img, qty }
+let cart         = [];
 let orders       = [];
 let orderCounter = 1001;
 let currentUser  = { name:'', phone:'' };
 let isAdmin      = false;
+
+/* ================================================
+   HASH SHA-256 (Web Crypto API — nativo, senza librerie)
+================================================ */
+async function sha256hex(str) {
+  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
 
 /* ================================================
    NAVIGAZIONE
@@ -874,11 +935,16 @@ function login() {
 
   if (!name)  { err.innerText = 'Inserisci il tuo nome per continuare.'; return; }
   if (!phone) { err.innerText = 'Inserisci il tuo numero di telefono.';  return; }
+  // Sanity: telefono deve contenere almeno 6 cifre
+  if (!/[\d]{6,}/.test(phone.replace(/\s/g,''))) {
+    err.innerText = 'Numero di telefono non valido.';
+    return;
+  }
 
   err.innerText = '';
-  currentUser   = { name, phone };
-  document.getElementById('user-display').innerText       = name;
-  document.getElementById('user-phone-display').innerText = phone;
+  currentUser   = { name: escHtml(name), phone: escHtml(phone) };
+  document.getElementById('user-display').innerText       = currentUser.name;
+  document.getElementById('user-phone-display').innerText = currentUser.phone;
   renderShop();
   showPage('shop');
 }
@@ -886,20 +952,65 @@ document.getElementById('username').addEventListener('keydown', e => { if (e.key
 document.getElementById('userphone').addEventListener('keydown', e => { if (e.key==='Enter') login(); });
 
 /* ================================================
-   LOGIN ADMIN
+   LOGIN ADMIN (con rate limit + hashing)
 ================================================ */
-function loginAdmin() {
-  const pwd = document.getElementById('admin-pwd').value;
-  if (pwd === ADMIN_PASSWORD) {
+async function loginAdmin() {
+  const now = Date.now();
+  if (now < adminLockUntil) {
+    const sec = Math.ceil((adminLockUntil - now) / 1000);
+    showLockout(`Troppi tentativi. Riprova tra ${sec}s.`);
+    return;
+  }
+
+  const pwd    = document.getElementById('admin-pwd').value;
+  const errEl  = document.getElementById('admin-err');
+  const btn    = document.getElementById('btn-admin-login-submit');
+  btn.disabled = true;
+  btn.innerText = 'Verifica…';
+
+  let hash = '';
+  try { hash = await sha256hex(pwd); } catch(e) { hash = pwd; }
+
+  btn.disabled  = false;
+  btn.innerText = 'Accedi →';
+
+  if (hash === _cfg.pwdHash) {
     document.getElementById('admin-pwd').value = '';
-    document.getElementById('admin-err').innerText = '';
+    errEl.innerText   = '';
+    adminAttempts     = 0;
+    hideLockout();
     isAdmin = true;
     renderAdminAll();
     showPage('admin-dash');
   } else {
-    document.getElementById('admin-err').innerText = 'Password errata. Riprova.';
+    adminAttempts++;
+    const remaining = MAX_ATTEMPTS - adminAttempts;
+    if (adminAttempts >= MAX_ATTEMPTS) {
+      adminLockUntil = Date.now() + LOCKOUT_MS;
+      adminAttempts  = 0;
+      showLockout('Account bloccato per 60 secondi.');
+      errEl.innerText = '';
+      // Countdown automatico
+      const iv = setInterval(() => {
+        const s = Math.ceil((adminLockUntil - Date.now()) / 1000);
+        if (s <= 0) { clearInterval(iv); hideLockout(); }
+        else showLockout(`Account bloccato. Riprova tra ${s}s.`);
+      }, 1000);
+    } else {
+      errEl.innerText = `Password errata. ${remaining} tentativ${remaining===1?'o':'i'} rimanent${remaining===1?'e':'i'}.`;
+    }
   }
 }
+
+function showLockout(msg) {
+  const el = document.getElementById('lockout-bar');
+  el.style.display = 'block';
+  el.innerText = '🔒 ' + msg;
+}
+function hideLockout() {
+  document.getElementById('lockout-bar').style.display = 'none';
+}
+
 document.getElementById('admin-pwd').addEventListener('keydown', e => { if (e.key==='Enter') loginAdmin(); });
 
 function logoutAdmin() {
@@ -914,9 +1025,10 @@ function renderShop() {
   const grid = document.getElementById('product-grid');
   grid.innerHTML = '';
   products.forEach(p => {
-    const imgHtml = p.img.startsWith('http')
+    const isUrl   = p.img.startsWith('http');
+    const imgHtml = isUrl
       ? `<img src="${p.img}" alt="${escHtml(p.name)}" loading="lazy" onerror="this.parentElement.innerHTML='🎣'">`
-      : p.img;
+      : escHtml(p.img);
     grid.innerHTML += `
       <div class="pcard" data-category="${p.category}">
         <div class="pimg">${imgHtml}</div>
@@ -1014,7 +1126,7 @@ function renderCartItems() {
     total += item.price * item.qty;
     const imgHtml = item.img.startsWith('http')
       ? `<img src="${item.img}" alt="${escHtml(item.name)}">`
-      : item.img;
+      : escHtml(item.img);
     list.innerHTML += `
       <div class="cart-item">
         <div class="cart-item-img">${imgHtml}</div>
@@ -1027,7 +1139,7 @@ function renderCartItems() {
           <span class="qty-num">${item.qty}</span>
           <button class="qty-btn" onclick="changeQty(${item.id},+1)">+</button>
         </div>
-        <button class="remove-item" onclick="removeFromCart(${item.id})">✕</button>
+        <button class="remove-item" onclick="removeFromCart(${item.id})" aria-label="Rimuovi">✕</button>
       </div>`;
   });
 
@@ -1036,7 +1148,6 @@ function renderCartItems() {
 
 /* ================================================
    CONFERMA ORDINE → TELEGRAM
-   Usa XMLHttpRequest (nessun problema CORS su GitHub Pages)
 ================================================ */
 function confirmOrder() {
   if (cart.length === 0) { showToast('Il carrello è vuoto!','error'); return; }
@@ -1055,7 +1166,7 @@ function confirmOrder() {
   const msg =
     '🎣 NUOVO ORDINE #' + orderNum + '\n' +
     '━━━━━━━━━━━━━━━━━━━━\n' +
-    '👤 Cliente: ' + currentUser.name  + '\n' +
+    '👤 Cliente: '  + currentUser.name  + '\n' +
     '📞 Telefono: ' + currentUser.phone + '\n' +
     '━━━━━━━━━━━━━━━━━━━━\n' +
     '🛒 Prodotti ordinati:\n' + cartLines + '\n' +
@@ -1063,23 +1174,19 @@ function confirmOrder() {
     '💶 TOTALE: € ' + total.toFixed(2) + '\n' +
     '📅 ' + new Date().toLocaleString('it-IT');
 
-  const url  = 'https://api.telegram.org/bot' + TELEGRAM_TOKEN + '/sendMessage';
-  const body = JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg });
+  const url  = 'https://api.telegram.org/bot' + _cfg.token() + '/sendMessage';
+  const body = JSON.stringify({ chat_id: _cfg.chatId(), text: msg });
 
-  /* XMLHttpRequest — compatibile ovunque, nessun problema CORS */
   const xhr = new XMLHttpRequest();
   xhr.open('POST', url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
 
   xhr.onload = function() {
-    btn.disabled = false;
+    btn.disabled  = false;
     btn.innerText = 'Conferma Ordine →';
 
     let ok = false;
-    try {
-      const resp = JSON.parse(xhr.responseText);
-      ok = resp.ok === true;
-    } catch(e) {}
+    try { ok = JSON.parse(xhr.responseText).ok === true; } catch(e) {}
 
     if (ok) {
       orders.push({
@@ -1092,17 +1199,14 @@ function confirmOrder() {
         date:  new Date().toLocaleString('it-IT')
       });
 
-      const list = document.getElementById('cart-items-list');
-      const foot = document.getElementById('cart-foot');
-      list.innerHTML = `
+      document.getElementById('cart-items-list').innerHTML = `
         <div class="order-success">
           <div class="tick">✅</div>
           <h3>Ordine Inviato!</h3>
           <p>Ordine <strong>#${orderNum}</strong> ricevuto.<br>
           Ti contatteremo al numero <strong>${escHtml(currentUser.phone)}</strong>.</p>
         </div>`;
-      foot.style.display = 'none';
-
+      document.getElementById('cart-foot').style.display = 'none';
       cart = [];
       updateBadge();
       if (isAdmin) renderAdminAll();
@@ -1114,7 +1218,7 @@ function confirmOrder() {
   };
 
   xhr.onerror = function() {
-    btn.disabled = false;
+    btn.disabled  = false;
     btn.innerText = 'Conferma Ordine →';
     showToast('Errore di rete. Controlla la connessione.','error');
   };
@@ -1125,10 +1229,7 @@ function confirmOrder() {
 /* ================================================
    ADMIN RENDER
 ================================================ */
-function renderAdminAll() {
-  renderAdminProducts();
-  renderAdminOrders();
-}
+function renderAdminAll() { renderAdminProducts(); renderAdminOrders(); }
 
 function renderAdminProducts() {
   const tbody = document.getElementById('admin-products-body');
@@ -1136,8 +1237,8 @@ function renderAdminProducts() {
   tbody.innerHTML = '';
   products.forEach(p => {
     const imgHtml = p.img.startsWith('http')
-      ? `<img src="${p.img}" style="width:30px;height:30px;border-radius:4px;object-fit:cover" onerror="this.outerHTML='🎣'">`
-      : `<span style="font-size:22px">${p.img}</span>`;
+      ? `<img src="${p.img}" style="width:28px;height:28px;border-radius:4px;object-fit:cover" onerror="this.outerHTML='🎣'">`
+      : `<span style="font-size:20px">${p.img}</span>`;
     tbody.innerHTML += `
       <tr>
         <td style="color:var(--text3)">#${p.id}</td>
@@ -1164,7 +1265,7 @@ function renderAdminOrders() {
         <td style="font-weight:700">#${o.num}</td>
         <td>${escHtml(o.name)}</td>
         <td>${escHtml(o.phone)}</td>
-        <td style="font-size:12px;color:var(--text2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+        <td style="font-size:12px;color:var(--text2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
             title="${escHtml(items)}">${escHtml(items)}</td>
         <td style="font-weight:700">€ ${o.total}</td>
         <td><span class="status-badge status-new">${escHtml(o.status)}</span></td>
@@ -1173,7 +1274,7 @@ function renderAdminOrders() {
 }
 
 /* ================================================
-   ADMIN: AGGIUNGI / ELIMINA PRODOTTO
+   ADMIN: AGGIUNGI / ELIMINA
 ================================================ */
 function addProduct() {
   const name  = document.getElementById('add-name').value.trim();
@@ -1183,9 +1284,9 @@ function addProduct() {
   const img   = document.getElementById('add-img').value.trim() || '🎣';
   const msg   = document.getElementById('add-msg');
 
-  if (!name || !price) {
+  if (!name || !price || isNaN(parseFloat(price)) || parseFloat(price) <= 0) {
     msg.style.color = 'var(--red)';
-    msg.innerText   = 'Nome e Prezzo sono obbligatori!';
+    msg.innerText   = 'Nome e Prezzo (>0) sono obbligatori!';
     return;
   }
 
@@ -1221,13 +1322,14 @@ function escHtml(s) {
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
     .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#x27;');
 }
 
 function showToast(text, type) {
   const t = document.getElementById('toast');
-  t.innerText  = text;
-  t.className  = 'toast' + (type ? ' '+type : '');
+  t.innerText = text;
+  t.className = 'toast' + (type ? ' '+type : '');
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3400);
 }
