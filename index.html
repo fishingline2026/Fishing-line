@@ -1,110 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FishingLine</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background: #f8f6f2; }
+        .page { display: none; padding: 20px; }
+        .page.on { display: block; }
+        header { background: #fff; padding: 15px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; }
+        .fg { margin-bottom: 15px; }
+        input, select { width: 100%; padding: 10px; margin-top: 5px; }
+        .btn { background: #0d2137; color: #fff; padding: 10px 20px; border: none; cursor: pointer; }
+        .pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .pcard { background: #fff; padding: 15px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+
+<header>
+    <strong>FishingLine</strong>
+    <nav>
+        <button onclick="showPage('welcome')">Home</button>
+        <button onclick="showPage('shop')">Negozio</button>
+        <button onclick="showPage('admin-login')">Admin</button>
+    </nav>
+</header>
+
+<main id="page-welcome" class="page on">
+    <h2>Benvenuto</h2>
+    <div class="fg"><label>Nome</label><input type="text" id="username"></div>
+    <div class="fg"><label>Telefono</label><input type="tel" id="userphone"></div>
+    <button class="btn" onclick="login()">Entra</button>
+</main>
+
+<main id="page-shop" class="page">
+    <h2>Negozio</h2>
+    <div id="filters">
+        <button onclick="filter('tutti')">Tutti</button>
+        <button onclick="filter('fili')">Fili</button>
+        <button onclick="filter('mulinelli')">Mulinelli</button>
+        <button onclick="filter('canne')">Canne</button>
+        <button onclick="filter('minuteria')">Minuteria</button>
+        <button onclick="filter('accessori')">Accessori</button>
+        <button onclick="filter('usato')">Usato</button>
+    </div>
+    <div class="pgrid" id="product-grid"></div>
+</main>
+
+<main id="page-admin-login" class="page">
+    <h2>Login Admin</h2>
+    <input type="password" id="admin-pwd" placeholder="Password">
+    <button class="btn" onclick="loginAdmin()">Accedi</button>
+</main>
+
+<main id="page-admin-dash" class="page">
+    <h2>Dashboard Admin</h2>
+    <div class="fg">
+        <input type="text" id="add-name" placeholder="Nome Prodotto">
+        <select id="add-cat">
+            <option value="fili">Fili</option>
+            <option value="mulinelli">Mulinelli</option>
+            <option value="canne">Canne</option>
+            <option value="minuteria">Minuteria</option>
+            <option value="accessori">Accessori</option>
+            <option value="usato">Usato</option>
+        </select>
+        <button class="btn" onclick="addProduct()">Aggiungi</button>
+    </div>
+</main>
+
 <script>
-/* ================================================
-   CONFIGURAZIONE
-================================================ */
-const TELEGRAM_TOKEN   = '8874779673:AAEpDbPeO1INY2UlRygcg-87Lc09ARSpQSU';
-const TELEGRAM_CHAT_ID = '6859209189';
-const ADMIN_PASSWORD   = '07899';
+    let products = [{name: "Prodotto Esempio", category: "fili"}];
+    let isAdmin = false;
 
-/* ================================================
-   DATI PRODOTTI
-================================================ */
-let products = [
-  { id:1, name:"Filo Trecciato X8 300m",    category:"trecciati",   price:"24.90", desc:"Massima resistenza all'abrasione e sensibilità estrema per ogni condizione.", img:"🎣" },
-  { id:2, name:"Fluorocarbon Stealth 50m",   category:"fluorocarbon",price:"14.50", desc:"Invisibilità totale in acqua, ideale per terminali in acque cristalline.",     img:"🌊" },
-  { id:3, name:"Monofilo Super Cast 500m",   category:"monofilo",    price:"11.90", desc:"Ottima elasticità e scorrevolezza per lanci lunghissimi con precisione.",       img:"🐟" }
-];
+    function showPage(id) {
+        if(id === 'page-admin-dash' && !isAdmin) return alert('Non autorizzato');
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+        document.getElementById('page-' + id).classList.add('on');
+    }
 
-let cart         = [];
-let orders       = [];
-let orderCounter = 1001;
-let currentUser  = { name:'', phone:'' };
-let isAdmin      = false;
+    function login() { 
+        if(document.getElementById('username').value) showPage('shop');
+        else alert('Inserisci nome');
+    }
 
-/* ================================================
-   NAVIGAZIONE
-================================================ */
-function showPage(id) {
-  // Blocco l'accesso alla dashboard se non loggato come admin
-  if (id === 'admin-dash' && !isAdmin) {
-    showToast('Area riservata: effettua il login', 'error');
-    showPage('admin-login');
-    return;
-  }
+    function loginAdmin() {
+        if(document.getElementById('admin-pwd').value === '07899') {
+            isAdmin = true;
+            showPage('admin-dash');
+        } else {
+            alert('Password errata');
+        }
+    }
 
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
-  const page = document.getElementById('page-' + id);
-  const btn  = document.getElementById('btn-' + id);
-  if (page) page.classList.add('on');
-  if (btn)  btn.classList.add('on');
-}
+    function addProduct() {
+        products.push({
+            name: document.getElementById('add-name').value,
+            category: document.getElementById('add-cat').value
+        });
+        alert('Aggiunto!');
+    }
 
-function requireLogin() {
-  if (!currentUser.name) {
-    showPage('welcome');
-    showToast('Accedi prima di visitare il negozio', 'error');
-  } else {
-    showPage('shop');
-  }
-}
-
-/* ================================================
-   LOGIN UTENTE
-================================================ */
-function login() {
-  const name  = document.getElementById('username').value.trim();
-  const phone = document.getElementById('userphone').value.trim();
-  const err   = document.getElementById('err');
-
-  if (!name || !phone)  { err.innerText = 'Compila tutti i campi.'; return; }
-
-  err.innerText = '';
-  currentUser   = { name, phone };
-  document.getElementById('user-display').innerText       = name;
-  document.getElementById('user-phone-display').innerText = phone;
-  renderShop();
-  showPage('shop');
-}
-
-/* ================================================
-   LOGIN ADMIN (CORRETTO)
-================================================ */
-function loginAdmin() {
-  const pwdField = document.getElementById('admin-pwd');
-  const errField = document.getElementById('admin-err');
-  
-  if (pwdField.value === ADMIN_PASSWORD) {
-    isAdmin = true;
-    pwdField.value = '';
-    errField.innerText = '';
-    renderAdminAll();
-    showPage('admin-dash');
-    showToast('Benvenuto Amministratore', 'success');
-  } else {
-    errField.innerText = 'Password errata!';
-    isAdmin = false;
-  }
-}
-
-function logoutAdmin() {
-  isAdmin = false;
-  showToast('Logout effettuato', 'success');
-  showPage('welcome');
-}
-
-/* ... (mantieni il resto delle funzioni renderShop, cart, telegram come erano prima) ... */
-/* Aggiungi queste funzioni mancanti se non le avevi nel resto dello script */
-
-function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function showToast(text, type) {
-  const t = document.getElementById('toast');
-  t.innerText  = text;
-  t.className  = 'toast' + (type ? ' '+type : '');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3400);
-}
-
-// Inizializzazione
-renderShop();
+    function filter(cat) {
+        const grid = document.getElementById('product-grid');
+        grid.innerHTML = products
+            .filter(p => cat === 'tutti' || p.category === cat)
+            .map(p => `<div class="pcard"><h3>${p.name}</h3><p>${p.category}</p></div>`)
+            .join('');
+    }
+    
+    // Inizializza il negozio
+    filter('tutti');
 </script>
+</body>
+</html>
