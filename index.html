@@ -443,16 +443,34 @@ var pendingImgBase64=''; // immagine selezionata ma non ancora salvata
 /* ============================================================
    UPLOAD FOTO — converte in base64 e mostra anteprima
 ============================================================ */
+/* --- FUNZIONE DI COMPRESSIONE INTEGRATA --- */
+var pendingImgBase64 = '';
+
 function handleFileUpload(evt){
-  var file=evt.target.files[0];
-  if(!file)return;
-  if(file.size>2*1024*1024){showToast('Foto troppo grande (max 2MB). Comprimi l\'immagine.','error');return;}
-  var reader=new FileReader();
-  reader.onload=function(e){
-    pendingImgBase64=e.target.result; // data:image/jpeg;base64,...
-    var box=document.getElementById('img-preview-box');
-    box.innerHTML='<img src="'+pendingImgBase64+'" alt="anteprima">';
-    document.getElementById('upload-area').style.borderColor='var(--green)';
+  var file = evt.target.files[0];
+  if(!file) return;
+
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var img = new Image();
+    img.onload = function(){
+      var canvas = document.createElement('canvas');
+      var MAX_WIDTH = 600; // Ridimensiona a 600px di larghezza
+      var scale = MAX_WIDTH / img.width;
+      canvas.width = MAX_WIDTH;
+      canvas.height = img.height * scale;
+      
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+      // Comprime in formato JPEG al 60% della qualità
+      pendingImgBase64 = canvas.toDataURL('image/jpeg', 0.6);
+      
+      var box = document.getElementById('img-preview-box');
+      box.innerHTML = '<img src="'+pendingImgBase64+'" alt="anteprima">';
+      document.getElementById('upload-area').style.borderColor = 'var(--green)';
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
