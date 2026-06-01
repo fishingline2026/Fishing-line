@@ -4,52 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>PharmaGest</title>
-<script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#0b1120;--surface:#131e30;--surface2:#1a2740;--surface3:#1f3050;
+  --bg:#0b1120;--surface:#131e30;--surface2:#1a2740;
   --border:#243245;--border2:#2a3d58;
-  --blue:#3b82f6;--blue-dim:rgba(59,130,246,.15);--blue-glow:rgba(59,130,246,.25);
-  --green:#22c55e;--green-dim:rgba(34,197,94,.14);--green-glow:rgba(34,197,94,.25);
-  --red:#ef4444;--red-dim:rgba(239,68,68,.14);--red-glow:rgba(239,68,68,.25);
-  --orange:#f59e0b;--orange-dim:rgba(245,158,11,.14);--orange-glow:rgba(245,158,11,.25);
-  --purple:#a855f7;
+  --blue:#3b82f6;--blue-dim:rgba(59,130,246,.15);
+  --green:#22c55e;--green-dim:rgba(34,197,94,.13);--green-glow:rgba(34,197,94,.25);
+  --red:#ef4444;--red-dim:rgba(239,68,68,.13);--red-glow:rgba(239,68,68,.25);
+  --orange:#f59e0b;--orange-dim:rgba(245,158,11,.13);--orange-glow:rgba(245,158,11,.25);
   --text:#e8f0fe;--text2:#8fa3bf;--text3:#4d6480;
-  --r:16px;--rsm:11px;
-  --sh:0 4px 24px rgba(0,0,0,.4);--sh2:0 8px 40px rgba(0,0,0,.55);
+  --r:16px;--rs:11px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden}
-
-/* ══ SCANNER ══ */
-.scan-overlay{position:fixed;inset:0;background:#000;z-index:300;display:none;flex-direction:column}
-.scan-overlay.active{display:flex}
-.scan-header{padding:52px 18px 16px;display:flex;align-items:center;justify-content:space-between;position:absolute;top:0;left:0;right:0;z-index:10;background:linear-gradient(180deg,rgba(0,0,0,.85) 0%,transparent 100%)}
-.scan-title{color:#fff;font-size:18px;font-weight:800}
-.scan-close{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-#scan-video{width:100%;height:100%;object-fit:cover}
-.scan-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:240px;height:240px;z-index:10;pointer-events:none}
-.scan-frame::before,.scan-frame::after{content:'';position:absolute;width:40px;height:40px;border-color:#fff;border-style:solid}
-.scan-frame::before{top:0;left:0;border-width:3px 0 0 3px;border-radius:4px 0 0 0}
-.scan-frame::after{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 4px 0 0}
-.scan-frame-bl,.scan-frame-br{position:absolute;width:40px;height:40px;border-color:#fff;border-style:solid;bottom:0}
-.scan-frame-bl{left:0;border-width:0 0 3px 3px;border-radius:0 0 0 4px}
-.scan-frame-br{right:0;border-width:0 3px 3px 0;border-radius:0 0 4px 0}
-.scan-line{position:absolute;top:0;left:4px;right:4px;height:2px;background:linear-gradient(90deg,transparent,var(--blue),transparent);animation:scanLine 2s linear infinite}
-@keyframes scanLine{0%{top:0}100%{top:100%}}
-.scan-hint{position:absolute;bottom:0;left:0;right:0;padding:28px 24px calc(28px + env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(0,0,0,.9) 0%,transparent 100%);z-index:10}
-.scan-hint-text{color:rgba(255,255,255,.7);font-size:13px;font-weight:600;text-align:center;margin-bottom:16px}
-.scan-manual-btn{width:100%;padding:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:12px;color:#fff;font-family:"Plus Jakarta Sans",sans-serif;font-size:14px;font-weight:700;cursor:pointer}
-.scan-result-flash{position:absolute;inset:0;background:rgba(34,197,94,.3);z-index:20;pointer-events:none;opacity:0;transition:opacity .1s}
-.scan-result-flash.show{opacity:1}
-.scan-mode-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,80px);z-index:10;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:6px 16px;color:#fff;font-size:12px;font-weight:700;text-align:center}
-
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
 /* NAV */
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;
-  background:rgba(11,17,32,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  background:rgba(11,17,32,.94);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom)}
 .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
   padding:10px 2px 8px;border:none;background:none;cursor:pointer;
@@ -57,22 +30,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
   transition:color .2s;position:relative}
 .nb.active{color:var(--blue)}
 .nb.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:28px;height:2px;background:var(--blue);border-radius:0 0 3px 3px;
-  box-shadow:0 0 8px var(--blue)}
+  width:28px;height:2px;background:var(--blue);border-radius:0 0 3px 3px;box-shadow:0 0 8px var(--blue)}
 .nb svg{width:21px;height:21px;stroke-width:2}
 
 /* HEADER */
 .hd{padding:48px 18px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;
-  background:rgba(11,17,32,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+  background:rgba(11,17,32,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .hd-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .hd-title{font-size:20px;font-weight:800;letter-spacing:-.4px;display:flex;align-items:center;gap:8px}
 .hd-pulse{width:7px;height:7px;border-radius:50%;background:var(--blue);
-  box-shadow:0 0 0 0 var(--blue-glow);animation:pulse 2.5s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--blue-glow)}50%{box-shadow:0 0 0 6px transparent}}
+  animation:pulse 2.5s infinite;box-shadow:0 0 0 0 rgba(59,130,246,.4)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.4)}50%{box-shadow:0 0 0 6px transparent}}
 .hd-sub{font-size:11px;color:var(--text3);margin-top:2px;font-weight:500}
 .btn-help{width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);
   background:var(--surface2);color:var(--text2);font-size:13px;font-weight:800;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
 .btn-help:active{background:var(--border2)}
 
 /* PAGES */
@@ -80,12 +52,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
 .page.active{display:block;animation:fi .22s ease}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* STATS GRID */
+/* STATS */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
 .stat{border-radius:var(--r);padding:16px 14px;border:1px solid var(--border);background:var(--surface);
   position:relative;overflow:hidden;display:flex;flex-direction:column;gap:4px}
-.stat::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;border-radius:50%;
-  transform:translate(20px,-20px);opacity:.08}
+.stat::after{content:'';position:absolute;top:0;right:0;width:56px;height:56px;border-radius:50%;
+  transform:translate(20px,-20px);opacity:.07}
 .stat.b::after{background:var(--blue)}.stat.g::after{background:var(--green)}
 .stat.o::after{background:var(--orange)}.stat.r::after{background:var(--red)}
 .stat-ic{font-size:17px}.stat-n{font-size:28px;font-weight:800;line-height:1;letter-spacing:-.5px}
@@ -101,24 +73,22 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
 .ctd{width:5px;height:5px;border-radius:50%}
 
 /* FARMACO ROW */
-.fi{display:flex;align-items:center;gap:11px;padding:12px 0;
-  border-bottom:1px solid var(--border);transition:opacity .15s}
+.fi{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--border)}
 .fi:last-child{border-bottom:none;padding-bottom:0}.fi:first-child{padding-top:0}
 .fib{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .fib.ok{background:var(--green);box-shadow:0 0 7px var(--green-glow)}
 .fib.warn{background:var(--orange);box-shadow:0 0 7px var(--orange-glow)}
 .fib.crit{background:var(--red);box-shadow:0 0 7px var(--red-glow)}
 .fi-body{flex:1;min-width:0}
-.fi-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  display:flex;align-items:center;gap:6px}
+.fi-name{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .fi-sub{font-size:11px;color:var(--text3);margin-top:2px;font-weight:500}
 .fi-right{text-align:right;flex-shrink:0}
 .fiq{font-size:19px;font-weight:800;line-height:1;letter-spacing:-.3px}
 .fiq.ok{color:var(--green)}.fiq.warn{color:var(--orange)}.fiq.crit{color:var(--red)}
 .fiu{font-size:10px;color:var(--text3);font-weight:600;margin-top:2px}
 
-/* ALERT BANNER */
-.alert{border-radius:var(--rsm);padding:12px 14px;margin-bottom:10px;
+/* ALERT */
+.alert{border-radius:var(--rs);padding:12px 14px;margin-bottom:10px;
   display:flex;align-items:flex-start;gap:10px;border:1px solid}
 .alert.r{background:var(--red-dim);border-color:rgba(239,68,68,.25)}
 .alert.o{background:var(--orange-dim);border-color:rgba(245,158,11,.25)}
@@ -127,64 +97,107 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
 
 /* FORM */
 .field{margin-bottom:13px}
-.field label{display:flex;align-items:center;gap:5px;
-  font-size:11px;font-weight:700;color:var(--text2);
+.field label{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--text2);
   margin-bottom:7px;letter-spacing:.04em;text-transform:uppercase}
 .field input,.field select,.field textarea{
   width:100%;padding:13px 15px;background:var(--surface2);
-  border:1.5px solid var(--border2);border-radius:var(--rsm);
+  border:1.5px solid var(--border2);border-radius:var(--rs);
   font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:var(--text);
   outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
 .field input:focus,.field select:focus,.field textarea:focus{
   border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-dim)}
 .field input::placeholder{color:var(--text3)}
 .field select option{background:var(--surface2)}
-.field textarea{resize:vertical;min-height:68px}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 /* STEPPER */
 .stepper{display:flex;align-items:stretch;background:var(--surface2);
-  border:1.5px solid var(--border2);border-radius:var(--rsm);overflow:hidden;transition:border-color .2s}
+  border:1.5px solid var(--border2);border-radius:var(--rs);overflow:hidden;transition:border-color .2s}
 .stepper:focus-within{border-color:var(--blue)}
 .sb{width:50px;border:none;background:transparent;font-size:22px;font-weight:300;
   cursor:pointer;color:var(--text2);transition:background .15s;flex-shrink:0}
-.sb:active{background:var(--surface3)}
+.sb:active{background:var(--surface)}
 .stepper input{flex:1;text-align:center;border:none!important;border-radius:0!important;
   box-shadow:none!important;background:transparent;font-size:20px;font-weight:800;
   color:var(--text);padding:13px 4px}
 
-/* QTY DISPLAY (sotto stepper durante scarico) */
-.qty-avail{font-size:12px;color:var(--text3);font-weight:600;margin-top:6px;text-align:center}
-.qty-avail.ok{color:var(--green)}.qty-avail.warn{color:var(--orange)}.qty-avail.crit{color:var(--red)}
-
 /* BUTTONS */
-.btn{width:100%;padding:14px;border:none;border-radius:var(--rsm);
+.btn{width:100%;padding:14px;border:none;border-radius:var(--rs);
   font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;
-  cursor:pointer;transition:all .15s;margin-top:4px;letter-spacing:.01em}
-.btn:active{transform:scale(.98)}
+  cursor:pointer;transition:opacity .15s;margin-top:4px}
+.btn:active{opacity:.8}
 .btn-blue{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(59,130,246,.3)}
 .btn-green{background:var(--green);color:#fff;box-shadow:0 4px 14px rgba(34,197,94,.25)}
 .btn-red{background:var(--red);color:#fff;box-shadow:0 4px 14px rgba(239,68,68,.25)}
 .btn-ghost{background:var(--surface2);color:var(--text2);border:1px solid var(--border2)}
-.btn-sm{padding:8px 14px;border-radius:8px;font-size:12px;font-weight:700;
+.btn-sm{padding:8px 13px;border-radius:8px;font-size:12px;font-weight:700;
   border:1px solid var(--border2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;
-  width:auto;background:var(--surface2);color:var(--text2);transition:all .15s}
-.btn-sm:active{background:var(--border2)}
+  width:auto;background:var(--surface2);color:var(--text2);transition:opacity .15s}
+.btn-sm:active{opacity:.7}
+
+/* SCAN BIG BUTTON */
+.scan-btn{
+  width:100%;padding:20px;border:2px dashed var(--border2);border-radius:var(--r);
+  background:var(--surface);color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:12px}
+.scan-btn:active{background:var(--surface2);border-color:var(--blue)}
+.scan-btn-icon{font-size:32px}
+.scan-btn-label{font-size:15px;font-weight:800;color:var(--text)}
+.scan-btn-sub{font-size:12px;color:var(--text3)}
 
 /* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:200;
   display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(6px)}
 .overlay.active{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border2);border-radius:22px 22px 0 0;
   width:100%;max-width:480px;max-height:92vh;overflow-y:auto;
   padding:18px 18px calc(26px + env(safe-area-inset-bottom));
-  animation:su .28s cubic-bezier(.32,.72,0,1)}
+  animation:su .26s cubic-bezier(.32,.72,0,1)}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .mh{width:32px;height:3px;background:var(--border2);border-radius:2px;margin:0 auto 20px}
 .mt{font-size:19px;font-weight:800;margin-bottom:18px;letter-spacing:-.3px}
 
+/* SCANNER FULL SCREEN */
+.scan-screen{position:fixed;inset:0;background:#000;z-index:300;display:none;flex-direction:column}
+.scan-screen.active{display:flex}
+.scan-top{position:absolute;top:0;left:0;right:0;z-index:10;padding:52px 18px 20px;
+  background:linear-gradient(180deg,rgba(0,0,0,.9) 0%,transparent 100%);
+  display:flex;align-items:center;justify-content:space-between}
+.scan-top-title{color:#fff;font-size:18px;font-weight:800}
+.scan-x{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);
+  border:none;color:#fff;font-size:22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center}
+#scan-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#scan-canvas{position:absolute;inset:0;width:100%;height:100%;display:none}
+.scan-aim{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);
+  width:260px;height:180px;z-index:10;pointer-events:none}
+.sa-corner{position:absolute;width:32px;height:32px;border-color:#fff;border-style:solid}
+.sa-tl{top:0;left:0;border-width:3px 0 0 3px;border-radius:3px 0 0 0}
+.sa-tr{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 3px 0 0}
+.sa-bl{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 3px}
+.sa-br{bottom:0;right:0;border-width:0 3px 3px 0;border-radius:0 0 3px 0}
+.sa-line{position:absolute;top:50%;left:4px;right:4px;height:2px;
+  background:linear-gradient(90deg,transparent,#3b82f6,transparent);
+  animation:saline 1.8s ease-in-out infinite}
+@keyframes saline{0%,100%{top:10%}50%{top:90%}}
+.scan-bottom{position:absolute;bottom:0;left:0;right:0;z-index:10;
+  padding:20px 20px calc(24px + env(safe-area-inset-bottom));
+  background:linear-gradient(0deg,rgba(0,0,0,.92) 0%,transparent 100%)}
+.scan-hint{color:rgba(255,255,255,.65);font-size:13px;font-weight:600;
+  text-align:center;margin-bottom:14px}
+.scan-cancel{width:100%;padding:14px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);border-radius:12px;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+.scan-flash{position:absolute;inset:0;background:rgba(34,197,94,.35);
+  z-index:20;pointer-events:none;opacity:0;transition:opacity .08s}
+.scan-flash.on{opacity:1}
+.scan-status{position:absolute;top:50%;left:50%;transform:translate(-50%,70px);
+  z-index:10;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.15);
+  border-radius:20px;padding:7px 18px;color:#fff;font-size:12px;font-weight:700}
+
 /* TABS */
-.tabs{display:flex;background:var(--surface2);border-radius:var(--rsm);padding:3px;
+.tabs{display:flex;background:var(--surface2);border-radius:var(--rs);padding:3px;
   margin-bottom:14px;border:1px solid var(--border)}
 .tab{flex:1;padding:9px;border:none;background:transparent;border-radius:9px;
   font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;
@@ -199,35 +212,39 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
 .mi-qty{font-size:14px;font-weight:800;flex-shrink:0}
 .mi-qty.in{color:var(--green)}.mi-qty.out{color:var(--red)}.mi-qty.ann{color:var(--text3);text-decoration:line-through}
 .mi-meta{font-size:11px;color:var(--text3);margin-top:3px}
-
-/* GUIDE */
-.gs{display:flex;gap:13px;margin-bottom:17px;align-items:flex-start}
-.gn{width:26px;height:26px;border-radius:50%;background:var(--blue-dim);color:var(--blue);
-  font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.gt{font-size:14px;font-weight:700;margin-bottom:3px}.gg{font-size:13px;color:var(--text2);line-height:1.55}
+.ann-btn{font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;padding:2px 4px;flex-shrink:0}
 
 /* SEARCH */
 .sw{position:relative;margin-bottom:13px}
 .sw svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3)}
 .sw input{width:100%;padding:12px 13px 12px 40px;background:var(--surface);
-  border:1.5px solid var(--border);border-radius:var(--rsm);
-  font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+  border:1.5px solid var(--border);border-radius:var(--rs);
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--text);
+  outline:none;transition:border-color .2s}
 .sw input:focus{border-color:var(--blue)}
 .sw input::placeholder{color:var(--text3)}
 
-/* PILLS */
+/* PILL */
 .pill{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;
   font-size:9px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;flex-shrink:0}
 .pill.ok{background:var(--green-dim);color:var(--green)}
 .pill.warn{background:var(--orange-dim);color:var(--orange)}
 .pill.crit{background:var(--red-dim);color:var(--red)}
 
+/* SCAD BADGE */
+.sc-bd{display:inline-flex;align-items:center;padding:1px 6px;border-radius:5px;
+  font-size:9px;font-weight:700;margin-left:4px}
+.sc-bd.ok{background:var(--green-dim);color:var(--green)}
+.sc-bd.w{background:var(--orange-dim);color:var(--orange)}
+.sc-bd.c{background:var(--red-dim);color:var(--red)}
+
 /* TOAST */
-.toast{position:fixed;top:58px;left:50%;transform:translateX(-50%) translateY(-16px);
+.toast{position:fixed;top:58px;left:50%;transform:translateX(-50%) translateY(-14px);
   background:var(--surface);border:1px solid var(--border2);color:var(--text);
   padding:11px 20px;border-radius:40px;font-size:13px;font-weight:700;z-index:500;
-  transition:all .28s cubic-bezier(.32,.72,0,1);white-space:nowrap;
-  box-shadow:var(--sh2);opacity:0;pointer-events:none}
+  transition:all .26s cubic-bezier(.32,.72,0,1);white-space:nowrap;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);opacity:0;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 .toast.g{background:rgba(34,197,94,.15);border-color:rgba(34,197,94,.3);color:var(--green)}
 .toast.r{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.3);color:var(--red)}
@@ -235,59 +252,33 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
 
 /* DETAIL GRID */
 .dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
-.dc{background:var(--surface2);border-radius:var(--rsm);padding:11px 13px;border:1px solid var(--border)}
+.dc{background:var(--surface2);border-radius:var(--rs);padding:11px 13px;border:1px solid var(--border)}
 .dc-l{font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
 .dc-v{font-size:15px;font-weight:800}
-
+.sl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:8px}
 .empty{text-align:center;padding:36px 16px;color:var(--text3)}
 .empty-ic{font-size:40px;margin-bottom:10px}
 .empty p{font-size:13px;font-weight:600;line-height:1.6}
-.sl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;
-  margin-bottom:9px;margin-top:3px}
 
-/* SCAD BADGE inline */
-.sc-bd{display:inline-flex;align-items:center;padding:1px 6px;border-radius:5px;
-  font-size:9px;font-weight:700;margin-left:5px;flex-shrink:0}
-.sc-bd.ok{background:var(--green-dim);color:var(--green)}
-.sc-bd.w{background:var(--orange-dim);color:var(--orange)}
-.sc-bd.c{background:var(--red-dim);color:var(--red)}
-
-/* SCADENZA ALERT HEADER BADGE */
-.hd-badge{display:inline-flex;align-items:center;justify-content:center;
-  min-width:18px;height:18px;border-radius:9px;padding:0 5px;
-  background:var(--red);color:#fff;font-size:9px;font-weight:800;
-  position:absolute;top:-4px;right:-6px;box-shadow:0 0 6px var(--red-glow)}
-
-/* SELECT FARMACO con giacenza chiara */
-.sc-sel-info{display:none;margin-bottom:13px;padding:12px 14px;border-radius:var(--rsm);border:1px solid}
-.sc-sel-info.ok{background:var(--green-dim);border-color:rgba(34,197,94,.25)}
-.sc-sel-info.warn{background:var(--orange-dim);border-color:rgba(245,158,11,.25)}
-.sc-sel-info.crit{background:var(--red-dim);border-color:rgba(239,68,68,.25)}
-.sc-sel-title{font-size:14px;font-weight:700;margin-bottom:2px}
-.sc-sel-title.ok{color:var(--green)}.sc-sel-title.warn{color:var(--orange)}.sc-sel-title.crit{color:var(--red)}
-.sc-sel-sub{font-size:12px;color:var(--text2)}
-
-/* SEZIONE NUOVA: rettifica */
-.ann-btn{font-size:10px;color:var(--text3);background:none;border:none;cursor:pointer;
-  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;padding:2px 4px;flex-shrink:0}
-.ann-btn:hover{color:var(--red)}
+/* SCHEDA OPERAZIONE (dopo scan) */
+.op-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding:14px;background:var(--surface2);border-radius:var(--rs);border:1px solid var(--border);margin-bottom:16px}
+.op-stato{font-size:12px;font-weight:700;margin-top:4px}
+.op-stato.ok{color:var(--green)}.op-stato.warn{color:var(--orange)}.op-stato.crit{color:var(--red)}
+.op-giac{font-size:30px;font-weight:800;line-height:1;letter-spacing:-.5px}
+.op-giac.ok{color:var(--green)}.op-giac.warn{color:var(--orange)}.op-giac.crit{color:var(--red)}
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
 
-<!-- ══ PAGE HOME ══ -->
+<!-- ══ HOME ══ -->
 <div class="page active" id="page-home">
-  <div class="hd">
-    <div class="hd-row">
-      <div>
-        <div class="hd-title"><span class="hd-pulse"></span>PharmaGest</div>
-        <div class="hd-sub">Farmacia interna · Casa di Riposo</div>
-      </div>
-      <button class="btn-help" onclick="openGuide('home')">?</button>
-    </div>
-  </div>
+  <div class="hd"><div class="hd-row">
+    <div><div class="hd-title"><span class="hd-pulse"></span>PharmaGest</div><div class="hd-sub">Farmacia interna · Casa di Riposo</div></div>
+    <button class="btn-help" onclick="openGuide('home')">?</button>
+  </div></div>
   <div style="height:16px"></div>
   <div id="dash-alerts"></div>
   <div class="stats">
@@ -302,81 +293,67 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
   </div>
 </div>
 
-<!-- ══ PAGE FARMACI ══ -->
+<!-- ══ FARMACI ══ -->
 <div class="page" id="page-farmaci">
-  <div class="hd">
-    <div class="hd-row">
-      <div><div class="hd-title"><span class="hd-pulse"></span>Farmaci</div><div class="hd-sub">Catalogo prodotti</div></div>
-      <button class="btn-help" onclick="openGuide('farmaci')">?</button>
-    </div>
-  </div>
+  <div class="hd"><div class="hd-row">
+    <div><div class="hd-title"><span class="hd-pulse"></span>Farmaci</div><div class="hd-sub">Catalogo prodotti</div></div>
+    <button class="btn-help" onclick="openGuide('farmaci')">?</button>
+  </div></div>
   <div style="height:16px"></div>
+
+  <!-- SCANNER BUTTON — centro della pagina farmaci -->
+  <button class="scan-btn" onclick="openScanner()">
+    <div class="scan-btn-icon">📷</div>
+    <div class="scan-btn-label">Scansiona farmaco</div>
+    <div class="scan-btn-sub">Usa la fotocamera per trovare o aggiungere un farmaco</div>
+  </button>
+
   <div class="sw">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="15" height="15"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="search-f" placeholder="Cerca nome o dosaggio…" oninput="renderFList()">
+    <input type="text" id="search-f" placeholder="Oppure cerca manualmente…" oninput="renderFList()">
   </div>
-  <button class="btn btn-blue" onclick="openMF(null)" style="margin-bottom:12px">+ Aggiungi farmaco</button>
+  <button class="btn btn-ghost" onclick="openMF(null)" style="margin-bottom:12px;font-size:13px">+ Aggiungi farmaco manualmente</button>
   <div class="card" style="padding:4px 16px"><div id="f-list"></div></div>
 </div>
 
-<!-- ══ PAGE MOVIMENTI ══ -->
+<!-- ══ MOVIMENTI ══ -->
 <div class="page" id="page-mov">
-  <div class="hd">
-    <div class="hd-row">
-      <div><div class="hd-title"><span class="hd-pulse"></span>Movimenti</div><div class="hd-sub">Carico e scarico</div></div>
-      <button class="btn-help" onclick="openGuide('mov')">?</button>
-    </div>
-  </div>
+  <div class="hd"><div class="hd-row">
+    <div><div class="hd-title"><span class="hd-pulse"></span>Movimenti</div><div class="hd-sub">Carico e scarico manuale</div></div>
+    <button class="btn-help" onclick="openGuide('mov')">?</button>
+  </div></div>
   <div style="height:16px"></div>
-  <!-- SCAN BTN -->
-  <button class="btn btn-blue" onclick="openScanner('scarico')" style="margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18" style="flex-shrink:0"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><path d="M21 16h-3v3M21 21h-1M16 16v1M11 3v4M11 11v1M3 11h4M11 16v1M16 11h5M16 21h1"/></svg>
-    Scansiona codice a barre / QR
-  </button>
   <div class="tabs">
     <button class="tab active" onclick="switchTab('sc',this)">⬇ Scarico</button>
     <button class="tab" onclick="switchTab('ca',this)">⬆ Carico</button>
   </div>
 
-  <!-- SCARICO -->
   <div id="t-sc">
     <div class="card">
-      <div class="ct"><div class="ctd" style="background:var(--red)"></div>Registra somministrazione</div>
-      <div class="field">
-        <label>Farmaco</label>
-        <select id="sc-f" onchange="updateScInfo()"><option value="">— Seleziona farmaco —</option></select>
+      <div class="ct"><div class="ctd" style="background:var(--red)"></div>Somministrazione</div>
+      <div class="field"><label>Farmaco</label>
+        <select id="sc-f" onchange="updateScInfo()"><option value="">— Seleziona —</option></select>
       </div>
-      <!-- BOX INFO GIACENZA -->
-      <div class="sc-sel-info" id="sc-info">
-        <div class="sc-sel-title" id="sc-info-t"></div>
-        <div class="sc-sel-sub" id="sc-info-s"></div>
-      </div>
-      <div class="field">
-        <label>Quantità somministrata</label>
+      <div id="sc-info" style="display:none;padding:11px 13px;border-radius:var(--rs);margin-bottom:13px;border:1px solid"></div>
+      <div class="field"><label>Quantità</label>
         <div class="stepper">
           <button class="sb" onclick="stepQty('sc-q',-1)">−</button>
           <input type="number" id="sc-q" value="1" min="1" oninput="capScQty()">
           <button class="sb" onclick="stepQty('sc-q',1)">+</button>
         </div>
       </div>
-      <div class="field">
-        <label>Note (opzionale)</label>
-        <input type="text" id="sc-note" placeholder="es. Camera 12, sig. Rossi">
-      </div>
+      <div class="field"><label>Note</label><input type="text" id="sc-note" placeholder="es. Camera 12, sig. Rossi"></div>
       <button class="btn btn-red" onclick="doScarico()">⬇ Registra scarico</button>
     </div>
   </div>
 
-  <!-- CARICO -->
   <div id="t-ca" style="display:none">
     <div class="card">
-      <div class="ct"><div class="ctd" style="background:var(--green)"></div>Registra consegna merce</div>
-      <div class="field">
-        <label>Farmaco</label>
-        <select id="ca-f"><option value="">— Seleziona farmaco —</option></select>
+      <div class="ct"><div class="ctd" style="background:var(--green)"></div>Consegna merce</div>
+      <div class="field"><label>Farmaco</label>
+        <select id="ca-f"><option value="">— Seleziona —</option></select>
       </div>
-      <div class="field">
-        <label>Quantità ricevuta</label>
+      <div class="field"><label>Quantità ricevuta</label>
         <div class="stepper">
           <button class="sb" onclick="stepQty('ca-q',-1)">−</button>
           <input type="number" id="ca-q" value="1" min="1">
@@ -384,7 +361,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
         </div>
       </div>
       <div class="fr">
-        <div class="field"><label>N° Lotto</label><input type="text" id="ca-lotto" placeholder="es. ABC123"></div>
+        <div class="field"><label>N° Lotto</label><input type="text" id="ca-lotto" placeholder="ABC123"></div>
         <div class="field"><label>Scadenza lotto</label><input type="month" id="ca-scad"></div>
       </div>
       <div class="field"><label>Note</label><input type="text" id="ca-note" placeholder="es. DDT 00123"></div>
@@ -392,34 +369,22 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
     </div>
   </div>
 
-  <!-- STORICO -->
   <div class="card">
     <div class="ct"><div class="ctd" style="background:var(--text3)"></div>Ultimi movimenti</div>
     <div id="stor-list"></div>
   </div>
 </div>
 
-<!-- ══ PAGE REPORT ══ -->
+<!-- ══ REPORT ══ -->
 <div class="page" id="page-report">
-  <div class="hd">
-    <div class="hd-row">
-      <div><div class="hd-title"><span class="hd-pulse"></span>Report</div><div class="hd-sub">Analisi e scadenze</div></div>
-      <button class="btn-help" onclick="openGuide('report')">?</button>
-    </div>
-  </div>
+  <div class="hd"><div class="hd-row">
+    <div><div class="hd-title"><span class="hd-pulse"></span>Report</div><div class="hd-sub">Analisi e scadenze</div></div>
+    <button class="btn-help" onclick="openGuide('report')">?</button>
+  </div></div>
   <div style="height:16px"></div>
-  <div class="card">
-    <div class="ct"><div class="ctd" style="background:var(--orange)"></div>Scadenze entro 90 giorni</div>
-    <div id="r-scad"></div>
-  </div>
-  <div class="card">
-    <div class="ct"><div class="ctd" style="background:var(--blue)"></div>Consumo medio (ultimi 90 giorni)</div>
-    <div id="r-cons"></div>
-  </div>
-  <div class="card">
-    <div class="ct"><div class="ctd" style="background:var(--red)"></div>Farmaci da riordinare</div>
-    <div id="r-rior"></div>
-  </div>
+  <div class="card"><div class="ct"><div class="ctd" style="background:var(--orange)"></div>Scadenze entro 90 giorni</div><div id="r-scad"></div></div>
+  <div class="card"><div class="ct"><div class="ctd" style="background:var(--blue)"></div>Consumo medio (ultimi 90 gg)</div><div id="r-cons"></div></div>
+  <div class="card"><div class="ct"><div class="ctd" style="background:var(--red)"></div>Farmaci da riordinare</div><div id="r-rior"></div></div>
 </div>
 
 <!-- ══ NAV ══ -->
@@ -438,41 +403,65 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
   </button>
 </nav>
 
+<!-- ══ SCANNER FULLSCREEN ══ -->
+<div class="scan-screen" id="scan-screen">
+  <div class="scan-top">
+    <div class="scan-top-title">📷 Scansiona farmaco</div>
+    <button class="scan-x" onclick="closeScanner()">✕</button>
+  </div>
+  <video id="scan-video" playsinline autoplay muted></video>
+  <canvas id="scan-canvas"></canvas>
+  <div class="scan-aim">
+    <div class="sa-corner sa-tl"></div><div class="sa-corner sa-tr"></div>
+    <div class="sa-corner sa-bl"></div><div class="sa-corner sa-br"></div>
+    <div class="sa-line"></div>
+  </div>
+  <div class="scan-status" id="scan-status">Inquadra il codice a barre</div>
+  <div class="scan-flash" id="scan-flash"></div>
+  <div class="scan-bottom">
+    <div class="scan-hint">Avvicina la fotocamera al codice sulla confezione</div>
+    <button class="scan-cancel" onclick="closeScanner()">Annulla</button>
+  </div>
+</div>
+
 <!-- ══ MODAL FARMACO ══ -->
 <div class="overlay" id="m-farmaco">
   <div class="modal">
     <div class="mh"></div>
     <div class="mt" id="mf-title">Nuovo farmaco</div>
-    <button class="btn btn-ghost" onclick="openScanner('registra')" style="margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;padding:11px">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="16" height="16"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><path d="M21 16h-3v3M21 21h-1M16 16v1M11 3v4M11 11v1M3 11h4M11 16v1M16 11h5M16 21h1"/></svg>
-      Scansiona per assegnare codice al farmaco
-    </button>
-    <div id="mf-barcode-preview" style="display:none;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rsm);padding:10px 13px;margin-bottom:10px;font-size:12px;color:var(--blue);font-weight:600"></div>
+    <div id="mf-bc-preview" style="display:none;background:var(--blue-dim);border-radius:var(--rs);padding:9px 12px;margin-bottom:12px;font-size:12px;color:var(--blue);border:1px solid rgba(59,130,246,.2)"></div>
     <div class="field"><label>Nome farmaco *</label><input type="text" id="mf-nome" placeholder="es. Tachipirina 500mg"></div>
     <div class="fr">
       <div class="field"><label>Dosaggio *</label><input type="text" id="mf-dos" placeholder="es. 500mg"></div>
-      <div class="field">
-        <label>Unità di misura</label>
+      <div class="field"><label>Unità</label>
         <select id="mf-un">
           <option value="compresse">Compresse</option>
           <option value="capsule">Capsule</option>
           <option value="fiale">Fiale</option>
           <option value="buste">Buste</option>
           <option value="flaconi">Flaconi</option>
-          <option value="ml">Millilitri (ml)</option>
-          <option value="grammi">Grammi (g)</option>
+          <option value="ml">Millilitri</option>
+          <option value="grammi">Grammi</option>
           <option value="pezzi">Pezzi</option>
         </select>
       </div>
     </div>
     <div class="fr">
       <div class="field"><label>Giacenza iniziale</label><input type="number" id="mf-giac" value="0" min="0"></div>
-      <div class="field"><label>Soglia minima *</label><input type="number" id="mf-sog" value="10" min="1" placeholder="es. 10"></div>
+      <div class="field"><label>Soglia minima *</label><input type="number" id="mf-sog" value="10" min="1"></div>
     </div>
-    <div class="field"><label>📅 Scadenza farmaco</label><input type="month" id="mf-scad"></div>
-    <div class="field"><label>Note</label><input type="text" id="mf-note" placeholder="es. Conservare in frigo, stupefacente…"></div>
+    <div class="field"><label>📅 Scadenza</label><input type="month" id="mf-scad"></div>
+    <div class="field"><label>Note</label><input type="text" id="mf-note" placeholder="es. Conservare in frigo"></div>
     <button class="btn btn-blue" id="mf-btn" onclick="salvaF()">💾 Salva farmaco</button>
     <button class="btn btn-ghost" onclick="closeM('m-farmaco')" style="margin-top:8px">Annulla</button>
+  </div>
+</div>
+
+<!-- ══ MODAL OPERAZIONE (dopo scan) ══ -->
+<div class="overlay" id="m-op">
+  <div class="modal">
+    <div class="mh"></div>
+    <div id="m-op-c"></div>
   </div>
 </div>
 
@@ -500,7 +489,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
   <div class="modal">
     <div class="mh"></div>
     <div class="mt">Eliminare il farmaco?</div>
-    <p style="color:var(--text2);font-size:14px;margin-bottom:22px;line-height:1.6">Questa azione è irreversibile. I movimenti storici rimarranno salvati.</p>
+    <p style="color:var(--text2);font-size:14px;margin-bottom:22px;line-height:1.6">Azione irreversibile. I movimenti storici rimarranno salvati.</p>
     <div class="btn-row">
       <button class="btn btn-ghost" onclick="closeM('m-del')">Annulla</button>
       <button class="btn btn-red" id="btn-del-ok">Elimina</button>
@@ -520,112 +509,76 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Plus J
     </div>
     <div class="btn-row">
       <button class="btn btn-ghost" onclick="closeM('m-ann')">Annulla</button>
-      <button class="btn btn-red" id="btn-ann-ok">Conferma annullamento</button>
+      <button class="btn btn-red" id="btn-ann-ok">Conferma</button>
     </div>
   </div>
 </div>
 
-<!-- ══ SCANNER OVERLAY ══ -->
-<div class="scan-overlay" id="scan-overlay">
-  <div class="scan-header">
-    <div class="scan-title" id="scan-title-label">Scansiona farmaco</div>
-    <button class="scan-close" onclick="closeScanner()">✕</button>
-  </div>
-  <video id="scan-video" playsinline autoplay muted></video>
-  <div class="scan-frame">
-    <div class="scan-line"></div>
-    <div class="scan-frame-bl"></div>
-    <div class="scan-frame-br"></div>
-  </div>
-  <div class="scan-mode-badge" id="scan-mode-badge">Scarico veloce</div>
-  <div class="scan-result-flash" id="scan-flash"></div>
-  <div class="scan-hint">
-    <div class="scan-hint-text">Inquadra il codice a barre o QR sulla confezione</div>
-    <button class="scan-manual-btn" onclick="closeScanner()">✏️ Inserisci manualmente</button>
+<!-- ══ MODAL CODICE NON TROVATO ══ -->
+<div class="overlay" id="m-notfound">
+  <div class="modal">
+    <div class="mh"></div>
+    <div class="mt">Codice non riconosciuto</div>
+    <div id="m-nf-c"></div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════
-// STORAGE
-// ══════════════════════════════
+// ═══════════════════ STORAGE ═══════════════════
 const LS={
   get:(k)=>{try{return JSON.parse(localStorage.getItem(k))||[]}catch{return[]}},
   set:(k,v)=>localStorage.setItem(k,JSON.stringify(v))
 };
-let FF=LS.get('pg_f');   // farmaci
-let MM=LS.get('pg_m');   // movimenti
-let _eid=null;            // editingId
+let FF=LS.get('pg_f');
+let MM=LS.get('pg_m');
+let _eid=null;
 
-// ══════════════════════════════
-// UTILS
-// ══════════════════════════════
+// ═══════════════════ UTILS ═══════════════════
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2);
 const now=()=>new Date().toISOString();
-
-// Formatta "compresse" → "compresse", mantiene già leggibile
-// ma per quantità: "15 compresse", "3 fiale" ecc.
-function qLabel(q,unita){
-  return `${q} ${unita}`;
-}
 
 function fmtDT(iso){
   if(!iso)return'—';
   const d=new Date(iso);
-  return d.toLocaleDateString('it-IT',{day:'2-digit',month:'short'})+
-         ' '+d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleDateString('it-IT',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
 }
-
-// Calcola giacenza: sempre dalla somma dei movimenti validi (non annullati)
 function giac(fid){
-  const id=(typeof fid==='object'&&fid!==null)?fid.id:fid;
-  return MM
-    .filter(m=>m.fid===id && !m.ann)
-    .reduce((s,m)=>s+(m.tipo==='carico'?Number(m.qty):-Number(m.qty)),0);
+  const id=(typeof fid==='object'&&fid)?fid.id:fid;
+  return MM.filter(m=>m.fid===id&&!m.ann).reduce((s,m)=>s+(m.tipo==='carico'?Number(m.qty):-Number(m.qty)),0);
 }
-
-// Stato: ok/warn/crit
 function stato(f){
-  const g=giac(f.id), s=Number(f.soglia)||10;
+  const g=giac(f.id),s=Number(f.soglia)||10;
   if(g<=0)return'crit';
-  if(g<=s*0.5)return'crit';
+  if(g<=s*.5)return'crit';
   if(g<=s)return'warn';
   return'ok';
 }
-
-// Scadenza info da "YYYY-MM"
 function scadInfo(ym){
   if(!ym)return null;
   const d=new Date(ym+'-01');
-  d.setMonth(d.getMonth()+1);d.setDate(0);// fine mese
+  d.setMonth(d.getMonth()+1);d.setDate(0);
   const oggi=new Date();oggi.setHours(23,59,59,0);
-  const diff=Math.ceil((d-oggi)/(1000*60*60*24));
-  return{diff,label:ym};
+  return{diff:Math.ceil((d-oggi)/(864e5))};
 }
 function scadBadge(ym){
   if(!ym)return'';
   const i=scadInfo(ym);if(!i)return'';
-  if(i.diff<0)return`<span class="sc-bd c">SCADUTO</span>`;
-  if(i.diff<=30)return`<span class="sc-bd w">Scad.&nbsp;${i.diff}gg</span>`;
-  if(i.diff<=90)return`<span class="sc-bd w">Scad.&nbsp;${Math.ceil(i.diff/30)}mesi</span>`;
-  return`<span class="sc-bd ok">Scad.&nbsp;OK</span>`;
+  if(i.diff<0)return'<span class="sc-bd c">SCADUTO</span>';
+  if(i.diff<=30)return'<span class="sc-bd w">Scad.&nbsp;'+i.diff+'gg</span>';
+  if(i.diff<=90)return'<span class="sc-bd w">Scad.&nbsp;'+Math.ceil(i.diff/30)+'mesi</span>';
+  return'<span class="sc-bd ok">Scad.&nbsp;OK</span>';
 }
 
-// Toast
 let _tid;
 function toast(msg,type=''){
   const t=document.getElementById('toast');
   clearTimeout(_tid);
-  t.textContent=msg;t.className='toast '+type;
-  t.classList.add('show');
+  t.textContent=msg;t.className='toast '+type;t.classList.add('show');
   _tid=setTimeout(()=>t.classList.remove('show'),2800);
 }
-
 function closeM(id){document.getElementById(id).classList.remove('active')}
 
-// ══════════════════════════════
-// NAV
-// ══════════════════════════════
+// ═══════════════════ NAV ═══════════════════
 function showPage(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
@@ -634,9 +587,7 @@ function showPage(id,btn){
   ({home:renderHome,farmaci:renderFList,mov:()=>{fillSel();renderStor();},report:renderReport}[id]||renderHome)();
 }
 
-// ══════════════════════════════
-// HOME
-// ══════════════════════════════
+// ═══════════════════ HOME ═══════════════════
 function renderHome(){
   let ok=0,warn=0,crit=0;
   FF.forEach(f=>{const s=stato(f);s==='ok'?ok++:s==='warn'?warn++:crit++});
@@ -644,44 +595,27 @@ function renderHome(){
   document.getElementById('st-ok').textContent=ok;
   document.getElementById('st-warn').textContent=warn;
   document.getElementById('st-crit').textContent=crit;
-
   const al=document.getElementById('dash-alerts');al.innerHTML='';
-  const cL=FF.filter(f=>stato(f)==='crit');
-  const wL=FF.filter(f=>stato(f)==='warn');
-  if(cL.length)al.innerHTML+=`<div class="alert r"><div class="al-ico">🚨</div><div><div class="al-title">${cL.length} farmaco/i con scorta critica</div><div class="al-sub">${cL.map(f=>f.nome).join(', ')}</div></div></div>`;
-  if(wL.length)al.innerHTML+=`<div class="alert o"><div class="al-ico">⚠️</div><div><div class="al-title">${wL.length} farmaco/i da riordinare</div><div class="al-sub">${wL.map(f=>f.nome).join(', ')}</div></div></div>`;
-
+  FF.filter(f=>stato(f)==='crit').length&&(al.innerHTML+=`<div class="alert r"><div class="al-ico">🚨</div><div><div class="al-title">${FF.filter(f=>stato(f)==='crit').length} farmaco/i critici</div><div class="al-sub">${FF.filter(f=>stato(f)==='crit').map(f=>f.nome).join(', ')}</div></div></div>`);
+  FF.filter(f=>stato(f)==='warn').length&&(al.innerHTML+=`<div class="alert o"><div class="al-ico">⚠️</div><div><div class="al-title">${FF.filter(f=>stato(f)==='warn').length} da riordinare</div><div class="al-sub">${FF.filter(f=>stato(f)==='warn').map(f=>f.nome).join(', ')}</div></div></div>`);
   const dl=document.getElementById('dash-list');
-  if(!FF.length){dl.innerHTML=`<div class="empty"><div class="empty-ic">📦</div><p>Nessun farmaco.<br>Vai su "Farmaci" per aggiungerne uno.</p></div>`;return;}
-  const sorted=[...FF].sort((a,b)=>{const o={crit:0,warn:1,ok:2};return o[stato(a)]-o[stato(b)]});
-  dl.innerHTML=sorted.map(f=>{
+  if(!FF.length){dl.innerHTML='<div class="empty"><div class="empty-ic">📦</div><p>Nessun farmaco.<br>Vai su "Farmaci" per aggiungerne uno.</p></div>';return;}
+  dl.innerHTML=[...FF].sort((a,b)=>{const o={crit:0,warn:1,ok:2};return o[stato(a)]-o[stato(b)]}).map(f=>{
     const g=giac(f.id),s=stato(f);
     return`<div class="fi" onclick="apriDet('${f.id}')" style="cursor:pointer">
       <div class="fib ${s}"></div>
-      <div class="fi-body">
-        <div class="fi-name">${f.nome}${scadBadge(f.scad)}</div>
-        <div class="fi-sub">${f.dos} · soglia: ${f.soglia} ${f.un}</div>
-      </div>
-      <div class="fi-right">
-        <div class="fiq ${s}">${g}</div>
-        <div class="fiu">${f.un}</div>
-      </div>
+      <div class="fi-body"><div class="fi-name">${f.nome}${scadBadge(f.scad)}</div><div class="fi-sub">${f.dos} · soglia: ${f.soglia} ${f.un}</div></div>
+      <div class="fi-right"><div class="fiq ${s}">${g}</div><div class="fiu">${f.un}</div></div>
     </div>`;
   }).join('');
 }
 
-// ══════════════════════════════
-// FARMACI
-// ══════════════════════════════
+// ═══════════════════ FARMACI ═══════════════════
 function renderFList(){
   const q=(document.getElementById('search-f')?.value||'').toLowerCase();
   const fil=FF.filter(f=>f.nome.toLowerCase().includes(q)||f.dos.toLowerCase().includes(q));
   const el=document.getElementById('f-list');
-  if(!fil.length){
-    el.innerHTML=q?`<div class="empty" style="padding:20px 0"><p>Nessun risultato per "${q}"</p></div>`
-                  :`<div class="empty"><div class="empty-ic">💊</div><p>Nessun farmaco.<br>Aggiungine uno!</p></div>`;
-    return;
-  }
+  if(!fil.length){el.innerHTML=q?`<div class="empty" style="padding:20px 0"><p>Nessun risultato per "${q}"</p></div>`:'<div class="empty"><div class="empty-ic">💊</div><p>Nessun farmaco.<br>Scansiona o aggiungine uno!</p></div>';return;}
   el.innerHTML=fil.map(f=>{
     const g=giac(f.id),s=stato(f);
     return`<div class="fi">
@@ -691,10 +625,7 @@ function renderFList(){
         <div class="fi-sub">${f.dos}${f.note?' · '+f.note:''}</div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-        <div class="fi-right">
-          <div class="fiq ${s}">${g}</div>
-          <div class="fiu">${f.un}</div>
-        </div>
+        <div class="fi-right"><div class="fiq ${s}">${g}</div><div class="fiu">${f.un}</div></div>
         <button class="btn-sm" onclick="openMF('${f.id}')">✏️</button>
       </div>
     </div>`;
@@ -703,8 +634,11 @@ function renderFList(){
 
 function openMF(id){
   _eid=id||null;
+  window._tmpBC='';
   const f=id?FF.find(x=>x.id===id):null;
   document.getElementById('mf-title').textContent=f?'Modifica farmaco':'Nuovo farmaco';
+  document.getElementById('mf-bc-preview').style.display='none';
+  document.getElementById('mf-bc-preview').textContent='';
   document.getElementById('mf-nome').value=f?f.nome:'';
   document.getElementById('mf-dos').value=f?f.dos:'';
   document.getElementById('mf-un').value=f?f.un:'compresse';
@@ -717,52 +651,67 @@ function openMF(id){
   document.getElementById('m-farmaco').classList.add('active');
 }
 
+function salvaF(){
+  const nome=document.getElementById('mf-nome').value.trim();
+  const dos=document.getElementById('mf-dos').value.trim();
+  const un=document.getElementById('mf-un').value;
+  const soglia=Number(document.getElementById('mf-sog').value)||10;
+  const scad=document.getElementById('mf-scad').value||'';
+  const note=document.getElementById('mf-note').value.trim();
+  const bc=window._tmpBC||'';
+  if(!nome||!dos){toast('Inserisci nome e dosaggio','r');return;}
+  if(_eid){
+    const i=FF.findIndex(f=>f.id===_eid);
+    if(i>-1)FF[i]={...FF[i],nome,dos,un,soglia,scad,note,bc:bc||FF[i].bc||''};
+  } else {
+    const g=Number(document.getElementById('mf-giac').value)||0;
+    const id=uid();
+    FF.push({id,nome,dos,un,soglia,scad,note,bc});
+    if(g>0){MM.push({id:uid(),fid:id,tipo:'carico',qty:g,data:now(),note:'Giacenza iniziale',lotto:'-',lscad:'',ann:false});LS.set('pg_m',MM);}
+  }
+  LS.set('pg_f',FF);
+  window._tmpBC='';
+  closeM('m-farmaco');
+  renderFList();
+  toast(_eid?'Farmaco aggiornato ✓':'Farmaco aggiunto ✓','g');
+}
 
-// ══════════════════════════════
-// DETTAGLIO FARMACO
-// ══════════════════════════════
+// ═══════════════════ DETTAGLIO ═══════════════════
 function apriDet(id){
   const f=FF.find(x=>x.id===id);if(!f)return;
   const g=giac(f.id),s=stato(f);
   const sc={ok:'var(--green)',warn:'var(--orange)',crit:'var(--red)'};
   const sl={ok:'Scorta OK',warn:'Da riordinare',crit:'Critico'};
   const si=f.scad?scadInfo(f.scad):null;
-  const scadTxt=si?`${f.scad}${si.diff<0?' · SCADUTO':' · tra '+si.diff+' gg'}`:'-';
-  const mov=MM.filter(m=>m.fid===id).sort((a,b)=>new Date(b.data)-new Date(a.data)).slice(0,5);
-  const movH=mov.length?mov.map(m=>`
-    <div class="mi">
-      <div class="mi-row">
-        <span class="mi-name">${m.ann?'🚫 Annullato: ':''}${m.tipo==='carico'?'⬆ Carico':'⬇ Scarico'}</span>
-        <span class="mi-qty ${m.ann?'ann':m.tipo==='carico'?'in':'out'}">${m.tipo==='carico'?'+':'-'}${m.qty} ${f.un}</span>
-      </div>
-      <div class="mi-meta">${fmtDT(m.data)}${m.note?' · '+m.note:''}${m.ann?' · Motivo: '+m.annNote:''}</div>
-    </div>`).join(''):`<div style="color:var(--text3);font-size:13px;padding:8px 0">Nessun movimento</div>`;
-  // consumo
+  const scadTxt=si?f.scad+(si.diff<0?' · SCADUTO':' · tra '+si.diff+' gg'):'-';
   const nov=new Date();nov.setDate(nov.getDate()-30);
-  const sc30=MM.filter(m=>m.fid===id&&m.tipo==='scarico'&&!m.ann&&new Date(m.data)>=nov);
-  const cm=sc30.reduce((s,m)=>s+Number(m.qty),0)/30;
+  const cm=MM.filter(m=>m.fid===id&&m.tipo==='scarico'&&!m.ann&&new Date(m.data)>=nov).reduce((s,m)=>s+Number(m.qty),0)/30;
   const ggRim=cm>0?Math.floor(g/cm):null;
+  const movH=MM.filter(m=>m.fid===id).sort((a,b)=>new Date(b.data)-new Date(a.data)).slice(0,5).map(m=>`
+    <div class="mi"><div class="mi-row">
+      <span class="mi-name">${m.ann?'🚫 ':''} ${m.tipo==='carico'?'⬆ Carico':'⬇ Scarico'}</span>
+      <span class="mi-qty ${m.ann?'ann':m.tipo==='carico'?'in':'out'}">${m.tipo==='carico'?'+':'-'}${m.qty} ${f.un}</span>
+    </div><div class="mi-meta">${fmtDT(m.data)}${m.note?' · '+m.note:''}${m.ann?' · '+m.annNote:''}</div></div>`).join('')||'<div style="color:var(--text3);font-size:13px;padding:8px 0">Nessun movimento</div>';
 
   document.getElementById('m-det-c').innerHTML=`
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px">
-      <div style="min-width:0">
-        <div style="font-size:21px;font-weight:800;letter-spacing:-.3px;word-break:break-word">${f.nome}</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:3px">${f.dos}</div>
-      </div>
+      <div><div style="font-size:21px;font-weight:800;letter-spacing:-.3px">${f.nome}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:3px">${f.dos}</div></div>
       <div style="text-align:right;flex-shrink:0">
-        <div style="font-size:36px;font-weight:800;color:${sc[s]};line-height:1;letter-spacing:-.5px">${g}</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:2px">${f.un}</div>
+        <div style="font-size:36px;font-weight:800;color:${sc[s]};line-height:1">${g}</div>
+        <div style="font-size:11px;color:var(--text3)">${f.un}</div>
       </div>
     </div>
     <div class="dg">
-      <div class="dc"><div class="dc-l">Stato scorta</div><div class="dc-v" style="color:${sc[s]};font-size:13px">${sl[s]}</div></div>
-      <div class="dc"><div class="dc-l">Soglia minima</div><div class="dc-v">${f.soglia} ${f.un}</div></div>
+      <div class="dc"><div class="dc-l">Stato</div><div class="dc-v" style="color:${sc[s]};font-size:13px">${sl[s]}</div></div>
+      <div class="dc"><div class="dc-l">Soglia min.</div><div class="dc-v">${f.soglia} ${f.un}</div></div>
       <div class="dc"><div class="dc-l">Scadenza</div><div class="dc-v" style="font-size:12px">${scadTxt}</div></div>
-      <div class="dc"><div class="dc-l">Consumo/giorno</div><div class="dc-v" style="font-size:13px">${cm>0?'~'+cm.toFixed(1)+' '+f.un:'N/D'}</div></div>
+      <div class="dc"><div class="dc-l">Consumo/gg</div><div class="dc-v" style="font-size:13px">${cm>0?'~'+cm.toFixed(1)+' '+f.un:'N/D'}</div></div>
     </div>
-    ${ggRim!==null?`<div style="background:var(--surface2);border-radius:var(--rsm);padding:10px 13px;margin-bottom:13px;font-size:13px;color:var(--text2);border:1px solid var(--border)">⏱ Esaurimento stimato: <strong style="color:${sc[s]}">tra ${ggRim} giorni</strong></div>`:''}
-    ${f.note?`<div style="background:var(--blue-dim);border-radius:var(--rsm);padding:9px 12px;margin-bottom:13px;font-size:12px;color:var(--blue);border:1px solid rgba(59,130,246,.2)">📌 ${f.note}</div>`:''}
-    <div class="sl">Ultimi 5 movimenti</div>
+    ${ggRim!==null?`<div style="background:var(--surface2);border-radius:var(--rs);padding:10px 13px;margin-bottom:13px;font-size:13px;color:var(--text2);border:1px solid var(--border)">⏱ Esaurimento stimato: <strong style="color:${sc[s]}">tra ${ggRim} giorni</strong></div>`:''}
+    ${f.note?`<div style="background:var(--blue-dim);border-radius:var(--rs);padding:9px 12px;margin-bottom:13px;font-size:12px;color:var(--blue);border:1px solid rgba(59,130,246,.2)">📌 ${f.note}</div>`:''}
+    ${f.bc?`<div style="background:var(--surface2);border-radius:var(--rs);padding:8px 12px;margin-bottom:13px;font-size:11px;color:var(--text3);border:1px solid var(--border)">📦 Codice: ${f.bc}</div>`:''}
+    <div class="sl">Ultimi movimenti</div>
     ${movH}
     <div class="btn-row" style="margin-top:18px">
       <button class="btn btn-ghost" onclick="chiediElimina('${id}')">🗑 Elimina</button>
@@ -775,91 +724,68 @@ function chiediElimina(id){
   closeM('m-det');
   document.getElementById('btn-del-ok').onclick=()=>{
     FF=FF.filter(f=>f.id!==id);LS.set('pg_f',FF);
-    closeM('m-del');renderFList();
-    toast('Farmaco eliminato','r');
+    closeM('m-del');renderFList();toast('Farmaco eliminato','r');
   };
   document.getElementById('m-del').classList.add('active');
 }
 
-// ══════════════════════════════
-// MOVIMENTI
-// ══════════════════════════════
+// ═══════════════════ MOVIMENTI ═══════════════════
 function fillSel(){
-  const opts=FF.map(f=>{
-    const g=giac(f.id);
-    return`<option value="${f.id}">${f.nome} · ${f.dos} — ${g} ${f.un} disponibili</option>`;
-  }).join('');
-  const ph='<option value="">— Seleziona farmaco —</option>';
+  const opts=FF.map(f=>`<option value="${f.id}">${f.nome} · ${f.dos} — ${giac(f.id)} ${f.un}</option>`).join('');
+  const ph='<option value="">— Seleziona —</option>';
   document.getElementById('sc-f').innerHTML=ph+opts;
   document.getElementById('ca-f').innerHTML=ph+opts;
   updateScInfo();
 }
-
 function switchTab(tab,btn){
-  document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+  document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
   document.getElementById('t-sc').style.display=tab==='sc'?'block':'none';
   document.getElementById('t-ca').style.display=tab==='ca'?'block':'none';
 }
-
 function updateScInfo(){
   const fid=document.getElementById('sc-f').value;
   const box=document.getElementById('sc-info');
-  const ti=document.getElementById('sc-info-t');
-  const si=document.getElementById('sc-info-s');
   if(!fid){box.style.display='none';return;}
   const f=FF.find(x=>x.id===fid);if(!f){box.style.display='none';return;}
-  const g=giac(f.id);
-  const s=stato(f);
-  box.className='sc-sel-info '+s;box.style.display='block';
-  ti.className='sc-sel-title '+s;
-  ti.textContent=`Disponibili: ${g} ${f.un}`;
-  si.textContent=s==='ok'?'Scorta sufficiente':s==='warn'?'⚠️ Scorte basse — considera il riordino':'🚨 Scorta critica — riordino urgente';
-  // cap stepper
-  const scq=document.getElementById('sc-q');
-  if(Number(scq.value)>g)scq.value=Math.max(1,g)||1;
+  const g=giac(f.id),s=stato(f);
+  const col={ok:'var(--green)',warn:'var(--orange)',crit:'var(--red)'};
+  const bc={ok:'rgba(34,197,94,.13)',warn:'rgba(245,158,11,.13)',crit:'rgba(239,68,68,.13)'};
+  const brd={ok:'rgba(34,197,94,.25)',warn:'rgba(245,158,11,.25)',crit:'rgba(239,68,68,.25)'};
+  box.style.display='block';
+  box.style.background=bc[s];box.style.borderColor=brd[s];
+  box.innerHTML=`<span style="font-size:14px;font-weight:800;color:${col[s]}">${g} ${f.un} disponibili</span><span style="font-size:12px;color:var(--text2);margin-left:8px">${s==='ok'?'Scorta OK':s==='warn'?'⚠️ Basse':'🚨 Critica'}</span>`;
+  const el=document.getElementById('sc-q');
+  if(Number(el.value)>g)el.value=Math.max(1,g);
 }
-
-function stepQty(inputId,delta){
-  const el=document.getElementById(inputId);
-  const newV=Math.max(1,(Number(el.value)||1)+delta);
-  // se è scarico, non superare giacenza
-  if(inputId==='sc-q'){
-    const fid=document.getElementById('sc-f').value;
-    if(fid){const g=giac(fid);el.value=Math.min(newV,Math.max(1,g));return;}
-  }
-  el.value=newV;
+function stepQty(id,d){
+  const el=document.getElementById(id);
+  let v=Math.max(1,(Number(el.value)||1)+d);
+  if(id==='sc-q'){const fid=document.getElementById('sc-f').value;if(fid)v=Math.min(v,Math.max(1,giac(fid)));}
+  el.value=v;
 }
 function capScQty(){
-  const fid=document.getElementById('sc-f').value;
-  if(!fid)return;
-  const g=giac(fid);
+  const fid=document.getElementById('sc-f').value;if(!fid)return;
   const el=document.getElementById('sc-q');
-  if(Number(el.value)>g)el.value=Math.max(1,g)||1;
+  if(Number(el.value)>giac(fid))el.value=Math.max(1,giac(fid));
 }
-
 function doScarico(){
   const fid=document.getElementById('sc-f').value;
   const qty=Number(document.getElementById('sc-q').value)||0;
   const note=document.getElementById('sc-note').value.trim();
   if(!fid){toast('Seleziona un farmaco','r');return;}
-  if(qty<=0){toast('Quantità non valida','r');return;}
   const f=FF.find(x=>x.id===fid);
   const g=giac(f.id);
-  if(qty>g){toast(`Disponibili solo ${g} ${f.un}`,'r');return;}
+  if(qty<=0||qty>g){toast('Disponibili solo '+g+' '+f.un,'r');return;}
   MM.push({id:uid(),fid,tipo:'scarico',qty,data:now(),note,lotto:'',lscad:'',ann:false});
   LS.set('pg_m',MM);
-  document.getElementById('sc-q').value=1;
-  document.getElementById('sc-note').value='';
-  document.getElementById('sc-f').value='';
-  document.getElementById('sc-info').style.display='none';
-  fillSel();renderStor();
-  toast(`✓ Scarico: ${qty} ${f.un} di ${f.nome}`,'g');
+  document.getElementById('sc-q').value=1;document.getElementById('sc-note').value='';
+  document.getElementById('sc-f').value='';document.getElementById('sc-info').style.display='none';
+  fillSel();renderStor();renderHome();
+  toast('✓ Scarico: '+qty+' '+f.un+' di '+f.nome,'g');
   const s=stato(f);
-  if(s==='crit')setTimeout(()=>toast(`🚨 ${f.nome}: scorta critica!`,'r'),3000);
-  else if(s==='warn')setTimeout(()=>toast(`⚠️ ${f.nome}: da riordinare`,'o'),3000);
+  if(s==='crit')setTimeout(()=>toast('🚨 '+f.nome+': scorta critica!','r'),3000);
+  else if(s==='warn')setTimeout(()=>toast('⚠️ '+f.nome+': da riordinare','o'),3000);
 }
-
 function doCarico(){
   const fid=document.getElementById('ca-f').value;
   const qty=Number(document.getElementById('ca-q').value)||0;
@@ -871,535 +797,349 @@ function doCarico(){
   const f=FF.find(x=>x.id===fid);
   MM.push({id:uid(),fid,tipo:'carico',qty,data:now(),note,lotto,lscad,ann:false});
   LS.set('pg_m',MM);
-  document.getElementById('ca-q').value=1;
-  document.getElementById('ca-lotto').value='';
-  document.getElementById('ca-scad').value='';
-  document.getElementById('ca-note').value='';
+  document.getElementById('ca-q').value=1;document.getElementById('ca-lotto').value='';
+  document.getElementById('ca-scad').value='';document.getElementById('ca-note').value='';
   document.getElementById('ca-f').value='';
-  fillSel();renderStor();
-  toast(`✓ Carico: ${qty} ${f.un} di ${f.nome}`,'g');
+  fillSel();renderStor();renderHome();
+  toast('✓ Carico: '+qty+' '+f.un+' di '+f.nome,'g');
 }
 
-// ══════════════════════════════
-// STORICO + ANNULLAMENTO
-// ══════════════════════════════
+// ═══════════════════ STORICO ═══════════════════
 function renderStor(){
   const el=document.getElementById('stor-list');
   const rec=[...MM].sort((a,b)=>new Date(b.data)-new Date(a.data)).slice(0,25);
-  if(!rec.length){el.innerHTML=`<div style="color:var(--text3);font-size:13px;text-align:center;padding:16px">Nessun movimento</div>`;return;}
+  if(!rec.length){el.innerHTML='<div style="color:var(--text3);font-size:13px;text-align:center;padding:16px">Nessun movimento</div>';return;}
   el.innerHTML=rec.map(m=>{
     const f=FF.find(x=>x.id===m.fid);
-    const nome=f?f.nome:'—';const un=f?f.un:'';
-    const annBtn=!m.ann?`<button class="ann-btn" onclick="apriAnn('${m.id}')" title="Annulla">✕</button>`:'';
-    return`<div class="mi">
-      <div class="mi-row">
-        <span class="mi-name">${m.ann?'<span style="color:var(--text3)">🚫</span> ':''}${nome}</span>
-        <span class="mi-qty ${m.ann?'ann':m.tipo==='carico'?'in':'out'}">${m.tipo==='carico'?'+':'-'}${m.qty} ${un}</span>
-        ${annBtn}
-      </div>
-      <div class="mi-meta">${fmtDT(m.data)}${m.note?' · '+m.note:''}${m.ann?' · Ann.: '+m.annNote:''}</div>
-    </div>`;
+    return`<div class="mi"><div class="mi-row">
+      <span class="mi-name">${m.ann?'🚫 ':''} ${f?f.nome:'—'}</span>
+      <span class="mi-qty ${m.ann?'ann':m.tipo==='carico'?'in':'out'}">${m.tipo==='carico'?'+':'-'}${m.qty} ${f?f.un:''}</span>
+      ${!m.ann?`<button class="ann-btn" onclick="apriAnn('${m.id}')">✕</button>`:''}
+    </div><div class="mi-meta">${fmtDT(m.data)}${m.note?' · '+m.note:''}${m.ann?' · '+m.annNote:''}</div></div>`;
   }).join('');
 }
-
 function apriAnn(mid){
   const m=MM.find(x=>x.id===mid);if(!m||m.ann)return;
   const f=FF.find(x=>x.id===m.fid);
-  document.getElementById('m-ann-desc').textContent=
-    `Stai annullando: ${m.tipo==='carico'?'Carico':'Scarico'} di ${m.qty} ${f?f.un:''} (${f?f.nome:''}) registrato il ${fmtDT(m.data)}.`;
+  document.getElementById('m-ann-desc').textContent=`${m.tipo==='carico'?'Carico':'Scarico'} di ${m.qty} ${f?f.un:''} — ${fmtDT(m.data)}`;
   document.getElementById('ann-motivo').value='';
   document.getElementById('btn-ann-ok').onclick=()=>{
     const motivo=document.getElementById('ann-motivo').value.trim();
     if(!motivo){toast('Inserisci il motivo','r');return;}
     const i=MM.findIndex(x=>x.id===mid);
     if(i>-1){MM[i].ann=true;MM[i].annNote=motivo;}
-    LS.set('pg_m',MM);
-    closeM('m-ann');fillSel();renderStor();
-    toast('Movimento annullato','o');
+    LS.set('pg_m',MM);closeM('m-ann');fillSel();renderStor();toast('Movimento annullato','o');
   };
   document.getElementById('m-ann').classList.add('active');
 }
 
-// ══════════════════════════════
-// REPORT
-// ══════════════════════════════
+// ═══════════════════ REPORT ═══════════════════
 function renderReport(){
   const oggi=new Date();oggi.setHours(23,59,59,0);
-  const o90=new Date(oggi);o90.setDate(o90.getDate()+90);
-
   // SCADENZE
-  const elS=document.getElementById('r-scad');
   const items=[];
-  // scadenze farmaci
-  FF.filter(f=>f.scad).forEach(f=>{
-    const si=scadInfo(f.scad);
-    if(si&&si.diff<=90)items.push({nome:f.nome,dos:f.dos,ym:f.scad,diff:si.diff,src:'Farmaco'});
-  });
-  // scadenze lotti
-  MM.filter(m=>m.tipo==='carico'&&m.lscad&&!m.ann).forEach(m=>{
-    const f=FF.find(x=>x.id===m.fid);if(!f)return;
-    const si=scadInfo(m.lscad);
-    if(si&&si.diff<=90)items.push({nome:f.nome,dos:f.dos,ym:m.lscad,diff:si.diff,src:`Lotto ${m.lotto||''}`});
-  });
+  FF.filter(f=>f.scad).forEach(f=>{const si=scadInfo(f.scad);if(si&&si.diff<=90)items.push({nome:f.nome,dos:f.dos,ym:f.scad,diff:si.diff,src:'Farmaco'});});
+  MM.filter(m=>m.tipo==='carico'&&m.lscad&&!m.ann).forEach(m=>{const f=FF.find(x=>x.id===m.fid);if(!f)return;const si=scadInfo(m.lscad);if(si&&si.diff<=90)items.push({nome:f.nome,dos:f.dos,ym:m.lscad,diff:si.diff,src:'Lotto '+m.lotto});});
   items.sort((a,b)=>a.diff-b.diff);
-  if(!items.length){elS.innerHTML=`<div style="color:var(--text3);font-size:13px;text-align:center;padding:14px">Nessuna scadenza entro 90 giorni 🎉</div>`;}
-  else elS.innerHTML=items.map(x=>{
-    const cl=x.diff<0?'crit':x.diff<=30?'warn':'ok';
-    const lb=x.diff<0?'SCADUTO':x.diff===0?'OGGI':'tra '+x.diff+' gg';
-    return`<div class="fi">
-      <div class="fi-body">
-        <div class="fi-name">${x.nome}</div>
-        <div class="fi-sub">${x.dos} · ${x.src} · Scad. ${x.ym}</div>
-      </div>
-      <span class="pill ${cl}">${lb}</span>
-    </div>`;
-  }).join('');
-
+  const elS=document.getElementById('r-scad');
+  elS.innerHTML=items.length?items.map(x=>{const cl=x.diff<0?'crit':x.diff<=30?'warn':'ok';const lb=x.diff<0?'SCADUTO':x.diff===0?'OGGI':'tra '+x.diff+' gg';return`<div class="fi"><div class="fi-body"><div class="fi-name">${x.nome}</div><div class="fi-sub">${x.dos} · ${x.src} · Scad. ${x.ym}</div></div><span class="pill ${cl}">${lb}</span></div>`}).join(''):'<div style="color:var(--text3);font-size:13px;text-align:center;padding:14px">Nessuna scadenza entro 90 giorni 🎉</div>';
   // CONSUMI
   const elC=document.getElementById('r-cons');
-  if(!FF.length){elC.innerHTML=`<div style="color:var(--text3);font-size:13px;text-align:center;padding:14px">Nessun farmaco</div>`;}
+  if(!FF.length){elC.innerHTML='<div style="color:var(--text3);font-size:13px;text-align:center;padding:14px">Nessun farmaco</div>';}
   else{
     const nov=new Date();nov.setDate(nov.getDate()-90);
-    const sorted=[...FF].map(f=>{
-      const sc=MM.filter(m=>m.fid===f.id&&m.tipo==='scarico'&&!m.ann&&new Date(m.data)>=nov);
-      const tot=sc.reduce((s,m)=>s+Number(m.qty),0);
-      return{...f,cmg:tot/90};
-    }).sort((a,b)=>b.cmg-a.cmg);
-    elC.innerHTML=sorted.map(f=>`<div class="fi">
-      <div class="fi-body">
-        <div class="fi-name">${f.nome}</div>
-        <div class="fi-sub">${f.dos}</div>
-      </div>
-      <div class="fi-right">
-        <div style="font-size:15px;font-weight:800;color:var(--blue)">${f.cmg>0?f.cmg.toFixed(2):'—'}<span style="font-size:10px;color:var(--text3);font-weight:600"> /gg</span></div>
-        <div style="font-size:11px;color:var(--text3)">${f.cmg>0?(f.cmg*7).toFixed(1)+' /sett.':'nessun dato'}</div>
-      </div>
-    </div>`).join('');
+    elC.innerHTML=[...FF].map(f=>{const tot=MM.filter(m=>m.fid===f.id&&m.tipo==='scarico'&&!m.ann&&new Date(m.data)>=nov).reduce((s,m)=>s+Number(m.qty),0);const cm=tot/90;return{...f,cm};}).sort((a,b)=>b.cm-a.cm).map(f=>`<div class="fi"><div class="fi-body"><div class="fi-name">${f.nome}</div><div class="fi-sub">${f.dos}</div></div><div class="fi-right"><div style="font-size:15px;font-weight:800;color:var(--blue)">${f.cm>0?f.cm.toFixed(2):'—'}<span style="font-size:10px;color:var(--text3)"> /gg</span></div><div style="font-size:11px;color:var(--text3)">${f.cm>0?(f.cm*7).toFixed(1)+' /sett.':'nessun dato'}</div></div></div>`).join('');
   }
-
   // RIORDINI
   const elR=document.getElementById('r-rior');
   const da=FF.filter(f=>stato(f)!=='ok');
-  if(!da.length){elR.innerHTML=`<div style="color:var(--green);font-size:13px;font-weight:700;text-align:center;padding:14px">✅ Tutte le scorte sono sufficienti</div>`;}
+  if(!da.length){elR.innerHTML='<div style="color:var(--green);font-size:13px;font-weight:700;text-align:center;padding:14px">✅ Tutte le scorte sono sufficienti</div>';}
   else{
     const nov=new Date();nov.setDate(nov.getDate()-90);
     elR.innerHTML=da.sort((a,b)=>{const o={crit:0,warn:1};return o[stato(a)]-o[stato(b)]}).map(f=>{
-      const g=giac(f.id);const s=stato(f);
-      const sc=MM.filter(m=>m.fid===f.id&&m.tipo==='scarico'&&!m.ann&&new Date(m.data)>=nov);
-      const cm=sc.reduce((sum,m)=>sum+Number(m.qty),0)/90;
+      const g=giac(f.id),s=stato(f);
+      const cm=MM.filter(m=>m.fid===f.id&&m.tipo==='scarico'&&!m.ann&&new Date(m.data)>=nov).reduce((s,m)=>s+Number(m.qty),0)/90;
       const gg=cm>0?Math.floor(g/cm):null;
-      return`<div class="fi">
-        <div class="fib ${s}"></div>
-        <div class="fi-body">
-          <div class="fi-name">${f.nome}</div>
-          <div class="fi-sub">${g} ${f.un} rimaste${gg!==null?' · esaurimento in ~'+gg+' gg':''}</div>
-        </div>
-        <span class="pill ${s}">${s==='crit'?'CRITICO':'RIORDINA'}</span>
-      </div>`;
+      return`<div class="fi"><div class="fib ${s}"></div><div class="fi-body"><div class="fi-name">${f.nome}</div><div class="fi-sub">${g} ${f.un} rimaste${gg!==null?' · ~'+gg+' gg':''}</div></div><span class="pill ${s}">${s==='crit'?'CRITICO':'RIORDINA'}</span></div>`;
     }).join('');
   }
 }
 
-// ══════════════════════════════
-// GUIDE
-// ══════════════════════════════
+// ═══════════════════ GUIDE ═══════════════════
 const GG={
   home:[
-    {t:'I 4 contatori',s:'Farmaci totali, scorte OK, da riordinare, critici. Un colpo d\'occhio per capire tutto subito.'},
-    {t:'Il pallino colorato',s:'🟢 Scorta ok · 🟡 Sotto soglia · 🔴 Critico o esaurito. La lista è ordinata dal più urgente.'},
-    {t:'Alert in cima',s:'Se ci sono farmaci critici o da riordinare, appaiono come banner colorati sopra i contatori.'},
-    {t:'Tocca un farmaco',s:'Apre il pannello di dettaglio con giacenza, stato, stima esaurimento, scadenza e ultimi movimenti.'},
+    {t:'I 4 contatori',s:'Farmaci totali, scorte OK, da riordinare, critici. Un colpo d\'occhio per capire tutto.'},
+    {t:'Pallino colorato',s:'🟢 OK · 🟡 Sotto soglia · 🔴 Critico o esaurito. Lista ordinata dal più urgente.'},
+    {t:'Tocca un farmaco',s:'Apre il pannello con giacenza, stima esaurimento, scadenza e ultimi movimenti.'},
   ],
   farmaci:[
-    {t:'Aggiungere un farmaco',s:'Premi "+ Aggiungi farmaco". Inserisci nome, dosaggio, unità di misura e soglia minima.'},
-    {t:'Soglia minima',s:'Quando la giacenza scende sotto questo numero, scatta l\'avviso arancione. Impostala a circa 1-2 settimane di consumo.'},
-    {t:'Scadenza farmaco',s:'Inserisci il mese e anno di scadenza. Apparirà una pillola colorata e il farmaco sarà visibile nel Report scadenze.'},
-    {t:'Modifica e elimina',s:'Premi ✏️ accanto al farmaco per modificarlo, oppure aprilo e usa "Elimina" in fondo.'},
+    {t:'Scansiona farmaco',s:'Premi il pulsante grande "Scansiona farmaco". L\'app apre la fotocamera, legge il codice sulla confezione e mostra subito la scheda operativa.'},
+    {t:'Se il farmaco non è ancora registrato',s:'L\'app chiede se vuoi crearlo adesso. Compili i dati una volta sola — da quel momento basta scansionare.'},
+    {t:'Soglia minima',s:'Quando la giacenza scende sotto questo numero scatta l\'avviso arancione. Impostala a circa 1-2 settimane di consumo.'},
+    {t:'Modifica e elimina',s:'Premi ✏️ per modificare un farmaco, oppure aprilo e usa "Elimina" in fondo al pannello.'},
   ],
   mov:[
-    {t:'Scarico (somministrazione)',s:'Scegli il farmaco — il menu mostra subito le quantità disponibili. Usa +/− per impostare la quantità e premi il tasto rosso.'},
-    {t:'Carico (consegna merce)',s:'Tab "⬆ Carico": scegli farmaco, quantità e, se vuoi, numero lotto e scadenza del lotto ricevuto.'},
-    {t:'Annullare un errore',s:'Nello storico, premi la ✕ accanto a qualsiasi movimento per annullarlo (serve indicare il motivo). Non cancella il record: lo segna come annullato.'},
-    {t:'Storico',s:'Mostra gli ultimi 25 movimenti con data, ora, note. I movimenti annullati appaiono barrati.'},
+    {t:'Uso manuale',s:'Qui puoi fare carichi e scarichi scegliendo il farmaco dal menu a tendina. Utile per correzioni o operazioni senza fotocamera.'},
+    {t:'Annullare un errore',s:'Premi la ✕ accanto a qualsiasi movimento nello storico per annullarlo (serve indicare il motivo).'},
   ],
   report:[
-    {t:'Scadenze',s:'Mostra sia le scadenze impostate sul farmaco sia quelle dei singoli lotti caricati, entro i prossimi 90 giorni.'},
-    {t:'Consumo medio',s:'Calcolato sugli scarichi degli ultimi 90 giorni. Indica quante unità vengono usate in media ogni giorno e settimana.'},
-    {t:'Da riordinare',s:'Lista dei farmaci sotto soglia con stima di quanti giorni mancano all\'esaurimento, basata sui consumi reali.'},
+    {t:'Scadenze',s:'Mostra scadenze del farmaco e dei lotti caricati entro 90 giorni.'},
+    {t:'Consumo medio',s:'Calcolato sugli scarichi degli ultimi 90 giorni — quante unità al giorno e alla settimana.'},
+    {t:'Da riordinare',s:'Lista farmaci sotto soglia con stima giorni all\'esaurimento.'},
   ],
 };
-function openGuide(page){
-  const g=GG[page];if(!g)return;
-  document.getElementById('m-guida-c').innerHTML=g.map((s,i)=>`
-    <div class="gs"><div class="gn">${i+1}</div>
-    <div><div class="gt">${s.t}</div><div class="gg">${s.s}</div></div></div>`).join('');
+function openGuide(p){
+  const g=GG[p];if(!g)return;
+  document.getElementById('m-guida-c').innerHTML=g.map((s,i)=>`<div style="display:flex;gap:13px;margin-bottom:17px;align-items:flex-start"><div style="width:26px;height:26px;border-radius:50%;background:var(--blue-dim);color:var(--blue);font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div><div><div style="font-size:14px;font-weight:700;margin-bottom:3px">${s.t}</div><div style="font-size:13px;color:var(--text2);line-height:1.55">${s.s}</div></div></div>`).join('');
   document.getElementById('m-guida').classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// SCANNER — canvas polling con BarcodeDetector nativo
+// fallback: ZXing caricato lazy solo se serve
+// ═══════════════════════════════════════
+let _scanStream=null, _scanDone=false, _scanRAF=null;
+
+async function openScanner(){
+  _scanDone=false;
+  document.getElementById('scan-screen').classList.add('active');
+  document.getElementById('scan-status').textContent='Apertura fotocamera…';
+  try{
+    _scanStream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}
+    });
+    const video=document.getElementById('scan-video');
+    video.srcObject=_scanStream;
+    await video.play();
+    document.getElementById('scan-status').textContent='Inquadra il codice a barre';
+    startDecoding();
+  } catch(e){
+    closeScanner();
+    toast('Fotocamera non disponibile — verifica i permessi','r');
+  }
+}
+
+function closeScanner(){
+  _scanDone=true;
+  if(_scanRAF){cancelAnimationFrame(_scanRAF);_scanRAF=null;}
+  if(_scanStream){_scanStream.getTracks().forEach(t=>t.stop());_scanStream=null;}
+  const v=document.getElementById('scan-video');
+  if(v)v.srcObject=null;
+  document.getElementById('scan-screen').classList.remove('active');
+}
+
+function startDecoding(){
+  // Usa BarcodeDetector nativo se disponibile (Chrome Android, Safari 17+)
+  if('BarcodeDetector' in window){
+    BarcodeDetector.getSupportedFormats().then(fmts=>{
+      const bd=new BarcodeDetector({formats:fmts});
+      pollNative(bd);
+    }).catch(()=>pollNative(new BarcodeDetector()));
+  } else {
+    // fallback: carica ZXing lazy
+    loadZXingAndPoll();
+  }
+}
+
+// ── NATIVE BarcodeDetector (Chrome/Android) ──
+function pollNative(bd){
+  if(_scanDone)return;
+  const video=document.getElementById('scan-video');
+  if(!video||video.readyState<2){_scanRAF=requestAnimationFrame(()=>pollNative(bd));return;}
+  bd.detect(video).then(codes=>{
+    if(_scanDone)return;
+    if(codes&&codes.length>0){
+      onCodeFound(codes[0].rawValue);
+    } else {
+      _scanRAF=requestAnimationFrame(()=>pollNative(bd));
+    }
+  }).catch(()=>{
+    _scanRAF=requestAnimationFrame(()=>pollNative(bd));
+  });
+}
+
+// ── FALLBACK: ZXing lazy load ──
+function loadZXingAndPoll(){
+  if(typeof ZXing!=='undefined'){startZXing();return;}
+  const s=document.createElement('script');
+  s.src='https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js';
+  s.onload=()=>startZXing();
+  s.onerror=()=>{closeScanner();toast('Scanner non disponibile senza connessione internet','r');};
+  document.head.appendChild(s);
+}
+
+let _zxScanner=null;
+function startZXing(){
+  if(_scanDone)return;
+  if(typeof ZXing==='undefined'){closeScanner();toast('Libreria scanner non caricata','r');return;}
+  const hints=new Map();
+  hints.set(ZXing.DecodeHintType.TRY_HARDER,true);
+  _zxScanner=new ZXing.BrowserMultiFormatReader(hints,300);
+  _zxScanner.decodeFromVideoElement(document.getElementById('scan-video'),(result,err)=>{
+    if(_scanDone)return;
+    if(result){onCodeFound(result.getText());}
+  });
+}
+
+// ── RISULTATO ──
+function onCodeFound(code){
+  if(_scanDone)return;
+  _scanDone=true;
+  // flash verde
+  const fl=document.getElementById('scan-flash');
+  fl.classList.add('on');
+  setTimeout(()=>fl.classList.remove('on'),400);
+  // vibra
+  if(navigator.vibrate)navigator.vibrate([80,40,80]);
+  // chiudi camera dopo breve pausa (feedback visivo)
+  setTimeout(()=>{
+    closeScanner();
+    handleCode(code);
+  },350);
+}
+
+// ── GESTISCI CODICE ──
+function handleCode(code){
+  const f=FF.find(x=>x.bc===code);
+  if(f){
+    // farmaco trovato → apri scheda operazione
+    apriSchedaOp(f);
+  } else {
+    // non trovato → chiedi cosa fare
+    apriNotFound(code);
+  }
+}
+
+// ── SCHEDA OPERAZIONE (farmaco trovato) ──
+function apriSchedaOp(f){
+  const g=giac(f.id),s=stato(f);
+  const sc={ok:'var(--green)',warn:'var(--orange)',crit:'var(--red)'};
+  const sl={ok:'Scorta sufficiente',warn:'⚠️ Scorte basse',crit:'🚨 Scorta critica'};
+  document.getElementById('m-op-c').innerHTML=`
+    <div class="op-header">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:18px;font-weight:800">${f.nome}</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px">${f.dos}</div>
+        <div class="op-stato ${s}">${sl[s]}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="op-giac ${s}">${g}</div>
+        <div style="font-size:11px;color:var(--text3)">${f.un}</div>
+      </div>
+    </div>
+
+    <div class="tabs" style="margin-bottom:16px">
+      <button class="tab active" id="op-tab-sc" onclick="switchOpTab('sc')">⬇ Scarico</button>
+      <button class="tab" id="op-tab-ca" onclick="switchOpTab('ca')">⬆ Carico</button>
+    </div>
+
+    <div id="op-sc">
+      <div class="field"><label>Quantità da scaricare</label>
+        <div class="stepper">
+          <button class="sb" onclick="stepOpQty('op-qty-sc',-1,${g})">−</button>
+          <input type="number" id="op-qty-sc" value="1" min="1" max="${g}">
+          <button class="sb" onclick="stepOpQty('op-qty-sc',1,${g})">+</button>
+        </div>
+        <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:5px">Max: ${g} ${f.un}</div>
+      </div>
+      <div class="field"><label>Note</label><input type="text" id="op-note-sc" placeholder="es. Camera 12, sig. Rossi"></div>
+      <button class="btn btn-red" onclick="confOp('scarico','${f.id}')">⬇ Conferma scarico</button>
+    </div>
+
+    <div id="op-ca" style="display:none">
+      <div class="field"><label>Quantità ricevuta</label>
+        <div class="stepper">
+          <button class="sb" onclick="stepOpQty('op-qty-ca',-1,9999)">−</button>
+          <input type="number" id="op-qty-ca" value="1" min="1">
+          <button class="sb" onclick="stepOpQty('op-qty-ca',1,9999)">+</button>
+        </div>
+      </div>
+      <div class="fr">
+        <div class="field"><label>N° Lotto</label><input type="text" id="op-lotto" placeholder="ABC123"></div>
+        <div class="field"><label>Scadenza lotto</label><input type="month" id="op-lscad"></div>
+      </div>
+      <div class="field"><label>Note</label><input type="text" id="op-note-ca" placeholder="es. DDT 00123"></div>
+      <button class="btn btn-green" onclick="confOp('carico','${f.id}')">⬆ Conferma carico</button>
+    </div>
+
+    <button class="btn btn-ghost" onclick="closeM('m-op')" style="margin-top:8px;font-size:13px">Annulla</button>`;
+  document.getElementById('m-op').classList.add('active');
+}
+
+function switchOpTab(tab){
+  document.getElementById('op-tab-sc').classList.toggle('active',tab==='sc');
+  document.getElementById('op-tab-ca').classList.toggle('active',tab==='ca');
+  document.getElementById('op-sc').style.display=tab==='sc'?'block':'none';
+  document.getElementById('op-ca').style.display=tab==='ca'?'block':'none';
+}
+
+function stepOpQty(id,delta,max){
+  const el=document.getElementById(id);if(!el)return;
+  el.value=Math.min(max,Math.max(1,(Number(el.value)||1)+delta));
+}
+
+function confOp(tipo,fid){
+  const f=FF.find(x=>x.id===fid);
+  if(tipo==='scarico'){
+    const qty=Number(document.getElementById('op-qty-sc').value)||0;
+    const note=document.getElementById('op-note-sc').value.trim();
+    const g=giac(fid);
+    if(qty<=0||qty>g){toast('Disponibili solo '+g+' '+f.un,'r');return;}
+    MM.push({id:uid(),fid,tipo:'scarico',qty,data:now(),note,lotto:'',lscad:'',ann:false});
+    LS.set('pg_m',MM);
+    closeM('m-op');
+    renderHome();try{fillSel();renderStor();}catch(e){}
+    toast('✓ Scarico: '+qty+' '+f.un+' di '+f.nome,'g');
+    const s=stato(f);
+    if(s==='crit')setTimeout(()=>toast('🚨 '+f.nome+': scorta critica!','r'),3000);
+    else if(s==='warn')setTimeout(()=>toast('⚠️ '+f.nome+': da riordinare','o'),3000);
+  } else {
+    const qty=Number(document.getElementById('op-qty-ca').value)||0;
+    const lotto=document.getElementById('op-lotto').value.trim()||'—';
+    const lscad=document.getElementById('op-lscad').value||'';
+    const note=document.getElementById('op-note-ca').value.trim();
+    if(qty<=0){toast('Quantità non valida','r');return;}
+    MM.push({id:uid(),fid,tipo:'carico',qty,data:now(),note,lotto,lscad,ann:false});
+    LS.set('pg_m',MM);
+    closeM('m-op');
+    renderHome();try{fillSel();renderStor();}catch(e){}
+    toast('✓ Carico: '+qty+' '+f.un+' di '+f.nome,'g');
+  }
+}
+
+// ── CODICE NON TROVATO ──
+function apriNotFound(code){
+  const opts=FF.map(f=>'<option value="'+f.id+'">'+f.nome+' · '+f.dos+'</option>').join('');
+  document.getElementById('m-nf-c').innerHTML=`
+    <p style="font-size:13px;color:var(--text2);margin-bottom:4px">Codice letto:</p>
+    <div style="background:var(--surface2);border-radius:var(--rs);padding:10px 13px;font-size:13px;color:var(--blue);font-weight:700;margin-bottom:18px;border:1px solid var(--border);word-break:break-all">${code}</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Non è ancora associato a nessun farmaco. Cosa vuoi fare?</p>
+    <div class="field">
+      <label>Associa a farmaco esistente</label>
+      <select id="nf-sel"><option value="">— Seleziona farmaco —</option>${opts}</select>
+    </div>
+    <button class="btn btn-blue" onclick="doAssegna('${code}')">Associa e continua</button>
+    <button class="btn btn-ghost" onclick="closeM('m-notfound');window._tmpBC='${code}';openMF(null);setTimeout(()=>{document.getElementById('mf-bc-preview').style.display='block';document.getElementById('mf-bc-preview').textContent='📦 Codice: ${code}';},300)" style="margin-top:8px">Crea nuovo farmaco</button>
+    <button class="btn btn-ghost" onclick="closeM('m-notfound')" style="margin-top:8px;font-size:12px;color:var(--text3)">Annulla</button>`;
+  document.getElementById('m-notfound').classList.add('active');
+}
+
+function doAssegna(code){
+  const fid=document.getElementById('nf-sel').value;
+  if(!fid){toast('Seleziona un farmaco','r');return;}
+  const i=FF.findIndex(x=>x.id===fid);
+  if(i>-1)FF[i].bc=code;
+  LS.set('pg_f',FF);
+  closeM('m-notfound');
+  toast('Codice associato ✓','g');
+  // apri subito la scheda operazione
+  setTimeout(()=>apriSchedaOp(FF[i]),350);
 }
 
 // chiudi overlay toccando fuori
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('active')}));
 
-
-// ══════════════════════════════
-// SCANNER BARCODE / QR  (v2 — fixed)
-// ══════════════════════════════
-let _scanner=null, _scanMode='scarico', _scanStream=null, _scanDone=false;
-
-function openScanner(mode){
-  _scanMode=mode;
-  _scanDone=false; // reset guard
-  const labels={scarico:'Scarico veloce',carico:'Carico veloce',registra:'Associa codice al farmaco'};
-  const titles={scarico:'Scansiona per scaricare',carico:'Scansiona per caricare',registra:'Scansiona codice farmaco'};
-  document.getElementById('scan-mode-badge').textContent=labels[mode]||'Scansione';
-  document.getElementById('scan-title-label').textContent=titles[mode]||'Scansiona';
-  document.getElementById('scan-overlay').classList.add('active');
-  startCamera();
-}
-
-function closeScanner(){
-  stopCamera();
-  document.getElementById('scan-overlay').classList.remove('active');
-}
-
-async function startCamera(){
-  stopCamera();
-  _scanDone=false;
-  const video=document.getElementById('scan-video');
-  try{
-    _scanStream=await navigator.mediaDevices.getUserMedia({
-      video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}
-    });
-    video.srcObject=_scanStream;
-    await video.play();
-    initZXing();
-  } catch(e){
-    // fallback: prova senza vincoli fotocamera
-    try{
-      _scanStream=await navigator.mediaDevices.getUserMedia({video:true});
-      video.srcObject=_scanStream;
-      await video.play();
-      initZXing();
-    } catch(e2){
-      closeScanner();
-      toast('Fotocamera non disponibile. Verifica i permessi.','r');
-    }
-  }
-}
-
-function stopCamera(){
-  if(_scanner){
-    try{_scanner.reset();}catch(e){}
-    _scanner=null;
-  }
-  if(_scanStream){
-    _scanStream.getTracks().forEach(t=>t.stop());
-    _scanStream=null;
-  }
-  const v=document.getElementById('scan-video');
-  if(v) v.srcObject=null;
-}
-
-function initZXing(){
-  if(typeof ZXing==='undefined'){
-    toast('Libreria scanner non caricata. Controlla la connessione internet.','r');
-    closeScanner();return;
-  }
-  const hints=new Map();
-  hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[
-    ZXing.BarcodeFormat.QR_CODE,
-    ZXing.BarcodeFormat.EAN_13,
-    ZXing.BarcodeFormat.EAN_8,
-    ZXing.BarcodeFormat.CODE_128,
-    ZXing.BarcodeFormat.CODE_39,
-    ZXing.BarcodeFormat.DATA_MATRIX,
-    ZXing.BarcodeFormat.ITF,
-    ZXing.BarcodeFormat.UPC_A,
-    ZXing.BarcodeFormat.UPC_E,
-  ]);
-  hints.set(ZXing.DecodeHintType.TRY_HARDER,true);
-  _scanner=new ZXing.BrowserMultiFormatReader(hints,500);
-  _scanner.decodeFromVideoElement(document.getElementById('scan-video'),(result,err)=>{
-    // GUARD: ignora chiamate multiple dopo il primo risultato
-    if(_scanDone) return;
-    if(result){
-      _scanDone=true;
-      onScanResult(result.getText());
-    }
-    // ignora err (sono continui quando nessun codice è inquadrato)
-  });
-}
-
-function flashScanSuccess(){
-  const fl=document.getElementById('scan-flash');
-  fl.classList.add('show');
-  setTimeout(()=>fl.classList.remove('show'),400);
-}
-
-function onScanResult(code){
-  flashScanSuccess();
-  if(navigator.vibrate) navigator.vibrate([80,40,80]);
-
-  const mode=_scanMode; // salva prima di closeScanner che resetta stato
-  closeScanner();
-
-  if(mode==='registra'){
-    window._tmpBarcode=code;
-    try{
-      document.getElementById('mf-barcode-preview').style.display='block';
-      document.getElementById('mf-barcode-preview').innerHTML='📦 Codice: <strong>'+code+'</strong>';
-    }catch(e){}
-    toast('Codice acquisito ✓ — ora compila e salva il farmaco','g');
-    return;
-  }
-
-  // cerca farmaco per barcode
-  const f=FF.find(x=>x.barcode===code);
-
-  if(f){
-    if(mode==='scarico') apriSchedaScarico(f);
-    else if(mode==='carico') apriSchedaCarico(f);
-  } else {
-    openScanNotFound(code,mode);
-  }
-}
-
-// ── SCARICO: apri modal diretto con farmaco già caricato ──
-function apriSchedaScarico(f){
-  const g=giac(f.id);
-  if(g<=0){
-    toast('⚠️ '+f.nome+': scorta esaurita, impossibile scaricare','r');
-    return;
-  }
-  const s=stato(f);
-  const sLabel={ok:'Scorta sufficiente',warn:'⚠️ Scorte basse',crit:'🚨 Scorta critica'};
-  const sColor={ok:'var(--green)',warn:'var(--orange)',crit:'var(--red)'};
-
-  document.getElementById('m-guida-c').innerHTML=`
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:14px;background:var(--surface2);border-radius:var(--rsm);border:1px solid var(--border2)">
-      <div style="flex:1">
-        <div style="font-size:17px;font-weight:800">${f.nome}</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:2px">${f.dos}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:28px;font-weight:800;color:${sColor[s]};line-height:1">${g}</div>
-        <div style="font-size:10px;color:var(--text3)">${f.un} disponibili</div>
-      </div>
-    </div>
-    <div style="color:${sColor[s]};font-size:12px;font-weight:700;margin-bottom:16px">${sLabel[s]}</div>
-    <div class="field">
-      <label>Quantità da scaricare</label>
-      <div class="stepper">
-        <button class="sb" onclick="stepScanQty(-1)">−</button>
-        <input type="number" id="scan-qty" value="1" min="1" max="${g}">
-        <button class="sb" onclick="stepScanQty(1)">+</button>
-      </div>
-    </div>
-    <div class="field"><label>Note (opzionale)</label><input type="text" id="scan-note" placeholder="es. Camera 12, sig. Rossi"></div>
-    <button class="btn btn-red" onclick="confermaScaricoDiretto('${f.id}')">⬇ Conferma scarico</button>
-    <button class="btn btn-ghost" onclick="closeM('m-guida')" style="margin-top:8px;font-size:13px">Annulla</button>`;
-
-  // salva max per stepScanQty
-  window._scanMaxQty=g;
-  document.getElementById('m-guida').classList.add('active');
-}
-
-function stepScanQty(delta){
-  const el=document.getElementById('scan-qty');
-  if(!el)return;
-  const max=window._scanMaxQty||99;
-  el.value=Math.min(max,Math.max(1,(Number(el.value)||1)+delta));
-}
-
-function confermaScaricoDiretto(fid){
-  const qty=Number(document.getElementById('scan-qty').value)||0;
-  const note=document.getElementById('scan-note').value.trim();
-  const f=FF.find(x=>x.id===fid);
-  const g=giac(fid);
-  if(qty<=0||qty>g){toast('Quantità non valida','r');return;}
-  MM.push({id:uid(),fid,tipo:'scarico',qty,data:now(),note,lotto:'',lscad:'',ann:false});
-  LS.set('pg_m',MM);
-  closeM('m-guida');
-  // aggiorna pagina movimenti se aperta
-  try{fillSel();renderStor();}catch(e){}
-  renderHome();
-  const s=stato(f);
-  toast('✓ Scaricato: '+qty+' '+f.un+' di '+f.nome,'g');
-  if(s==='crit')setTimeout(()=>toast('🚨 '+f.nome+': scorta critica!','r'),3000);
-  else if(s==='warn')setTimeout(()=>toast('⚠️ '+f.nome+': da riordinare','o'),3000);
-}
-
-// ── CARICO: apri modal diretto ──
-function apriSchedaCarico(f){
-  document.getElementById('m-guida-c').innerHTML=`
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:14px;background:var(--surface2);border-radius:var(--rsm);border:1px solid var(--border2)">
-      <div style="flex:1">
-        <div style="font-size:17px;font-weight:800">${f.nome}</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:2px">${f.dos}</div>
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:28px;font-weight:800;color:var(--blue);line-height:1">${giac(f.id)}</div>
-        <div style="font-size:10px;color:var(--text3)">${f.un} in stock</div>
-      </div>
-    </div>
-    <div class="field">
-      <label>Quantità ricevuta</label>
-      <div class="stepper">
-        <button class="sb" onclick="stepScanQty2(-1)">−</button>
-        <input type="number" id="scan-qty2" value="1" min="1">
-        <button class="sb" onclick="stepScanQty2(1)">+</button>
-      </div>
-    </div>
-    <div class="fr">
-      <div class="field"><label>N° Lotto</label><input type="text" id="scan-lotto" placeholder="es. ABC123"></div>
-      <div class="field"><label>Scadenza lotto</label><input type="month" id="scan-lscad"></div>
-    </div>
-    <div class="field"><label>Note</label><input type="text" id="scan-note2" placeholder="es. DDT 00123"></div>
-    <button class="btn btn-green" onclick="confermaCaricoDiretto('${f.id}')">⬆ Conferma carico</button>
-    <button class="btn btn-ghost" onclick="closeM('m-guida')" style="margin-top:8px;font-size:13px">Annulla</button>`;
-  document.getElementById('m-guida').classList.add('active');
-}
-
-function stepScanQty2(delta){
-  const el=document.getElementById('scan-qty2');
-  if(el) el.value=Math.max(1,(Number(el.value)||1)+delta);
-}
-
-function confermaCaricoDiretto(fid){
-  const qty=Number(document.getElementById('scan-qty2').value)||0;
-  const lotto=document.getElementById('scan-lotto').value.trim()||'—';
-  const lscad=document.getElementById('scan-lscad').value||'';
-  const note=document.getElementById('scan-note2').value.trim();
-  const f=FF.find(x=>x.id===fid);
-  if(qty<=0){toast('Quantità non valida','r');return;}
-  MM.push({id:uid(),fid,tipo:'carico',qty,data:now(),note,lotto,lscad,ann:false});
-  LS.set('pg_m',MM);
-  closeM('m-guida');
-  try{fillSel();renderStor();}catch(e){}
-  renderHome();
-  toast('✓ Caricato: '+qty+' '+f.un+' di '+f.nome,'g');
-}
-
-// ── MODAL: codice non trovato ──
-function openScanNotFound(code,mode){
-  window._notFoundCode=code;
-  window._notFoundMode=mode;
-  const opts=FF.map(f=>'<option value="'+f.id+'">'+f.nome+' · '+f.dos+'</option>').join('');
-  document.getElementById('m-guida-c').innerHTML=`
-    <div style="text-align:center;padding:4px 0 18px">
-      <div style="font-size:34px;margin-bottom:10px">🔍</div>
-      <div style="font-size:15px;font-weight:700;margin-bottom:6px">Codice non riconosciuto</div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:4px;word-break:break-all">Codice: <strong style="color:var(--blue)">${code}</strong></div>
-      <div style="font-size:12px;color:var(--text3);margin-bottom:20px">Non è ancora associato a nessun farmaco.</div>
-    </div>
-    <div class="field">
-      <label>Associa a un farmaco esistente</label>
-      <select id="assegna-sel"><option value="">— Seleziona farmaco —</option>${opts}</select>
-    </div>
-    <button class="btn btn-blue" onclick="confAssegnaEsegui()">Associa${mode!=='registra'?' e '+mode:''}</button>
-    <button class="btn btn-ghost" onclick="creaNuovoConBarcode()" style="margin-top:8px">+ Crea nuovo farmaco</button>
-    <button class="btn btn-ghost" onclick="closeM('m-guida')" style="margin-top:8px;font-size:12px;color:var(--text3)">Ignora</button>`;
-  document.getElementById('m-guida').classList.add('active');
-}
-
-function confAssegnaEsegui(){
-  const fid=document.getElementById('assegna-sel').value;
-  const code=window._notFoundCode;
-  const mode=window._notFoundMode;
-  if(!fid){toast('Seleziona un farmaco','r');return;}
-  const i=FF.findIndex(x=>x.id===fid);
-  if(i>-1) FF[i].barcode=code;
-  LS.set('pg_f',FF);
-  closeM('m-guida');
-  toast('Codice associato ✓','g');
-  // esegui operazione
-  setTimeout(()=>{
-    const f=FF.find(x=>x.id===fid);
-    if(mode==='scarico') apriSchedaScarico(f);
-    else if(mode==='carico') apriSchedaCarico(f);
-  },400);
-}
-
-function creaNuovoConBarcode(){
-  closeM('m-guida');
-  window._tmpBarcode=window._notFoundCode||'';
-  openMF(null);
-  setTimeout(()=>{
-    try{
-      document.getElementById('mf-barcode-preview').style.display='block';
-      document.getElementById('mf-barcode-preview').innerHTML='📦 Codice: <strong>'+window._tmpBarcode+'</strong>';
-    }catch(e){}
-  },350);
-}
-
-function assegnaACodiceEsistente(){
-  closeM('m-guida');
-  // Apri modal scelta farmaco
-  const code=window._notFoundCode;
-  const opts=FF.map(f=>`<option value="${f.id}">${f.nome} · ${f.dos}</option>`).join('');
-  document.getElementById('m-guida-c').innerHTML=`
-    <div style="margin-bottom:16px;font-size:14px;color:var(--text2)">Seleziona il farmaco a cui associare il codice <strong style="color:var(--blue)">${code}</strong>:</div>
-    <div class="field"><select id="assegna-sel" style="width:100%"><option value="">— Seleziona —</option>${opts}</select></div>
-    <div class="btn-row">
-      <button class="btn btn-ghost" onclick="closeM('m-guida')">Annulla</button>
-      <button class="btn btn-blue" onclick="confAssegna('${code}')">Associa</button>
-    </div>`;
-  document.getElementById('m-guida').classList.add('active');
-}
-
-function confAssegna(code){
-  const fid=document.getElementById('assegna-sel').value;
-  if(!fid){toast('Seleziona un farmaco','r');return;}
-  const i=FF.findIndex(x=>x.id===fid);
-  if(i>-1)FF[i].barcode=code;
-  LS.set('pg_f',FF);
-  closeM('m-guida');
-  toast('Codice associato ✓','g');
-}
-
-function creaNuovoConBarcode(){
-  closeM('m-guida');
-  window._tmpBarcode=window._notFoundCode;
-  openMF(null);
-  setTimeout(()=>{
-    document.getElementById('mf-barcode-preview').style.display='block';
-    document.getElementById('mf-barcode-preview').innerHTML=`📦 Codice: <strong>${window._tmpBarcode}</strong>`;
-  },300);
-}
-
-// Aggancia barcode al salvataggio farmaco
-const _origSalvaF=salvaF;
-// override: aggiunge barcode se presente
-function salvaF(){
-  const nome=document.getElementById('mf-nome').value.trim();
-  const dos=document.getElementById('mf-dos').value.trim();
-  const un=document.getElementById('mf-un').value;
-  const soglia=Number(document.getElementById('mf-sog').value)||10;
-  const scad=document.getElementById('mf-scad').value||'';
-  const note=document.getElementById('mf-note').value.trim();
-  const barcode=window._tmpBarcode||'';
-  if(!nome||!dos){toast('Inserisci nome e dosaggio','r');return;}
-  if(_eid){
-    const i=FF.findIndex(f=>f.id===_eid);
-    if(i>-1)FF[i]={...FF[i],nome,dos,un,soglia,scad,note,barcode:barcode||FF[i].barcode||''};
-  } else {
-    const g=Number(document.getElementById('mf-giac').value)||0;
-    const id=uid();
-    FF.push({id,nome,dos,un,soglia,scad,note,barcode});
-    if(g>0)MM.push({id:uid(),fid:id,tipo:'carico',qty:g,data:now(),note:'Giacenza iniziale',lotto:'-',lscad:'',ann:false});
-    LS.set('pg_m',MM);
-  }
-  LS.set('pg_f',FF);
-  window._tmpBarcode='';
-  document.getElementById('mf-barcode-preview').style.display='none';
-  closeM('m-farmaco');
-  renderFList();
-  toast(_eid?'Farmaco aggiornato ✓':'Farmaco aggiunto ✓','g');
-}
-
-
-// ══════════════════════════════
 // INIT
-// ══════════════════════════════
 renderHome();
 </script>
 </body>
