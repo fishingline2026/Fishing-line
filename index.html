@@ -717,29 +717,6 @@ function openMF(id){
   document.getElementById('m-farmaco').classList.add('active');
 }
 
-function salvaF(){
-  const nome=document.getElementById('mf-nome').value.trim();
-  const dos=document.getElementById('mf-dos').value.trim();
-  const un=document.getElementById('mf-un').value;
-  const soglia=Number(document.getElementById('mf-sog').value)||10;
-  const scad=document.getElementById('mf-scad').value||'';
-  const note=document.getElementById('mf-note').value.trim();
-  if(!nome||!dos){toast('Inserisci nome e dosaggio','r');return;}
-  if(_eid){
-    const i=FF.findIndex(f=>f.id===_eid);
-    if(i>-1)FF[i]={...FF[i],nome,dos,un,soglia,scad,note};
-  } else {
-    const g=Number(document.getElementById('mf-giac').value)||0;
-    const id=uid();
-    FF.push({id,nome,dos,un,soglia,scad,note});
-    if(g>0)MM.push({id:uid(),fid:id,tipo:'carico',qty:g,data:now(),note:'Giacenza iniziale',lotto:'-',lscad:'',ann:false});
-    LS.set('pg_m',MM);
-  }
-  LS.set('pg_f',FF);
-  closeM('m-farmaco');
-  renderFList();
-  toast(_eid?'Farmaco aggiornato ✓':'Farmaco aggiunto ✓','g');
-}
 
 // ══════════════════════════════
 // DETTAGLIO FARMACO
@@ -1064,12 +1041,13 @@ document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{
 
 
 // ══════════════════════════════
-// SCANNER BARCODE / QR
+// SCANNER BARCODE / QR  (v2 — fixed)
 // ══════════════════════════════
-let _scanner=null, _scanMode='scarico', _scanStream=null;
+let _scanner=null, _scanMode='scarico', _scanStream=null, _scanDone=false;
 
 function openScanner(mode){
   _scanMode=mode;
+  _scanDone=false; // reset guard
   const labels={scarico:'Scarico veloce',carico:'Carico veloce',registra:'Associa codice al farmaco'};
   const titles={scarico:'Scansiona per scaricare',carico:'Scansiona per caricare',registra:'Scansiona codice farmaco'};
   document.getElementById('scan-mode-badge').textContent=labels[mode]||'Scansione';
@@ -1085,31 +1063,49 @@ function closeScanner(){
 
 async function startCamera(){
   stopCamera();
+  _scanDone=false;
   const video=document.getElementById('scan-video');
   try{
     _scanStream=await navigator.mediaDevices.getUserMedia({
-      video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}
+      video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}}
     });
     video.srcObject=_scanStream;
     await video.play();
     initZXing();
   } catch(e){
-    closeScanner();
-    toast('Fotocamera non disponibile: '+e.message,'r');
+    // fallback: prova senza vincoli fotocamera
+    try{
+      _scanStream=await navigator.mediaDevices.getUserMedia({video:true});
+      video.srcObject=_scanStream;
+      await video.play();
+      initZXing();
+    } catch(e2){
+      closeScanner();
+      toast('Fotocamera non disponibile. Verifica i permessi.','r');
+    }
   }
 }
 
 function stopCamera(){
-  if(_scanner){try{_scanner.reset();}catch(e){}; _scanner=null;}
-  if(_scanStream){_scanStream.getTracks().forEach(t=>t.stop());_scanStream=null;}
+  if(_scanner){
+    try{_scanner.reset();}catch(e){}
+    _scanner=null;
+  }
+  if(_scanStream){
+    _scanStream.getTracks().forEach(t=>t.stop());
+    _scanStream=null;
+  }
   const v=document.getElementById('scan-video');
-  v.srcObject=null;
+  if(v) v.srcObject=null;
 }
 
 function initZXing(){
-  if(typeof ZXing==='undefined'){toast('Libreria scanner non caricata. Controlla la connessione.','r');closeScanner();return;}
+  if(typeof ZXing==='undefined'){
+    toast('Libreria scanner non caricata. Controlla la connessione internet.','r');
+    closeScanner();return;
+  }
   const hints=new Map();
-  const formats=[
+  hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[
     ZXing.BarcodeFormat.QR_CODE,
     ZXing.BarcodeFormat.EAN_13,
     ZXing.BarcodeFormat.EAN_8,
@@ -1119,109 +1115,220 @@ function initZXing(){
     ZXing.BarcodeFormat.ITF,
     ZXing.BarcodeFormat.UPC_A,
     ZXing.BarcodeFormat.UPC_E,
-  ];
-  hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, formats);
-  hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
-  _scanner=new ZXing.BrowserMultiFormatReader(hints);
-  _scanner.decodeFromVideoElement(document.getElementById('scan-video'), (result,err)=>{
+  ]);
+  hints.set(ZXing.DecodeHintType.TRY_HARDER,true);
+  _scanner=new ZXing.BrowserMultiFormatReader(hints,500);
+  _scanner.decodeFromVideoElement(document.getElementById('scan-video'),(result,err)=>{
+    // GUARD: ignora chiamate multiple dopo il primo risultato
+    if(_scanDone) return;
     if(result){
+      _scanDone=true;
       onScanResult(result.getText());
     }
+    // ignora err (sono continui quando nessun codice è inquadrato)
   });
 }
 
 function flashScanSuccess(){
   const fl=document.getElementById('scan-flash');
   fl.classList.add('show');
-  setTimeout(()=>fl.classList.remove('show'),300);
+  setTimeout(()=>fl.classList.remove('show'),400);
 }
 
 function onScanResult(code){
   flashScanSuccess();
-  // Vibra se disponibile
-  if(navigator.vibrate) navigator.vibrate([60,30,60]);
+  if(navigator.vibrate) navigator.vibrate([80,40,80]);
 
-  if(_scanMode==='registra'){
-    // Modalità: assegna codice al farmaco in creazione/modifica
-    closeScanner();
-    const f=_eid?FF.find(x=>x.id===_eid):null;
-    // salva il barcode nel campo nascosto e mostra preview
-    document.getElementById('mf-barcode-preview').style.display='block';
-    document.getElementById('mf-barcode-preview').innerHTML=`📦 Codice: <strong>${code}</strong>`;
-    // Salva il codice in variabile temporanea
+  const mode=_scanMode; // salva prima di closeScanner che resetta stato
+  closeScanner();
+
+  if(mode==='registra'){
     window._tmpBarcode=code;
-    toast('Codice assegnato al farmaco ✓','g');
+    try{
+      document.getElementById('mf-barcode-preview').style.display='block';
+      document.getElementById('mf-barcode-preview').innerHTML='📦 Codice: <strong>'+code+'</strong>';
+    }catch(e){}
+    toast('Codice acquisito ✓ — ora compila e salva il farmaco','g');
     return;
   }
 
-  // Cerca il farmaco per barcode salvato
-  let f=FF.find(x=>x.barcode===code);
+  // cerca farmaco per barcode
+  const f=FF.find(x=>x.barcode===code);
 
   if(f){
-    closeScanner();
-    if(_scanMode==='scarico'){
-      precompilaScarico(f.id);
-    } else if(_scanMode==='carico'){
-      precompilaCarico(f.id);
-    }
+    if(mode==='scarico') apriSchedaScarico(f);
+    else if(mode==='carico') apriSchedaCarico(f);
   } else {
-    // Barcode non trovato — chiedi se creare nuovo o associare esistente
-    closeScanner();
-    openScanNotFound(code);
+    openScanNotFound(code,mode);
   }
 }
 
-function precompilaScarico(fid){
-  // Porta in pagina movimenti, tab scarico, precompila farmaco
-  showPage('mov', document.querySelectorAll('.nb')[2]);
-  setTimeout(()=>{
-    document.getElementById('sc-f').value=fid;
-    updateScInfo();
-    document.getElementById('sc-q').value=1;
-    document.getElementById('sc-q').focus();
-    // evidenzia
-    document.getElementById('sc-f').style.borderColor='var(--green)';
-    setTimeout(()=>document.getElementById('sc-f').style.borderColor='',1500);
-    const f=FF.find(x=>x.id===fid);
-    toast(`✓ ${f.nome} selezionato — imposta quantità`,'g');
-  },200);
-}
+// ── SCARICO: apri modal diretto con farmaco già caricato ──
+function apriSchedaScarico(f){
+  const g=giac(f.id);
+  if(g<=0){
+    toast('⚠️ '+f.nome+': scorta esaurita, impossibile scaricare','r');
+    return;
+  }
+  const s=stato(f);
+  const sLabel={ok:'Scorta sufficiente',warn:'⚠️ Scorte basse',crit:'🚨 Scorta critica'};
+  const sColor={ok:'var(--green)',warn:'var(--orange)',crit:'var(--red)'};
 
-function precompilaCarico(fid){
-  showPage('mov', document.querySelectorAll('.nb')[2]);
-  setTimeout(()=>{
-    // attiva tab carico
-    const tabs=document.querySelectorAll('.tabs .tab');
-    tabs.forEach(t=>t.classList.remove('active'));
-    tabs[1].classList.add('active');
-    document.getElementById('t-sc').style.display='none';
-    document.getElementById('t-ca').style.display='block';
-    document.getElementById('ca-f').value=fid;
-    document.getElementById('ca-q').value=1;
-    document.getElementById('ca-q').focus();
-    document.getElementById('ca-f').style.borderColor='var(--green)';
-    setTimeout(()=>document.getElementById('ca-f').style.borderColor='',1500);
-    const f=FF.find(x=>x.id===fid);
-    toast(`✓ ${f.nome} selezionato — imposta quantità`,'g');
-  },200);
-}
-
-// ── MODAL: barcode non trovato ──
-function openScanNotFound(code){
-  window._notFoundCode=code;
-  // Usa modal guida riciclato — inietta contenuto
   document.getElementById('m-guida-c').innerHTML=`
-    <div style="text-align:center;padding:8px 0 20px">
-      <div style="font-size:36px;margin-bottom:12px">📦</div>
-      <div style="font-size:15px;font-weight:700;margin-bottom:6px">Codice non trovato</div>
-      <div style="font-size:13px;color:var(--text2);margin-bottom:20px">Il codice <strong style="color:var(--blue)">${code}</strong> non è associato a nessun farmaco.</div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <button class="btn btn-blue" onclick="assegnaACodiceEsistente()">Associa a farmaco esistente</button>
-        <button class="btn btn-ghost" onclick="creaNuovoConBarcode()">Crea nuovo farmaco con questo codice</button>
-        <button class="btn btn-ghost" onclick="closeM('m-guida')" style="font-size:12px;color:var(--text3)">Ignora</button>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:14px;background:var(--surface2);border-radius:var(--rsm);border:1px solid var(--border2)">
+      <div style="flex:1">
+        <div style="font-size:17px;font-weight:800">${f.nome}</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px">${f.dos}</div>
       </div>
-    </div>`;
+      <div style="text-align:right">
+        <div style="font-size:28px;font-weight:800;color:${sColor[s]};line-height:1">${g}</div>
+        <div style="font-size:10px;color:var(--text3)">${f.un} disponibili</div>
+      </div>
+    </div>
+    <div style="color:${sColor[s]};font-size:12px;font-weight:700;margin-bottom:16px">${sLabel[s]}</div>
+    <div class="field">
+      <label>Quantità da scaricare</label>
+      <div class="stepper">
+        <button class="sb" onclick="stepScanQty(-1)">−</button>
+        <input type="number" id="scan-qty" value="1" min="1" max="${g}">
+        <button class="sb" onclick="stepScanQty(1)">+</button>
+      </div>
+    </div>
+    <div class="field"><label>Note (opzionale)</label><input type="text" id="scan-note" placeholder="es. Camera 12, sig. Rossi"></div>
+    <button class="btn btn-red" onclick="confermaScaricoDiretto('${f.id}')">⬇ Conferma scarico</button>
+    <button class="btn btn-ghost" onclick="closeM('m-guida')" style="margin-top:8px;font-size:13px">Annulla</button>`;
+
+  // salva max per stepScanQty
+  window._scanMaxQty=g;
   document.getElementById('m-guida').classList.add('active');
+}
+
+function stepScanQty(delta){
+  const el=document.getElementById('scan-qty');
+  if(!el)return;
+  const max=window._scanMaxQty||99;
+  el.value=Math.min(max,Math.max(1,(Number(el.value)||1)+delta));
+}
+
+function confermaScaricoDiretto(fid){
+  const qty=Number(document.getElementById('scan-qty').value)||0;
+  const note=document.getElementById('scan-note').value.trim();
+  const f=FF.find(x=>x.id===fid);
+  const g=giac(fid);
+  if(qty<=0||qty>g){toast('Quantità non valida','r');return;}
+  MM.push({id:uid(),fid,tipo:'scarico',qty,data:now(),note,lotto:'',lscad:'',ann:false});
+  LS.set('pg_m',MM);
+  closeM('m-guida');
+  // aggiorna pagina movimenti se aperta
+  try{fillSel();renderStor();}catch(e){}
+  renderHome();
+  const s=stato(f);
+  toast('✓ Scaricato: '+qty+' '+f.un+' di '+f.nome,'g');
+  if(s==='crit')setTimeout(()=>toast('🚨 '+f.nome+': scorta critica!','r'),3000);
+  else if(s==='warn')setTimeout(()=>toast('⚠️ '+f.nome+': da riordinare','o'),3000);
+}
+
+// ── CARICO: apri modal diretto ──
+function apriSchedaCarico(f){
+  document.getElementById('m-guida-c').innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:14px;background:var(--surface2);border-radius:var(--rsm);border:1px solid var(--border2)">
+      <div style="flex:1">
+        <div style="font-size:17px;font-weight:800">${f.nome}</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px">${f.dos}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:28px;font-weight:800;color:var(--blue);line-height:1">${giac(f.id)}</div>
+        <div style="font-size:10px;color:var(--text3)">${f.un} in stock</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Quantità ricevuta</label>
+      <div class="stepper">
+        <button class="sb" onclick="stepScanQty2(-1)">−</button>
+        <input type="number" id="scan-qty2" value="1" min="1">
+        <button class="sb" onclick="stepScanQty2(1)">+</button>
+      </div>
+    </div>
+    <div class="fr">
+      <div class="field"><label>N° Lotto</label><input type="text" id="scan-lotto" placeholder="es. ABC123"></div>
+      <div class="field"><label>Scadenza lotto</label><input type="month" id="scan-lscad"></div>
+    </div>
+    <div class="field"><label>Note</label><input type="text" id="scan-note2" placeholder="es. DDT 00123"></div>
+    <button class="btn btn-green" onclick="confermaCaricoDiretto('${f.id}')">⬆ Conferma carico</button>
+    <button class="btn btn-ghost" onclick="closeM('m-guida')" style="margin-top:8px;font-size:13px">Annulla</button>`;
+  document.getElementById('m-guida').classList.add('active');
+}
+
+function stepScanQty2(delta){
+  const el=document.getElementById('scan-qty2');
+  if(el) el.value=Math.max(1,(Number(el.value)||1)+delta);
+}
+
+function confermaCaricoDiretto(fid){
+  const qty=Number(document.getElementById('scan-qty2').value)||0;
+  const lotto=document.getElementById('scan-lotto').value.trim()||'—';
+  const lscad=document.getElementById('scan-lscad').value||'';
+  const note=document.getElementById('scan-note2').value.trim();
+  const f=FF.find(x=>x.id===fid);
+  if(qty<=0){toast('Quantità non valida','r');return;}
+  MM.push({id:uid(),fid,tipo:'carico',qty,data:now(),note,lotto,lscad,ann:false});
+  LS.set('pg_m',MM);
+  closeM('m-guida');
+  try{fillSel();renderStor();}catch(e){}
+  renderHome();
+  toast('✓ Caricato: '+qty+' '+f.un+' di '+f.nome,'g');
+}
+
+// ── MODAL: codice non trovato ──
+function openScanNotFound(code,mode){
+  window._notFoundCode=code;
+  window._notFoundMode=mode;
+  const opts=FF.map(f=>'<option value="'+f.id+'">'+f.nome+' · '+f.dos+'</option>').join('');
+  document.getElementById('m-guida-c').innerHTML=`
+    <div style="text-align:center;padding:4px 0 18px">
+      <div style="font-size:34px;margin-bottom:10px">🔍</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">Codice non riconosciuto</div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px;word-break:break-all">Codice: <strong style="color:var(--blue)">${code}</strong></div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:20px">Non è ancora associato a nessun farmaco.</div>
+    </div>
+    <div class="field">
+      <label>Associa a un farmaco esistente</label>
+      <select id="assegna-sel"><option value="">— Seleziona farmaco —</option>${opts}</select>
+    </div>
+    <button class="btn btn-blue" onclick="confAssegnaEsegui()">Associa${mode!=='registra'?' e '+mode:''}</button>
+    <button class="btn btn-ghost" onclick="creaNuovoConBarcode()" style="margin-top:8px">+ Crea nuovo farmaco</button>
+    <button class="btn btn-ghost" onclick="closeM('m-guida')" style="margin-top:8px;font-size:12px;color:var(--text3)">Ignora</button>`;
+  document.getElementById('m-guida').classList.add('active');
+}
+
+function confAssegnaEsegui(){
+  const fid=document.getElementById('assegna-sel').value;
+  const code=window._notFoundCode;
+  const mode=window._notFoundMode;
+  if(!fid){toast('Seleziona un farmaco','r');return;}
+  const i=FF.findIndex(x=>x.id===fid);
+  if(i>-1) FF[i].barcode=code;
+  LS.set('pg_f',FF);
+  closeM('m-guida');
+  toast('Codice associato ✓','g');
+  // esegui operazione
+  setTimeout(()=>{
+    const f=FF.find(x=>x.id===fid);
+    if(mode==='scarico') apriSchedaScarico(f);
+    else if(mode==='carico') apriSchedaCarico(f);
+  },400);
+}
+
+function creaNuovoConBarcode(){
+  closeM('m-guida');
+  window._tmpBarcode=window._notFoundCode||'';
+  openMF(null);
+  setTimeout(()=>{
+    try{
+      document.getElementById('mf-barcode-preview').style.display='block';
+      document.getElementById('mf-barcode-preview').innerHTML='📦 Codice: <strong>'+window._tmpBarcode+'</strong>';
+    }catch(e){}
+  },350);
 }
 
 function assegnaACodiceEsistente(){
